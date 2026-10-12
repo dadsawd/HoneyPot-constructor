@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body style="    background-color: #121212;
+    color: #00ffcc;
+    font-family: monospace;
+    padding: 20px;
+">
+    <!-- Навигационная панель HoneyForge -->
+<div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 12px 20px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px;">
+    <div style="font-weight: bold; font-size: 16px; color: #fff;">
+        🛡️ <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+    </div>
+    <div style="display: flex; gap: 15px;">
+        <a href="UI.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'">📊 Дашборд атак</a>
+        <a href="append.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);"> 🖥️ Парк ловушек</a>
+    </div>
+</div>
+    <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222; margin-top: 20px; font-family: monospace;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="color: #00ffcc; margin: 0;">🖥️ Парк ловушек (Fleet Management)</h3>
+        <button class="btn-primary" onclick="openAddHostModal()">+ Добавить ловушку</button>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; color: #ffffff;">
+        <thead>
+            <tr style="background-color: #1a1a1a; color: #00ffcc; text-align: left;">
+                <th style="padding: 12px;">Имя хоста / Сервис</th>
+                <th style="padding: 12px;">Тип взаимодействия</th>
+                <th style="padding: 12px;">Порт</th>
+                <th style="padding: 12px;">Статус</th>
+                <th style="padding: 12px;">Последний контакт</th>
+            </tr>
+        </thead>
+        <tbody id="hosts-table-body">
+            <!-- Сюда JS загрузит список хостов -->
+        </tbody>
+    </table>
+</div>
+    <script>
+// Мок-данные парка ловушек
+const mockHosts = [
+    { id: 1, name: "SSH-Trap-Production", type: "Medium Interaction", port: 2222, status: "online", last_seen: "Только что" },
+    { id: 2, name: "HTTP-Admin-Panel", type: "Low Interaction", port: 80, status: "online", last_seen: "2 мин назад" },
+    { id: 3, name: "FTP-Backup-Storage", type: "Medium Interaction", port: 21, status: "offline", last_seen: "4 часа назад" }
+];
+
+// Функция отрисовки таблицы хостов
+function renderHostsTable() {
+    const tbody = document.getElementById('hosts-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    mockHosts.forEach(host => {
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid #222';
+
+        // Формируем красивый статус-бейдж
+        const isOnline = host.status === 'online';
+        const statusClass = isOnline ? 'status-online' : 'status-offline';
+        const statusText = isOnline ? 'Online' : 'Offline';
+
+        row.innerHTML = `
+            <td style="padding: 12px; font-weight: bold;">${host.name}</td>
+            <td style="padding: 12px; color: #aaa;">${host.type}</td>
+            <td style="padding: 12px;"><code>${host.port}</code></td>
+            <td style="padding: 12px;">
+                <span class="${statusClass}"></span>${statusText}
+            </td>
+            <td style="padding: 12px; color: #777;">${host.last_seen}</td>
+        `;
+
+        tbody.appendChild(row);
+    });
+}
+
+// Заглушка для кнопки добавления (пока просто выводит алерт или может открывать форму)
+function openAddHostModal() {
+    alert("Здесь будет модальное окно создания новой ловушки (настраивается бэкендом друга).");
+}
+
+// Запускаем рендер при загрузке
+renderHostsTable();
+    </script>
+</body>
+</html>

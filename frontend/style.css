@@ -1,0 +1,89 @@
+/* Статусные точки для хостов */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.status-online {
+    background-color: #00ffcc;
+    box-shadow: 0 0 6px #00ffcc;
+}
+
+.status-offline {
+    background-color: #ff4444;
+    box-shadow: 0 0 6px #ff4444;
+}
+
+/* Кнопка добавления нового хоста */
+.btn-primary {
+    background-color: #00ffcc;
+    color: #121212;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.85;
+}
+/* Затемнение фона под модальным окном */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+/* Само модальное окно */
+.modal-content {
+    background: #121212;
+    border: 1px solid #00ffcc;
+    box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+    width: 600px;
+    max-width: 90%;
+    border-radius: 8px;
+    padding: 20px;
+    font-family: monospace;
+    color: #fff;
+    position: relative;
+}
+
+/* Кнопка закрытия (крестик) */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #ff6666;
+}
+
+/* Стиль для кликабельных строк таблицы */
+#events-table-body tr {
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+#events-table-body tr:hover {
+    background-color: rgba(0, 255, 204, 0.05);
+}

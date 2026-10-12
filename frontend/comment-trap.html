@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Internal Discussion & Activity Feed</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .comments-container {
+            width: 100%;
+            max-width: 680px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .header {
+            border-bottom: 1px solid #334155;
+            padding-bottom: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h3 {
+            font-size: 1.2rem;
+            color: #f8fafc;
+        }
+
+        .badge {
+            background: #0284c7;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Форма добавления комментария */
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .comment-form input, 
+        .comment-form textarea {
+            width: 100%;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 14px;
+            color: #f8fafc;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .comment-form input:focus, 
+        .comment-form textarea:focus {
+            border-color: #38bdf8;
+        }
+
+        .comment-form textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-btn {
+            align-self: flex-end;
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        /* Список существующих фейковых комментариев */
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .comment-card {
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .comment-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #475569;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            color: #f8fafc;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .comment-date {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .comment-text {
+            font-size: 0.875rem;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        /* Уведомление о модерации */
+        .status-msg {
+            display: none;
+            padding: 10px;
+            border-radius: 6px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid #10b981;
+            color: #34d399;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="comments-container">
+    <div class="header">
+        <h3>Обсуждение инцидентов (Dev Notes)</h3>
+        <span class="badge">Internal API v1</span>
+    </div>
+
+    <div id="statusMsg" class="status-msg">
+        Ваш комментарий отправлен на модерацию администратору безопасности.
+    </div>
+
+    <!-- Форма-приманка -->
+    <form class="comment-form" id="trapForm">
+        <div class="form-row">
+            <input type="text" id="author" name="author" placeholder="Ваше имя / Позывной" required>
+            <input type="email" id="email" name="email" placeholder="Рабочая почта (опционально)">
+        </div>
+        <textarea id="comment" name="comment" placeholder="Написать комментарий к таску..." required></textarea>
+        <button type="submit" class="submit-btn">Отправить</button>
+    </form>
+
+    <!-- Приманка: Фейковые комментарии сотрудников -->
+    <div class="comments-list">
+        <div class="comment-card">
+            <div class="comment-author">
+                <div class="avatar">AD</div>
+                <div class="author-info">
+                    <span class="author-name">Alexey_Dev (Lead)</span>
+                    <span class="comment-date">Сегодня в 14:20</span>
+                </div>
+            </div>
+            <p class="comment-text">Проверьте конфигурацию правил фаервола, в логах снова пошли подозрительные пакты на port 8080.</p>
+        </div>
+
+        <div class="comment-card">
+            <div class="comment-author">
+                <div class="avatar" style="background:#0284c7;">Sec</div>
+                <div class="author-info">
+                    <span class="author-name">SOC_Analyst_02</span>
+                    <span class="comment-date">Вчера в 18:45</span>
+                </div>
+            </div>
+            <p class="comment-text">Секретные ключи доступа временно обновлены. Старые токены деактивированы.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('trapForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const payload = {
+        author: document.getElementById('author').value,
+        email: document.getElementById('email').value,
+        comment: document.getElementById('comment').value,
+        timestamp: new Date().toISOString()
+    };
+
+    // Отправка вектора атаки на бэкенд FastAPI
+    fetch('/api/v1/trap/comments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Показываем фейковое сообщение "Отправлено на модерацию"
+        document.getElementById('statusMsg').style.display = 'block';
+        document.getElementById('trapForm').reset();
+    })
+    .catch(err => {
+        // Даже при ошибке делаем вид, что всё ушло
+        document.getElementById('statusMsg').style.display = 'block';
+        document.getElementById('trapForm').reset();
+    });
+});
+</script>
+
+</body>
+</html>
