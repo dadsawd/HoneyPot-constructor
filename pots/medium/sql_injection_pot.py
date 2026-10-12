@@ -4,7 +4,6 @@ from datetime import datetime
 from app.logging import save_to_json_log
 from app.database.databaze import save_logs
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.middleware import Middleware
 import re
 
 app = FastAPI(title="SqlInjection Pot")
