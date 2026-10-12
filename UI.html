@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>HoneyForge Dashboard</title>
+    <style>
+        body { 
+            background-color: #121212; 
+            color: #00ffcc; 
+            font-family: monospace; 
+            padding: 20px;
+        }
+        h1 { 
+            color: #fff; 
+            border-bottom: 2px solid #00ffcc;
+            padding-bottom: 10px;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px;
+        }
+        th, td { 
+            border: 1px solid #333; 
+            padding: 10px; 
+            text-align: left;
+            cursor: pointer;
+        }
+        th { 
+            background-color: #1e1e1e;
+            color: #fff;
+            cursor: default;
+        }
+        tr:nth-child(even) { 
+            background-color: #181818;
+        }
+        tr:hover {
+            background-color: rgba(0, 255, 204, 0.05);
+        }
+        .payload { 
+            color: #ff5555; 
+            word-break: break-all;
+        }
+        .priority-critical {
+            color: #ff4444;
+            background-color: rgba(255, 68, 68, 0.2);
+            animation: pulse 1.5s infinite;
+            border: 1px solid #ff4444;
+            box-shadow: 0 0 8px rgba(255, 68, 68, 0.4);
+        }
+        .priority-warning {
+            background-color: rgba(255, 187, 51, 0.2);
+            color: #ffbb33;
+            border: 1px solid #ffbb33;
+        }
+        .priority-info {
+            background-color: rgba(0, 255, 204, 0.1);
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .highlight-match {
+            background-color: rgba(255, 235, 59, 0.25);
+            color: #ffee58;
+            border: 1px solid rgba(255, 235, 59, 0.5);
+            padding: 0 2px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        /* 👇 ДОБАВЛЕННЫЕ СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: #121212;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            width: 600px;
+            max-width: 90%;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: monospace;
+            color: #fff;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ff4444;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: #ff6666;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Навигационная панель HoneyForge -->
+<div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 12px 20px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px;">
+    <div style="font-weight: bold; font-size: 16px; color: #fff;">
+        🛡️ <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+    </div>
+    <div style="display: flex; gap: 15px;">
+        <a href="UI.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);">📊 Дашборд атак</a>
+        <a href="append.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'">🖥️ Парк ловушек</a>
+    </div>
+</div>
+    
+    <h1>HoneyForge — Центр мониторинга атак</h1>
+    
+    <div class="filter-wrapper" style="margin-bottom: 15px;">
+        <label for="severity-filter" style="color: #aaa; font-family: monospace; margin-right: 10px;">Фильтр по уровню:</label>
+        <select id="severity-filter" onchange="filterEvents()" style="background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 6px 12px; border-radius: 4px; font-family: monospace; cursor: pointer;">
+            <option value="all">Все уровни</option>
+            <option value="critical">Critical (Критический)</option>
+            <option value="warning">Warning (Средний)</option>
+            <option value="info">Info (Низкий)</option>
+        </select>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+        <input type="text" id="payload-search" oninput="filterEvents()" placeholder="Поиск в payload (напр. admin)..." style="background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 6px 12px; border-radius: 4px; font-family: monospace; width: 260px;">
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Время</th>
+                <th>IP Атакующего</th>
+                <th>Host ID</th>
+                <th>Status</th>
+                <th>Payload / Запрос</th>
+            </tr>
+        </thead>
+        <tbody id="events-table-body">
+            <!-- Данные загружаются динамически -->
+        </tbody>
+    </table>
+
+    <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222; margin: 20px 0;">
+        <h3 style="color: #00ffcc; font-family: monospace; margin-top: 0; margin-bottom: 15px;">📊 Динамика атак (по часам)</h3>
+        <canvas id="attacksChart" style="max-height: 250px;"></canvas>
+    </div>
+
+    <!-- Модальное окно деталей инцидента -->
+    <div id="incidentModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeIncidentModal()">&times;</button>
+            <h3 style="color: #00ffcc; margin-top: 0; margin-bottom: 15px;">🔍 Инспектор инцидента (Forensic View)</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px;">
+                <div><span style="color: #777;">Таймстамп:</span> <span id="modal-time" style="color: #fff;">-</span></div>
+                <div><span style="color: #777;">IP атакующего:</span> <code id="modal-ip" style="color: #ff4444;">-</code></div>
+                <div><span style="color: #777;">Целевой хост:</span> <span id="modal-host" style="color: #00ffcc;">-</span></div>
+                <div><span style="color: #777;">Уровень угрозы:</span> <span id="modal-severity" style="font-weight: bold;">-</span></div>
+                
+                <div style="margin-top: 10px;">
+                    <span style="color: #777; display: block; margin-bottom: 5px;">Перехваченный Payload / Дамп запроса:</span>
+                    <pre id="modal-payload" style="background: #1a1a1a; padding: 12px; border-radius: 4px; border: 1px solid #333; color: #ddd; overflow-x: auto; margin: 0; white-space: pre-wrap; word-wrap: break-word;"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. Мок-данные событий
+        const mockEvents = [
+            { timestamp: new Date().toISOString(), attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
+            { timestamp: new Date().toISOString(), attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
+            { timestamp: new Date().toISOString(), attacker_ip: "172.16.0.99", host_id: 1, payload: "SSH-2.0-OpenSSH_8.9 (Port scan)", severity: "info" }
+        ];
+
+        // 2. Функция подсветки текста в payload
+        function highlightText(text, query) {
+            if (!query) return text;
+            const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return text.replace(regex, '<span class="highlight-match">$1</span>');
+        }
+
+        // 3. Функция отрисовки таблицы
+        function renderTable(eventsToRender, searchQuery = '') {
+            const tbody = document.getElementById('events-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            if (eventsToRender.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #777;">Нет событий для отображения</td></tr>`;
+                return;
+            }
+
+            eventsToRender.forEach(event => {
+                const row = document.createElement('tr');
+
+                let badgeClass = 'priority-info';
+                let badgeText = 'Info';
+
+                if (event.severity === 'critical') {
+                    badgeClass = 'priority-critical';
+                    badgeText = 'Critical';
+                } else if (event.severity === 'warning') {
+                    badgeClass = 'priority-warning';
+                    badgeText = 'Warning';
+                }
+
+                const highlightedPayload = highlightText(event.payload, searchQuery);
+
+                row.innerHTML = `
+                    <td>${new Date(event.timestamp).toLocaleTimeString()}</td>
+                    <td><code>${event.attacker_ip}</code></td>
+                    <td>Host #${event.host_id}</td>
+                    <td><span class="priority-badge ${badgeClass}">${badgeText}</span></td>
+                    <td style="color: #ddd;">${highlightedPayload}</td>
+                `;
+                
+                // Клик по строке открывает модальное окно деталей
+                row.onclick = () => openIncidentModal(event);
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // 4. Функция фильтрации
+        function filterEvents() {
+            const selectedSeverity = document.getElementById('severity-filter').value;
+            const searchQuery = document.getElementById('payload-search').value.toLowerCase().trim();
+
+            const filtered = mockEvents.filter(event => {
+                const matchesSeverity = (selectedSeverity === 'all' || event.severity === selectedSeverity);
+                const matchesSearch = event.payload.toLowerCase().includes(searchQuery);
+                return matchesSeverity && matchesSearch;
+            });
+
+            renderTable(filtered, searchQuery);
+        }
+
+        // 5. Управление модальным окном (Forensic View)
+        function openIncidentModal(eventData) {
+            document.getElementById('modal-time').innerText = new Date(eventData.timestamp).toLocaleString();
+            document.getElementById('modal-ip').innerText = eventData.attacker_ip;
+            document.getElementById('modal-host').innerText = `Host #${eventData.host_id}`;
+            document.getElementById('modal-severity').innerText = eventData.severity.toUpperCase();
+            document.getElementById('modal-payload').innerText = eventData.payload;
+
+            document.getElementById('incidentModal').style.display = 'flex';
+        }
+
+        function closeIncidentModal() {
+            document.getElementById('incidentModal').style.display = 'none';
+        }
+
+        function closeModalOnOutsideClick(e) {
+            if (e.target.id === 'incidentModal') {
+                closeIncidentModal();
+            }
+        }
+
+        // 6. Инициализация графика (Chart.js)
+        const ctx = document.getElementById('attacksChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
+                    datasets: [{
+                        label: 'Инциденты / Атаки',
+                        data: [4, 2, 1, 8, 15, 23, 11, 7],
+                        borderColor: '#ff4444',
+                        backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#aaa', font: { family: 'monospace' } }
+                        }
+                    },
+                    scales: {
+                        x: { 
+                            ticks: { color: '#777', font: { family: 'monospace' } }, 
+                            grid: { color: '#222' } 
+                        },
+                        y: { 
+                            ticks: { color: '#777', font: { family: 'monospace' } }, 
+                            grid: { color: '#222' } 
+                        }
+                    }
+                }
+            });
+        }
+
+        // 7. Первичный запуск отрисовки таблицы
+        renderTable(mockEvents);
+    </script>
+</body>
+</html>
