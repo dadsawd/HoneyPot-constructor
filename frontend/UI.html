@@ -112,6 +112,54 @@
         .modal-close:hover {
             color: #ff6666;
         }
+        /* Стили для столбчатой диаграммы (палочек) */
+        /* Почасовой график-палочки (гистограмма) */
+        .hourly-chart-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 150px;
+            padding: 20px 8px 10px 8px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            margin-top: 10px;
+            gap: 4px;
+        }
+
+        .hourly-chart-container .bar-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            cursor: pointer;
+            min-width: 0;
+        }
+
+        .hourly-chart-container .bar {
+            width: 100%;
+            max-width: 12px;
+            background: #38bdf8;
+            border-radius: 3px 3px 0 0;
+            transition: height 0.3s, background 0.3s;
+        }
+
+        .hourly-chart-container .peak-bar {
+            background: #ef4444; /* Красный цвет для пика на 19:00 */
+        }
+
+        .hourly-chart-container .bar-column:hover .bar {
+            filter: brightness(1.2);
+            transform: scaleY(1.02);
+        }
+
+        .hourly-chart-container .bar-label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            margin-top: 6px;
+        }
     </style>
 </head>
 <body>
@@ -158,10 +206,39 @@
         </tbody>
     </table>
 
-    <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222; margin: 20px 0;">
-        <h3 style="color: #00ffcc; font-family: monospace; margin-top: 0; margin-bottom: 15px;">📊 Динамика атак (по часам)</h3>
-        <canvas id="attacksChart" style="max-height: 250px;"></canvas>
+   <!-- Секция: Почасовая динамика атак (палочки) -->
+<div class="panel-section">
+    
+    <p style="font-size: 0.85rem; color: #94a3b8;">Фиксация точечных всплесков активности по часам:</p>
+    
+    <div class="hourly-chart-container">
+        <div class="bar-column" title="00:00 — 1 инцидент"><div class="bar" style="height: 10%;"></div><span class="bar-label">00</span></div>
+        <div class="bar-column" title="01:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">01</span></div>
+        <div class="bar-column" title="02:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">02</span></div>
+        <div class="bar-column" title="03:00 — 3 инцидента"><div class="bar" style="height: 15%;"></div><span class="bar-label">03</span></div>
+        <div class="bar-column" title="04:00 — 1 инцидент"><div class="bar" style="height: 10%;"></div><span class="bar-label">04</span></div>
+        <div class="bar-column" title="05:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">05</span></div>
+        <div class="bar-column" title="06:00 — 2 инцидента"><div class="bar" style="height: 12%;"></div><span class="bar-label">06</span></div>
+        <div class="bar-column" title="07:00 — 5 инцидентов"><div class="bar" style="height: 25%;"></div><span class="bar-label">07</span></div>
+        <div class="bar-column" title="08:00 — 12 инцидентов"><div class="bar" style="height: 45%;"></div><span class="bar-label">08</span></div>
+        <div class="bar-column" title="09:00 — 8 инцидентов"><div class="bar" style="height: 35%;"></div><span class="bar-label">09</span></div>
+        <div class="bar-column" title="10:00 — 15 инцидентов"><div class="bar" style="height: 55%;"></div><span class="bar-label">10</span></div>
+        <div class="bar-column" title="11:00 — 6 инцидентов"><div class="bar" style="height: 25%;"></div><span class="bar-label">11</span></div>
+        <div class="bar-column" title="12:00 — 19 инцидентов"><div class="bar" style="height: 70%;"></div><span class="bar-label">12</span></div>
+        <div class="bar-column" title="13:00 — 4 инцидента"><div class="bar" style="height: 20%;"></div><span class="bar-label">13</span></div>
+        <div class="bar-column" title="14:00 — 9 инцидентов"><div class="bar" style="height: 38%;"></div><span class="bar-label">14</span></div>
+        <div class="bar-column" title="15:00 — 14 инцидентов"><div class="bar" style="height: 52%;"></div><span class="bar-label">15</span></div>
+        <div class="bar-column" title="16:00 — 7 инцидентов"><div class="bar" style="height: 30%;"></div><span class="bar-label">16</span></div>
+        <div class="bar-column" title="17:00 — 22 инцидента"><div class="bar" style="height: 80%;"></div><span class="bar-label">17</span></div>
+        <div class="bar-column" title="18:00 — 11 инцидентов"><div class="bar" style="height: 42%;"></div><span class="bar-label">18</span></div>
+        <!-- Тот самый пик на 19:00 -->
+        <div class="bar-column" title="19:00 — 27 инцидентов (ПИК)"><div class="bar peak-bar" style="height: 100%;"></div><span class="bar-label" style="color: #ef4444; font-weight: bold;">19</span></div>
+        <div class="bar-column" title="20:00 — 16 инцидентов"><div class="bar" style="height: 60%;"></div><span class="bar-label">20</span></div>
+        <div class="bar-column" title="21:00 — 8 инцидентов"><div class="bar" style="height: 35%;"></div><span class="bar-label">21</span></div>
+        <div class="bar-column" title="22:00 — 4 инцидента"><div class="bar" style="height: 20%;"></div><span class="bar-label">22</span></div>
+        <div class="bar-column" title="23:00 — 2 инцидента"><div class="bar" style="height: 12%;"></div><span class="bar-label">23</span></div>
     </div>
+</div>
 
     <!-- Модальное окно деталей инцидента -->
     <div id="incidentModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
