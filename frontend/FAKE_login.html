@@ -22,13 +22,13 @@
     </div>
 <script>
     document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Останавливаем стандартную перезагрузку страницы
+    e.preventDefault();
 
     const usernameInput = document.getElementById('username').value;
     const passwordInput = document.getElementById('password').value;
 
-    // 1. Отправляем введенные данные на бэкенд, чтобы напарник их залогинил (IP, логин, пароль)
-    fetch('/api/v1/login', {
+    
+    fetch('/api/v1/login', {//адекватная ссылка
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -38,11 +38,9 @@
         })
     })
     .then(response => {
-        // 2. После отправки логов сразу перенаправляем на панель администратора
-        window.location.href = 'fake_admin_board.html'; // Либо 'fake_admin_board.html'
+        window.location.href = 'fake_admin_board.html'; 
     })
     .catch(error => {
-        // Даже если сеть моргнула, хакер всё равно должен провалиться в ловушку
         window.location.href = 'fake_admin_board.html';
     });
 });
