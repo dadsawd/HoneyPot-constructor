@@ -20,41 +20,32 @@
             <button type="submit" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Войти</button>
         </form>
     </div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault(); // Останавливаем стандартную перезагрузку страницы
 
-    <!--<script>       
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault(); // Блокируем перезагрузку
+    const usernameInput = document.getElementById('username').value;
+    const passwordInput = document.getElementById('password').value;
 
-            const TARGET_URL = "https://ufzmv-45-93-4-36.run.piggy-free.link/auth/login/";
-
-            const formData = new FormData();
-            formData.append('username', document.getElementById('username').value);
-            formData.append('password', document.getElementById('password').value);
-
-            try {
-                console.log("[*] Отправляем боевой POST запрос через туннель...");
-                const response = await fetch(TARGET_URL, {
-                    method: 'POST',
-                    body: formData
-                });
-
-                console.log("Статус ответа сервера:", response.status);
-
-                // Читаем ответ как текст, чтобы не словить краш, если пришел HTML или текст ошибки
-                const rawText = await response.text();
-                console.log("Сырой текст ответа от бэкенда:", rawText);
-
-                // Пытаемся превратить в JSON
-                const result = JSON.parse(rawText);
-                alert("Успех! Ответ сервера: " + JSON.stringify(result));
-
-            } catch (error) {
-                console.error("[!] ПОЙМАЛИ ОШИБКУ В CATCH:", error);
-                alert("Ошибка! Открой консоль (F12 -> Console), там написана точная причина.");
-            }
-        });
-    
-    </script>--> 
-
+    // 1. Отправляем введенные данные на бэкенд, чтобы напарник их залогинил (IP, логин, пароль)
+    fetch('/api/v1/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            username: usernameInput,
+            password: passwordInput,
+            timestamp: new Date().toISOString()
+        })
+    })
+    .then(response => {
+        // 2. После отправки логов сразу перенаправляем на панель администратора
+        window.location.href = 'fake_admin_board.html'; // Либо 'fake_admin_board.html'
+    })
+    .catch(error => {
+        // Даже если сеть моргнула, хакер всё равно должен провалиться в ловушку
+        window.location.href = 'fake_admin_board.html';
+    });
+});
+</script>
 </body>
 </html>
