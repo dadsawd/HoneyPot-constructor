@@ -1,9 +1,9 @@
-from flask import Flask, request, jsonify
-from app.logging import save_to_json_log
+from flask import Flask, request, jsonify, render_template
 from datetime import datetime
 from collections import deque
 import time
 import logging
+import requests
 
 logging.basicConfig(
     filename='pots/honeypot.log',
@@ -20,7 +20,7 @@ delay = 0.1
 
 @app.route('/')
 def index():
-    return "Welcome to secure portal", 200
+    return render_template('fake_login.html')
 
 @app.route('/auth/login', methods=['POST'])
 def login():
@@ -41,14 +41,17 @@ def login():
         if last_delay > delay:
             attack_info = {
                 "timestamp": datetime.now().isoformat(),
-                "attacker_ip": attacker_ip,
+                'ip': request.headers.get('X-Forwarded-For', request.remote_addr),
                 "user_agent": user_agent,
                 "http-method": request.method,
                 "signature": "Potential BruteForce",
                 "pot_name": "Brute Force pot"
             }
 
-            save_to_json_log(attack_info)
+            try:
+                requests.post("http://center-backend:8000/api/v1/telemetry", json=attack_info, timeout=2)
+            except requests.exceptions.RequestException as e:
+                print(f"Center connection error: {e}")
 
     return jsonify({
         "status": "error",

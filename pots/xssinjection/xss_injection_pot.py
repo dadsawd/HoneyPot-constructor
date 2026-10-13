@@ -1,8 +1,8 @@
-from flask import Flask, request
-from app.logging import save_to_json_log
+from flask import Flask, request, render_template, jsonify
 from datetime import datetime
 import logging
 import re
+import requests
 
 logging.basicConfig(
     filename='pots/honeypot.log',
@@ -13,18 +13,31 @@ logging.basicConfig(
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+    return render_template('comment_trap.html')
+
 @app.route('/comments', methods=['POST', 'GET'])
-def catch_comments(): # catch Stored XSS
+def catch_comments():
     user_input = request.form.get('comment', '') or request.args.get('q', '')
     if re.findall(r'script|on\w+=|javascript:', user_input, re.IGNORECASE):
         attack_info = {
             "timestamp": datetime.now().isoformat(),
-            "attacker_ip": request.remote_addr,
+            'ip': request.headers.get('X-Forwarded-For', request.remote_addr),
             "user_agent": request.headers.get('User-Agent'),
             "http-method": request.method,
             "signature": "Potential XXS-Injection",
             "pot_name": "XSS-Injection Pot"
         }
-        save_to_json_log(attack_info)
+
+        try:
+            requests.post("http://center-backend:8000/api/v1/telemetry", json=attack_info, timeout=2)
+        except requests.exceptions.RequestException as e:
+            print(f"Center connection error: {e}")
 
         logging.info(f"Potential XSS-Injection attemp from {request.remote_addr}, {user_input}")
+
+        return jsonify({
+          "status": "error",
+            "message": "Invalid credentials"
+        }), 401

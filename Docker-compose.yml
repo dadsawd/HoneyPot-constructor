@@ -1,0 +1,83 @@
+version: '3.8'
+
+# Создаем две изолированные сети, как требуют эксперты (раздел 7.2)
+networks:
+  management-net: # Внутренний закрытый контур (Бэк Центра + База)
+  honeynet:       # Внешний грязный контур DMZ (Ловушки + Бэк Центра для приема логов)
+
+services:
+
+  # --- КОНТУР УПРАВЛЕНИЯ (C2) ---
+
+  # Главный бэкенд Центра управления (твоё Flask-приложение из папки app)
+  center-backend:
+    build:
+      context: app
+      dockerfile: ./app/Dockerfile # Dockerfile для твоего главного main.py
+    ports:
+      - "8000:8000" # Порт для связи и API Дашборда
+    networks:
+      - management-net
+      - honeynet # КРИТИЧНО: Сидит в обеих сетях, чтобы принимать логи от ловушек
+    depends_on:
+      - database-db
+    environment:
+      - DB_URL=postgresql://user:password@database-db:5432/honeypot_db
+
+  # База данных PostgreSQL (контейнер берется готовый из Docker Hub)
+  database-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: honeypot_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Храним данные базы на диске вечно
+    networks:
+      - management-net # База отрезана от сети ловушек! Хакер её не увидит
+
+  # Фронтенд Дашборда (код твоего друга оператора)
+  dashboard-frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:80" # Открываем дашборд на порту 3000 твоего компа
+    networks:
+      - management-net
+
+
+  # --- ПАРК ЛОВУШЕК (DMZ) ---
+
+  # Ловушка 1: SQL-Инъекции
+  sql-injection-pot:
+    build:
+      context: app
+      dockerfile: ./pots/sql_injection/Dockerfile # Путь к Dockerfile SQL пота
+    ports:
+      - "8081:80" # Хакер из Kali будет атаковать порт 8081
+    networks:
+      - honeynet # Сидит только в сети ловушек
+
+  # Ловушка 2: XSS
+  xss-pot:
+    build:
+      context: app
+      dockerfile: ./pots/xss/Dockerfile # Путь к Dockerfile XSS пота
+    ports:
+      - "8082:80" # Хакер из Kali будет атаковать порт 8082
+    networks:
+      - honeynet # Сидит только в сети ловушек
+
+  # Ловушка 3: Брутфорс
+  bruteforce-pot:
+    build:
+      context: app
+      dockerfile: ./pots/bruteforce/Dockerfile # Путь к Dockerfile Брутфорс пота
+    ports:
+      - "8083:80" # Хакер из Kali будет атаковать порт 8083
+    networks:
+      - honeynet # Сидит только в сети ловушек
+
+# Объявляем постоянное хранилище для базы данных
+volumes:
+  pgdata:
