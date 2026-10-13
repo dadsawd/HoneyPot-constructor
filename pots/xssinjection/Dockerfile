@@ -1,7 +1,7 @@
 FROM python:3.11-slim
 WORKDIR /app
 RUN pip install --no-cache-dir flask flask-cors requests
-COPY pots/xssinjection/xss_injection_pot.py .
-COPY app/faketemplates/FAKE_login.html ./templates/fake_login.html
+COPY xss_injection_pot.py .
+COPY comment_trap.html ./templates/comment_trap.html
 EXPOSE 80
 CMD ["python", "xss_injection_pot.py"]

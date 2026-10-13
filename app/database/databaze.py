@@ -24,6 +24,11 @@ def init_db():
 
 
 def save_logs(pot_logs: dict):
+    try:
+        init_db()
+    except Exception as e:
+        print(f"Database init lazy error: {e}")
+
     payload_data = pot_logs.get("payload")
     if isinstance(payload_data, dict):
         payload_data = json.dumps(payload_data, ensure_ascii=False)

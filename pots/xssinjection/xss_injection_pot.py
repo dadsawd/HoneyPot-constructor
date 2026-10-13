@@ -5,10 +5,10 @@ import re
 import requests
 
 logging.basicConfig(
-    filename='pots/honeypot.log',
+    filename='honeypot.log',
     level=logging.INFO,
     format='%(asctime)s - %(messages)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
+    datefmt='%Y-%m-%d %H:%M:%S'
 )
 
 app = Flask(__name__)
@@ -25,8 +25,8 @@ def catch_comments():
             "timestamp": datetime.now().isoformat(),
             'ip': request.headers.get('X-Forwarded-For', request.remote_addr),
             "user_agent": request.headers.get('User-Agent'),
-            "http-method": request.method,
-            "signature": "Potential XXS-Injection",
+            "method": request.method,
+            "signature": "Potential XSS-Injection",
             "pot_name": "XSS-Injection Pot"
         }
 
@@ -41,3 +41,6 @@ def catch_comments():
           "status": "error",
             "message": "Invalid credentials"
         }), 401
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)

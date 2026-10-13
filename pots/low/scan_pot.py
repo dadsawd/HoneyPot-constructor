@@ -1,5 +1,5 @@
 from datetime import datetime
-from app.logging import save_to_json_log
+from app.json_logging import save_to_json_log
 import socket
 
 server_address = ('127.0.0.1', 8080)

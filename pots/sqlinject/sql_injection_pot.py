@@ -5,9 +5,10 @@ import logging
 import requests
 
 logging.basicConfig(
-    filename='pots/honeypot.log',
+    filename='honeypot.log',
     level=logging.INFO,
-    format='%(asctime)s -%(message)s'
+    format='%(asctime)s -%(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
 )
 
 app = Flask(__name__)
@@ -39,3 +40,6 @@ def login():
             "status": "error",
             "message": "Invalid credentials"
         }), 401
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)

@@ -6,7 +6,7 @@ import logging
 import requests
 
 logging.basicConfig(
-    filename='pots/honeypot.log',
+    filename='honeypot.log',
     level=logging.INFO,
     format='%(asctime)s  - %(message)s',
     datefmt='%d-%b-%y %H:%M:%S'
@@ -57,3 +57,6 @@ def login():
         "status": "error",
         "message": "Invalid credentials"
     }), 401
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=80)
