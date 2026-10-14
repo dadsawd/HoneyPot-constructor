@@ -1,0 +1,161 @@
+{
+  "application": "Chapter & Co. local demo",
+  "exportedAt": "2026-10-14T22:53:56.475Z",
+  "retentionDays": 7,
+  "eventCount": 16,
+  "events": [
+    {
+      "id": "71e3ba8a-f3f4-408a-acf7-f0e671715564",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:27.497Z",
+      "type": "consent_granted",
+      "data": {
+        "scope": "local demo interaction and text logging",
+        "retentionDays": 7,
+        "maxEvents": 1000
+      }
+    },
+    {
+      "id": "3156c34f-a638-42eb-a744-5f751bc86738",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:27.500Z",
+      "type": "page_view",
+      "data": {
+        "page": "bookstore",
+        "viewport": {
+          "width": 1334,
+          "height": 734
+        }
+      }
+    },
+    {
+      "id": "c18df827-25c2-4005-8a79-11794bc0ef2a",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:30.295Z",
+      "type": "navigation",
+      "data": {
+        "destination": "all"
+      }
+    },
+    {
+      "id": "12ee4757-5170-43ee-b394-9db3adccbbe0",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:30.296Z",
+      "type": "click",
+      "data": {
+        "target": "nav:all"
+      }
+    },
+    {
+      "id": "65859c2a-166e-46d2-b358-0ecacb643854",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:31.170Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 25
+      }
+    },
+    {
+      "id": "fe278f4f-d785-4c31-98b6-ef9351c594de",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:32.371Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 50
+      }
+    },
+    {
+      "id": "00a199bf-1dbf-4ed6-a4cc-a7243a0bb64a",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:33.189Z",
+      "type": "click",
+      "data": {
+        "target": "add:somewhere-south"
+      }
+    },
+    {
+      "id": "3ca914ac-495e-400e-b997-2a27259d464f",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:33.191Z",
+      "type": "cart_add",
+      "data": {
+        "book": "somewhere-south",
+        "quantity": 1
+      }
+    },
+    {
+      "id": "18e197e3-034b-45c6-8377-a30af2efe535",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:39.131Z",
+      "type": "field_focus",
+      "data": {
+        "field": "sort"
+      }
+    },
+    {
+      "id": "b6db7b32-7664-4f1e-afd8-f51485b3afce",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:41.408Z",
+      "type": "sort",
+      "data": {
+        "value": "title"
+      }
+    },
+    {
+      "id": "cfb96499-610b-4d70-99ad-68446671dc67",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:43.567Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 75
+      }
+    },
+    {
+      "id": "70b5cb61-95c9-49f5-a798-7bc982091ad0",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:43.568Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 100
+      }
+    },
+    {
+      "id": "c5e0f478-1066-448a-a290-c4f224af4375",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:46.608Z",
+      "type": "field_focus",
+      "data": {
+        "field": "newsletterEmail"
+      }
+    },
+    {
+      "id": "287cb93c-0ebf-49e0-9b58-1a2dcc1a5ad3",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:49.240Z",
+      "type": "field_change",
+      "data": {
+        "field": "newsletterEmail",
+        "value": "iwa.now.13@mail.ru"
+      }
+    },
+    {
+      "id": "1090cd9a-5304-4a57-87d0-e9b536b1b495",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:49.488Z",
+      "type": "click",
+      "data": {
+        "target": "Count me in ↗"
+      }
+    },
+    {
+      "id": "92eda047-3ffb-4631-a070-5d3fb79e099f",
+      "session": "e46d16ff-c280-4c11-89ef-bb61cab0f47e",
+      "time": "2026-10-14T22:53:49.510Z",
+      "type": "form_submit",
+      "data": {
+        "form": "newsletter",
+        "email": "iwa.now.13@mail.ru"
+      }
+    }
+  ]
+}
