@@ -73,7 +73,7 @@
             font-weight: bold;
         }
 
-        /* 👇 ДОБАВЛЕННЫЕ СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА */
+        /* Модальное окно */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -112,13 +112,20 @@
         .modal-close:hover {
             color: #ff6666;
         }
-        /* Стили для столбчатой диаграммы (палочек) */
-        /* Почасовой график-палочки (гистограмма) */
+
+        /* Стили для динамической столбчатой диаграммы (гистограммы) */
+        .panel-section {
+            margin-top: 30px;
+            background: #181818;
+            border: 1px solid #333;
+            padding: 15px;
+            border-radius: 6px;
+        }
         .hourly-chart-container {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            height: 150px;
+            height: 160px;
             padding: 20px 8px 10px 8px;
             background: #0f172a;
             border: 1px solid #334155;
@@ -126,8 +133,7 @@
             margin-top: 10px;
             gap: 4px;
         }
-
-        .hourly-chart-container .bar-column {
+        .bar-column {
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -137,25 +143,21 @@
             cursor: pointer;
             min-width: 0;
         }
-
-        .hourly-chart-container .bar {
+        .bar {
             width: 100%;
             max-width: 12px;
             background: #38bdf8;
             border-radius: 3px 3px 0 0;
             transition: height 0.3s, background 0.3s;
         }
-
-        .hourly-chart-container .peak-bar {
-            background: #ef4444; /* Красный цвет для пика на 19:00 */
+        .peak-bar {
+            background: #ef4444; /* Выделение пикового значения красным */
         }
-
-        .hourly-chart-container .bar-column:hover .bar {
+        .bar-column:hover .bar {
             filter: brightness(1.2);
             transform: scaleY(1.02);
         }
-
-        .hourly-chart-container .bar-label {
+        .bar-label {
             font-size: 0.65rem;
             color: #94a3b8;
             margin-top: 6px;
@@ -165,15 +167,15 @@
 <body>
 
     <!-- Навигационная панель HoneyForge -->
-<div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 12px 20px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px;">
-    <div style="font-weight: bold; font-size: 16px; color: #fff;">
-        🛡️ <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+    <div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 12px 20px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px;">
+        <div style="font-weight: bold; font-size: 16px; color: #fff;">
+             <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <a href="UI.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);">Дашборд атак</a>
+            <a href="append.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'">Парк ловушек</a>
+        </div>
     </div>
-    <div style="display: flex; gap: 15px;">
-        <a href="UI.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);">📊 Дашборд атак</a>
-        <a href="append.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'">🖥️ Парк ловушек</a>
-    </div>
-</div>
     
     <h1>HoneyForge — Центр мониторинга атак</h1>
     
@@ -206,39 +208,15 @@
         </tbody>
     </table>
 
-   <!-- Секция: Почасовая динамика атак (палочки) -->
-<div class="panel-section">
-    
-    <p style="font-size: 0.85rem; color: #94a3b8;">Фиксация точечных всплесков активности по часам:</p>
-    
-    <div class="hourly-chart-container">
-        <div class="bar-column" title="00:00 — 1 инцидент"><div class="bar" style="height: 10%;"></div><span class="bar-label">00</span></div>
-        <div class="bar-column" title="01:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">01</span></div>
-        <div class="bar-column" title="02:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">02</span></div>
-        <div class="bar-column" title="03:00 — 3 инцидента"><div class="bar" style="height: 15%;"></div><span class="bar-label">03</span></div>
-        <div class="bar-column" title="04:00 — 1 инцидент"><div class="bar" style="height: 10%;"></div><span class="bar-label">04</span></div>
-        <div class="bar-column" title="05:00 — 0 инцидентов"><div class="bar" style="height: 5%;"></div><span class="bar-label">05</span></div>
-        <div class="bar-column" title="06:00 — 2 инцидента"><div class="bar" style="height: 12%;"></div><span class="bar-label">06</span></div>
-        <div class="bar-column" title="07:00 — 5 инцидентов"><div class="bar" style="height: 25%;"></div><span class="bar-label">07</span></div>
-        <div class="bar-column" title="08:00 — 12 инцидентов"><div class="bar" style="height: 45%;"></div><span class="bar-label">08</span></div>
-        <div class="bar-column" title="09:00 — 8 инцидентов"><div class="bar" style="height: 35%;"></div><span class="bar-label">09</span></div>
-        <div class="bar-column" title="10:00 — 15 инцидентов"><div class="bar" style="height: 55%;"></div><span class="bar-label">10</span></div>
-        <div class="bar-column" title="11:00 — 6 инцидентов"><div class="bar" style="height: 25%;"></div><span class="bar-label">11</span></div>
-        <div class="bar-column" title="12:00 — 19 инцидентов"><div class="bar" style="height: 70%;"></div><span class="bar-label">12</span></div>
-        <div class="bar-column" title="13:00 — 4 инцидента"><div class="bar" style="height: 20%;"></div><span class="bar-label">13</span></div>
-        <div class="bar-column" title="14:00 — 9 инцидентов"><div class="bar" style="height: 38%;"></div><span class="bar-label">14</span></div>
-        <div class="bar-column" title="15:00 — 14 инцидентов"><div class="bar" style="height: 52%;"></div><span class="bar-label">15</span></div>
-        <div class="bar-column" title="16:00 — 7 инцидентов"><div class="bar" style="height: 30%;"></div><span class="bar-label">16</span></div>
-        <div class="bar-column" title="17:00 — 22 инцидента"><div class="bar" style="height: 80%;"></div><span class="bar-label">17</span></div>
-        <div class="bar-column" title="18:00 — 11 инцидентов"><div class="bar" style="height: 42%;"></div><span class="bar-label">18</span></div>
-        <!-- Тот самый пик на 19:00 -->
-        <div class="bar-column" title="19:00 — 27 инцидентов (ПИК)"><div class="bar peak-bar" style="height: 100%;"></div><span class="bar-label" style="color: #ef4444; font-weight: bold;">19</span></div>
-        <div class="bar-column" title="20:00 — 16 инцидентов"><div class="bar" style="height: 60%;"></div><span class="bar-label">20</span></div>
-        <div class="bar-column" title="21:00 — 8 инцидентов"><div class="bar" style="height: 35%;"></div><span class="bar-label">21</span></div>
-        <div class="bar-column" title="22:00 — 4 инцидента"><div class="bar" style="height: 20%;"></div><span class="bar-label">22</span></div>
-        <div class="bar-column" title="23:00 — 2 инцидента"><div class="bar" style="height: 12%;"></div><span class="bar-label">23</span></div>
+    <!-- Секция: Динамическая почасовая гистограмма из таблицы -->
+    <div class="panel-section">
+        <div style="font-size: 0.9rem; color: #fff; font-weight: bold; margin-bottom: 4px;">Почасовая динамика сетевых атак (24 часа)</div>
+        <p style="font-size: 0.81rem; color: #94a3b8;">Гистограмма строится на основе реальных таймстампов из таблицы инцидентов:</p>
+        
+        <div class="hourly-chart-container" id="hourlyChartContainer">
+            <!-- Колонки генерируются автоматически через JavaScript -->
+        </div>
     </div>
-</div>
 
     <!-- Модальное окно деталей инцидента -->
     <div id="incidentModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
@@ -261,11 +239,13 @@
     </div>
 
     <script>
-        // 1. Мок-данные событий
+        // 1. Мок-данные событий (можно дополнять или подтягивать с бэкенда)
         const mockEvents = [
-            { timestamp: new Date().toISOString(), attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
-            { timestamp: new Date().toISOString(), attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
-            { timestamp: new Date().toISOString(), attacker_ip: "172.16.0.99", host_id: 1, payload: "SSH-2.0-OpenSSH_8.9 (Port scan)", severity: "info" }
+            { timestamp: "2026-03-30T10:15:00.000Z", attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
+            { timestamp: "2026-03-30T13:40:00.000Z", attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
+            { timestamp: "2026-03-30T19:00:00.000Z", attacker_ip: "172.16.0.99", host_id: 1, payload: "SQL Injection: ' OR 1=1 --", severity: "critical" },
+            { timestamp: "2026-03-30T19:25:00.000Z", attacker_ip: "172.16.0.99", host_id: 1, payload: "Command Injection: ; cat /etc/passwd", severity: "critical" },
+            { timestamp: "2026-03-30T22:10:00.000Z", attacker_ip: "192.168.1.102", host_id: 3, payload: "SSH-2.0-OpenSSH_8.9 (Port scan)", severity: "info" }
         ];
 
         // 2. Функция подсветки текста в payload
@@ -276,7 +256,7 @@
             return text.replace(regex, '<span class="highlight-match">$1</span>');
         }
 
-        // 3. Функция отрисовки таблицы
+        // 3. Функция отрисовки таблицы и обновления графика
         function renderTable(eventsToRender, searchQuery = '') {
             const tbody = document.getElementById('events-table-body');
             if (!tbody) return;
@@ -285,41 +265,91 @@
 
             if (eventsToRender.length === 0) {
                 tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #777;">Нет событий для отображения</td></tr>`;
-                return;
+            } else {
+                eventsToRender.forEach(event => {
+                    const row = document.createElement('tr');
+
+                    let badgeClass = 'priority-info';
+                    let badgeText = 'Info';
+
+                    if (event.severity === 'critical') {
+                        badgeClass = 'priority-critical';
+                        badgeText = 'Critical';
+                    } else if (event.severity === 'warning') {
+                        badgeClass = 'priority-warning';
+                        badgeText = 'Warning';
+                    }
+
+                    const highlightedPayload = highlightText(event.payload, searchQuery);
+
+                    row.innerHTML = `
+                        <td>${new Date(event.timestamp).toLocaleTimeString()}</td>
+                        <td><code>${event.attacker_ip}</code></td>
+                        <td>Host #${event.host_id}</td>
+                        <td><span class="priority-badge ${badgeClass}">${badgeText}</span></td>
+                        <td style="color: #ddd;">${highlightedPayload}</td>
+                    `;
+                    
+                    row.onclick = () => openIncidentModal(event);
+                    tbody.appendChild(row);
+                });
             }
 
-            eventsToRender.forEach(event => {
-                const row = document.createElement('tr');
-
-                let badgeClass = 'priority-info';
-                let badgeText = 'Info';
-
-                if (event.severity === 'critical') {
-                    badgeClass = 'priority-critical';
-                    badgeText = 'Critical';
-                } else if (event.severity === 'warning') {
-                    badgeClass = 'priority-warning';
-                    badgeText = 'Warning';
-                }
-
-                const highlightedPayload = highlightText(event.payload, searchQuery);
-
-                row.innerHTML = `
-                    <td>${new Date(event.timestamp).toLocaleTimeString()}</td>
-                    <td><code>${event.attacker_ip}</code></td>
-                    <td>Host #${event.host_id}</td>
-                    <td><span class="priority-badge ${badgeClass}">${badgeText}</span></td>
-                    <td style="color: #ddd;">${highlightedPayload}</td>
-                `;
-                
-                // Клик по строке открывает модальное окно деталей
-                row.onclick = () => openIncidentModal(event);
-
-                tbody.appendChild(row);
-            });
+            // Перестраиваем график на основе отфильтрованных/актуальных данных таблицы
+            renderHourlyChart(eventsToRender);
         }
 
-        // 4. Функция фильтрации
+        // 4. Генерация гистограммы по часам на основе данных таблицы
+        function renderHourlyChart(events) {
+            const container = document.getElementById('hourlyChartContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            // Создаем массив на 24 часа со значениями 0
+            const hoursCount = new Array(24).fill(0);
+
+            // Считаем количество инцидентов для каждого часа (0 - 23)
+            events.forEach(event => {
+                const date = new Date(event.timestamp);
+                const hour = date.getHours();
+                hoursCount[hour]++;
+            });
+
+            // Находим максимальное значение для расчета высоты столбцов в процентах
+            const maxCount = Math.max(...hoursCount, 1); // защищаемся от деления на ноль
+
+            // Рендерим все 24 часа
+            for (let i = 0; i < 24; i++) {
+                const count = hoursCount[i];
+                // Вычисляем высоту в процентах (минимум 8% для пустых, чтобы столбик не исчезал полностью)
+                const heightPercent = count === 0 ? 6 : Math.round((count / maxCount) * 100);
+                
+                // Проверяем, является ли это пиковым значением
+                const isPeak = (count === maxCount && count > 0);
+
+                const col = document.createElement('div');
+                col.className = 'bar-column';
+                col.title = `${String(i).padStart(2, '0')}:00 — ${count} инцидент(ов)${isPeak ? ' (ПИК)' : ''}`;
+
+                const bar = document.createElement('div');
+                bar.className = `bar ${isPeak ? 'peak-bar' : ''}`;
+                bar.style.height = `${heightPercent}%`;
+
+                const label = document.createElement('span');
+                label.className = 'bar-label';
+                if (isPeak) {
+                    label.style.color = '#ef4444';
+                    label.style.fontWeight = 'bold';
+                }
+                label.innerText = String(i).padStart(2, '0');
+
+                col.appendChild(bar);
+                col.appendChild(label);
+                container.appendChild(col);
+            }
+        }
+
+        // 5. Функция фильтрации
         function filterEvents() {
             const selectedSeverity = document.getElementById('severity-filter').value;
             const searchQuery = document.getElementById('payload-search').value.toLowerCase().trim();
@@ -333,7 +363,7 @@
             renderTable(filtered, searchQuery);
         }
 
-        // 5. Управление модальным окном (Forensic View)
+        // 6. Управление модальным окном
         function openIncidentModal(eventData) {
             document.getElementById('modal-time').innerText = new Date(eventData.timestamp).toLocaleString();
             document.getElementById('modal-ip').innerText = eventData.attacker_ip;
@@ -354,46 +384,10 @@
             }
         }
 
-        // 6. Инициализация графика (Chart.js)
-        const ctx = document.getElementById('attacksChart');
-        if (ctx) {
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['00:00', '03:00', '06:00', '09:00', '12:00', '15:00', '18:00', '21:00'],
-                    datasets: [{
-                        label: 'Инциденты / Атаки',
-                        data: [4, 2, 1, 8, 15, 23, 11, 7],
-                        borderColor: '#ff4444',
-                        backgroundColor: 'rgba(255, 68, 68, 0.1)',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            labels: { color: '#aaa', font: { family: 'monospace' } }
-                        }
-                    },
-                    scales: {
-                        x: { 
-                            ticks: { color: '#777', font: { family: 'monospace' } }, 
-                            grid: { color: '#222' } 
-                        },
-                        y: { 
-                            ticks: { color: '#777', font: { family: 'monospace' } }, 
-                            grid: { color: '#222' } 
-                        }
-                    }
-                }
-            });
-        }
-
-        // 7. Первичный запуск отрисовки таблицы
-        renderTable(mockEvents);
+        // 7. Инициализация при загрузке страницы
+        window.onload = () => {
+            renderTable(mockEvents);
+        };
     </script>
 </body>
 </html>
