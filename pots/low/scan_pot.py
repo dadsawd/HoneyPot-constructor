@@ -22,7 +22,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             "attacker_port" : client_address[1],
             "user_agent" : user_agent,
             "target_port" : s.getsockname()[1],
-            "pot_name": "Spider/Crawler pot"
+            "pot_name": "Potential Scanner pot"
         }
     finally:
         connection.close()
