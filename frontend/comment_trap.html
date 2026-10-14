@@ -50,51 +50,104 @@
             font-weight: 600;
         }
 
-        /* Сетка 3 столбца на 2 строки */
+        /* Сетка файлов */
         .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            display: contents;
             margin-bottom: 30px;
         }
 
         .photo-card {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 10px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, transform 0.2s;
+            margin: 15px 0px 15px 0px;
         }
 
         .photo-card:hover {
             border-color: #38bdf8;
+            transform: translateY(-2px);
         }
 
-        .file-download-box {
-            padding: 16px;
-            background: #1a2234;
+        /* Карточка файла с превью и блюром */
+        .file-item-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px;
+            padding: 16px;
+            background: #1a2234;
             border-bottom: 1px solid #334155;
+            gap: 14px;
         }
 
-        .file-icon {
-            font-size: 1.2rem;
+        .file-thumb-container {
+            position: relative;
+            width: 48px;
+            height: 60px;
+            background: #0f172a;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #475569;
         }
 
-        .download-link {
+        .file-thumb-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(4px);
+            opacity: 0.75;
+        }
+
+        .file-extension-badge {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            color: #fff;
+            font-size: 0.55rem;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Цветовая дифференциация бейджей по типу файлов */
+        .badge-sql, .badge-zip { background: #ef4444; }
+        .badge-pdf { background: #dc2626; }
+        .badge-xlsx, .badge-csv { background: #10b981; }
+        .badge-conf, .badge-env, .badge-yml, .badge-yaml { background: #f59e0b; }
+        .badge-sec, .badge-key { background: #8b5cf6; }
+        .badge-default { background: #0284c7; }
+
+        .file-meta {
+            flex-grow: 1;
+            overflow: hidden;
+        }
+
+        .file-name-link {
             color: #38bdf8;
             text-decoration: none;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            word-break: break-all;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            cursor: pointer;
         }
 
-        .download-link:hover {
+        .file-name-link:hover {
             text-decoration: underline;
+        }
+
+        .file-details {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-top: 4px;
         }
 
         .photo-content {
@@ -103,16 +156,18 @@
             flex-direction: column;
             gap: 10px;
             flex-grow: 1;
+            background: #1e293b;
         }
 
         /* Блок комментариев под файлом */
         .comments-section {
             background: #0f172a;
             border-radius: 6px;
-            padding: 8px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             gap: 6px;
+            border: 1px solid #334155;
         }
 
         .comment-item {
@@ -156,6 +211,7 @@
             border-radius: 4px;
             font-size: 0.75rem;
             cursor: pointer;
+            font-weight: 600;
         }
 
         .comment-btn:hover {
@@ -167,6 +223,7 @@
             display: flex;
             justify-content: center;
             gap: 8px;
+            margin-top: 20px;
         }
 
         .page-btn {
@@ -195,7 +252,7 @@
         <span class="badge" id="pageIndicator">Страница 1 из 5</span>
     </div>
 
-    <!-- Сетка 3 столбца на 2 строки (генерируется динамически через JS) -->
+    <!-- Сетка файлов -->
     <div class="gallery-grid" id="galleryGrid"></div>
 
     <!-- Кнопки пагинации на 5 страниц -->
@@ -253,6 +310,28 @@ const pagesData = {
     ]
 };
 
+// Функция для автоматического определения расширения, размера и цвета бейджа
+function getFileMeta(fileName) {
+    const parts = fileName.split('.');
+    const ext = parts.length > 1 ? parts[parts.length - 1].toUpperCase() : 'DAT';
+    
+    let size = '1.2 MB';
+    let badgeClass = 'badge-default';
+    
+    switch(ext) {
+        case 'SQL': size = '142.5 MB'; badgeClass = 'badge-sql'; break;
+        case 'PDF': size = '3.8 MB'; badgeClass = 'badge-pdf'; break;
+        case 'XLSX': case 'CSV': size = '1.4 MB'; badgeClass = 'badge-xlsx'; break;
+        case 'CONF': case 'ENV': case 'YML': case 'YAML': size = '32 KB'; badgeClass = 'badge-conf'; break;
+        case 'SH': case 'PY': size = '14 KB'; badgeClass = 'badge-sec'; break;
+        case 'KEY': case 'CRT': size = '8 KB'; badgeClass = 'badge-sec'; break;
+        case 'ZIP': case 'DB': size = '86.4 MB'; badgeClass = 'badge-zip'; break;
+        case 'LOG': case 'TXT': size = '5.1 MB'; badgeClass = 'badge-default'; break;
+        default: size = '2.1 MB';
+    }
+    return { ext, size, badgeClass };
+}
+
 let currentPage = 1;
 
 function renderPage(page) {
@@ -264,15 +343,20 @@ function renderPage(page) {
 
     items.forEach((item, index) => {
         const globalIndex = (page - 1) * 6 + index + 1;
+        const meta = getFileMeta(item.name);
         
         const card = document.createElement('div');
         card.className = 'photo-card';
         card.innerHTML = `
-            <div class="file-download-box">
-                        
-                <a href="/api/v1/trap/download?file=${item.name}" style="margin: 9px 0px 9px 0px;
-    text-align: center;
-    display: block;" class="download-link" onclick="handleDownload(${globalIndex}, '${item.name}')">${item.name}</a>
+            <div class="file-item-wrapper">
+                <div class="file-thumb-container">
+                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=150" alt="Document preview">
+                    <span class="file-extension-badge ${meta.badgeClass}">${meta.ext}</span>
+                </div>
+                <div class="file-meta">
+                    <a class="file-name-link" onclick="handleDownload(${globalIndex}, '${item.name}')">${item.name}</a>
+                    <div class="file-details">${meta.size} • Защищенный файл</div>
+                </div>
             </div>
             <div class="photo-content">
                 <div class="comments-section">
@@ -287,7 +371,7 @@ function renderPage(page) {
         grid.appendChild(card);
     });
 
-    // Обновляем пагинацию визуально
+    // Обновляем активную кнопку пагинации
     document.querySelectorAll('.page-btn').forEach((btn, idx) => {
         if (idx + 1 === page) {
             btn.classList.add('active');
@@ -296,9 +380,15 @@ function renderPage(page) {
         }
     });
 
+    // Плавный скролл вверх при переходе на другую страницу
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+    
     document.getElementById('pageIndicator').innerText = `Страница ${page} из 5`;
 
-    // Телеметрия смены страниц для фиксации сканеров
+    // Телеметрия смены страниц для фиксации сканеров на бэкенде
     fetch('/api/v1/trap/gallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -316,6 +406,9 @@ function handleDownload(fileId, fileName) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ file_id: fileId, file_name: fileName, page: currentPage, timestamp: new Date().toISOString() })
     }).catch(err => {});
+
+    // Эмуляция скачивания-ловушки
+    alert(`Запрос на скачивание файла "${fileName}" отправлен в систему безопасности.`);
 }
 
 function sendComment(fileId, fileName) {

