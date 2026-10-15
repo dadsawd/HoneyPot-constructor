@@ -332,13 +332,21 @@
     </div>
 
     <script>
-        const mockEvents = [
-            { timestamp: "2026-03-30T10:15:00.000Z", attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
-            { timestamp: "2026-03-30T13:40:00.000Z", attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
-            { timestamp: "2026-03-30T19:00:00.000Z", attacker_ip: "172.16.0.99", host_id: 1, payload: "SQL Injection: ' OR 1=1 --", severity: "critical" },
-            { timestamp: "2026-03-30T19:25:00.000Z", attacker_ip: "172.16.0.99", host_id: 1, payload: "Command Injection: ; cat /etc/passwd", severity: "critical" },
-            { timestamp: "2026-03-30T22:10:00.000Z", attacker_ip: "192.168.1.102", host_id: 3, payload: "SSH-2.0-OpenSSH_8.9 (Port scan)", severity: "info" }
-        ];
+       let liveEvents = []; // Массив для реальных инцидентов с бэкенда
+
+// Функция добавления новой атаки в таблицу и график
+function addNewAttackToDashboardTable(addData) {
+    const newEvent = {
+        timestamp: addData.timestamp || new Date().toISOString(),
+        attacker_ip: addData.attacker_ip || addData.ip || "127.0.0.1",
+        host_id: addData.host_id || 1,
+        payload: addData.payload || addData.attack_type || "Подозрительный запрос",
+        severity: addData.severity || (addData.risk_lvl === 3 ? "critical" : addData.risk_lvl === 2 ? "warning" : "info")
+    };
+    
+    liveEvents.unshift(newEvent); // Добавляем свежую атаку в самое начало
+    renderTable(liveEvents);      // Перерисовываем таблицу и почасовой график
+}
 
         // Функция отправки JSON-конфигурации конструктора на бэкенд (от твоего кента)
         function deployNewHoneypot() {
@@ -468,7 +476,7 @@
             const selectedSeverity = document.getElementById('severity-filter').value;
             const searchQuery = document.getElementById('payload-search').value.toLowerCase().trim();
 
-            const filtered = mockEvents.filter(event => {
+            const filtered = liveEvents.filter(event => {
                 const matchesSeverity = (selectedSeverity === 'all' || event.severity === selectedSeverity);
                 const matchesSearch = event.payload.toLowerCase().includes(searchQuery);
                 return matchesSeverity && matchesSearch;
@@ -498,7 +506,7 @@
         }
 
         window.onload = () => {
-            renderTable(mockEvents);
+            renderTable(liveEvents);
         };
     </script>
 </body>
