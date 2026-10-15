@@ -299,8 +299,8 @@
             }
         }
 
-        // Обработка отправки формы добавления ловушки
-        function handleTrapSubmit(e) {
+        // Обработка отправки формы добавления ловушки (добавлен async и исправлен вызов функций)
+        async function handleTrapSubmit(e) {
             e.preventDefault();
             
             const name = document.getElementById('trapName').value;
@@ -308,20 +308,46 @@
             const levelText = levelSelect.options[levelSelect.selectedIndex].text.split(' ')[0] + " Interaction";
             const portInput = document.getElementById('hostPort') ? document.getElementById('hostPort').value : 2222;
 
-            // Добавляем новый элемент в локальный массив (в реальном проекте здесь будет fetch на FastAPI бэкенд)
-            mockHosts.unshift({
-                id: mockHosts.length + 1,
-                name: name,
-                type: levelText,
-                port: parseInt(portInput),
-                status: "online",
-                last_seen: "Только что"
-            });
+            try {
+                // 1. Отправляем данные на FastAPI бэкенд
+                const response = await fetch('/api/deploy', { 
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        type: levelText,
+                        port: parseInt(portInput)
+                    })
+                });
 
-            renderHostsTable();
-            closeAddHostModal();
-            document.getElementById('trapForm').reset();
-            alert("Ловушка успешно развернута и зарегистрирована в SOC-платформе!");
+                if (!response.ok) {
+                    throw new Error(`Ошибка сервера: ${response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                // 2. Добавляем элемент в локальный массив на основе ответа бэкенда
+                mockHosts.unshift({
+                    id: result.id || (mockHosts.length + 1),
+                    name: name,
+                    type: levelText,
+                    port: parseInt(portInput),
+                    status: "online",
+                    last_seen: "Только что"
+                });
+
+                // 3. Обновляем таблицу, закрываем модальное окно и сбрасываем форму
+                renderHostsTable();
+                closeAddHostModal();
+                document.getElementById('trapForm').reset();
+                alert("Ловушка успешно развернута и зарегистрирована в SOC-платформе!");
+
+            } catch (error) {
+                console.error("Ошибка при развертывании ловушки:", error);
+                alert("Не удалось запустить ловушку: " + error.message);
+            }
         }
 
         // Запускаем рендер при загрузке 
