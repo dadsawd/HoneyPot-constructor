@@ -123,7 +123,7 @@
     
     <div class="fleet-container">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-            <h3 style="color: #00ffcc; margin: 0;">Парк ловушек (Fleet Management) </h3>
+            <h3 style="color: #00ffcc; margin: 0;">Парк ловушек </h3>
             <button class="btn-primary" onclick="openAddHostModal()">+ Добавить ловушку </button>
         </div>
         <table>
@@ -137,7 +137,7 @@
                 </tr>
             </thead>
             <tbody id="hosts-table-body">
-                <!-- Сюда JS загрузит список хостов  -->
+                <!-- Данные подгружаются динамически с бэкенда -->
             </tbody>
         </table>
     </div>
@@ -177,21 +177,25 @@
     </div>
 
     <script>
-        // Мок-данные парка ловушек 
-        const mockHosts = [
-            { id: 1, name: "SSH-Trap-Production", type: "Medium Interaction", port: 2222, status: "online", last_seen: "Только что" },
-            { id: 2, name: "HTTP-Admin-Panel", type: "Low Interaction", port: 80, status: "online", last_seen: "2 мин назад" },
-            { id: 3, name: "FTP-Backup-Storage", type: "Medium Interaction", port: 21, status: "offline", last_seen: "4 часа назад" }
-        ];
+        // ==========================================
+        // НАСТРОЙКА ПОДКЛЮЧЕНИЯ К БЭКЕНДУ (LOCALHOST)
+        // ==========================================
+        // Меняй этот адрес, если бэкенд на другом порту или домене
+        const API_BASE_URL = "http://192.163.3.86:8000"; 
 
-        // Функция отрисовки таблицы хостов 
-        function renderHostsTable() {
+        // Функция отрисовки таблицы хостов на основе реальных данных с бэкенда
+        function renderHostsTable(hosts) {
             const tbody = document.getElementById('hosts-table-body');
             if (!tbody) return;
 
             tbody.innerHTML = '';
 
-            mockHosts.forEach(host => {
+            if (!hosts || hosts.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #777;">Нет активных ловушек в парке</td></tr>`;
+                return;
+            }
+
+            hosts.forEach(host => {
                 const row = document.createElement('tr');
                 const isOnline = host.status === 'online';
                 const statusClass = isOnline ? 'status-online' : 'status-offline';
@@ -202,16 +206,31 @@
                     <td style="color: #aaa;">${host.type}</td>
                     <td><code>${host.port}</code></td>
                     <td><span class="${statusClass}"></span>${statusText}</td>
-                    <td style="color: #777;">${host.last_seen}</td>
+                    <td style="color: #777;">${host.last_seen || 'Только что'}</td>
                 `;
                 tbody.appendChild(row);
             });
         }
 
+        // Запрос списка ловушек с бэкенда при загрузке страницы
+        async function fetchHosts() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/hosts`); // Эндпоинт списка хостов на бэкенде
+                if (!response.ok) {
+                    throw new Error(`Ошибка загрузки: ${response.statusText}`);
+                }
+                const hosts = await response.json();
+                renderHostsTable(hosts);
+            } catch (error) {
+                console.warn("Не удалось получить список хостов с бэкенда (возможно, сервер еще запускается):", error);
+                renderHostsTable([]); // Очищаем таблицу или показываем заглушку пустой сети
+            }
+        }
+
         // Управление модальным окном
         function openAddHostModal() {
             document.getElementById('addTrapModal').style.display = 'flex';
-            updateConfigFields(); // инициализируем поля по умолчанию (low)
+            updateConfigFields();
         }
 
         function closeAddHostModal() {
@@ -299,7 +318,7 @@
             }
         }
 
-        // Обработка отправки формы добавления ловушки (добавлен async и исправлен вызов функций)
+        // Обработка отправки формы добавления ловушки на FastAPI бэкенд
         async function handleTrapSubmit(e) {
             e.preventDefault();
             
@@ -309,8 +328,8 @@
             const portInput = document.getElementById('hostPort') ? document.getElementById('hostPort').value : 2222;
 
             try {
-                // 1. Отправляем данные на FastAPI бэкенд
-                const response = await fetch('/api/deploy', { 
+                // Отправляем POST запрос на локальный бэкенд
+                const response = await fetch(`${API_BASE_URL}/api/deploy`, { 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -326,32 +345,23 @@
                     throw new Error(`Ошибка сервера: ${response.statusText}`);
                 }
 
-                const result = await response.json();
-
-                // 2. Добавляем элемент в локальный массив на основе ответа бэкенда
-                mockHosts.unshift({
-                    id: result.id || (mockHosts.length + 1),
-                    name: name,
-                    type: levelText,
-                    port: parseInt(portInput),
-                    status: "online",
-                    last_seen: "Только что"
-                });
-
-                // 3. Обновляем таблицу, закрываем модальное окно и сбрасываем форму
-                renderHostsTable();
+                // Закрываем модалку и сбрасываем форму
                 closeAddHostModal();
                 document.getElementById('trapForm').reset();
+                
+                // Перезапрашиваем актуальный список с бэкенда
+                await fetchHosts();
+                
                 alert("Ловушка успешно развернута и зарегистрирована в SOC-платформе!");
 
             } catch (error) {
                 console.error("Ошибка при развертывании ловушки:", error);
-                alert("Не удалось запустить ловушку: " + error.message);
+                alert("Не удалось запустить ловушку. Убедитесь, что бэкенд доступен по адресу " + API_BASE_URL + "\nОшибка: " + error.message);
             }
         }
 
-        // Запускаем рендер при загрузке 
-        renderHostsTable();
+        // Инициализация при загрузке страницы: тянем данные с бэкенда
+        fetchHosts();
     </script>
 </body>
 </html>
