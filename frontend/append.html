@@ -3,96 +3,330 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/style.css">
+    <title>HoneyForge — Fleet Management</title>
+    <style>
+        body { 
+            background-color: #121212; 
+            color: #00ffcc; 
+            font-family: monospace; 
+            padding: 20px; 
+        }
+        .nav-bar {
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: #1e1e1e; 
+            padding: 12px 20px; 
+            border-radius: 6px; 
+            border: 1px solid #333; 
+            margin-bottom: 20px;
+        }
+        .fleet-container {
+            background: #121212; 
+            padding: 20px; 
+            border-radius: 8px; 
+            border: 1px solid #222; 
+            margin-top: 20px; 
+            font-family: monospace;
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            color: #ffffff; 
+        }
+        th, td { 
+            padding: 12px; 
+            border-bottom: 1px solid #222;
+            text-align: left;
+        }
+        th { 
+            background-color: #1a1a1a; 
+            color: #00ffcc; 
+        }
+        .btn-primary {
+            background: #2563eb; 
+            color: #fff; 
+            border: none; 
+            padding: 6px 14px; 
+            border-radius: 4px; 
+            font-size: 0.8rem; 
+            cursor: pointer;
+            font-family: monospace;
+        }
+        .btn-primary:hover { background: #1d4ed8; }
+        .status-online { display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: 6px; }
+        .status-offline { display: inline-block; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; margin-right: 6px; }
+
+        /* Стили модального окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center; align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        .modal-content {
+            background: #181818;
+            border: 1px solid #00ffcc;
+            box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+            width: 550px;
+            max-width: 90%;
+            border-radius: 8px;
+            padding: 25px;
+            color: #fff;
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 15px; right: 20px;
+            background: none; border: none;
+            color: #ff4444; font-size: 20px; cursor: pointer;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .form-group label {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        .form-group input, .form-group select {
+            background: #121212;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #00ffcc;
+            outline: none;
+        }
+    </style>
 </head>
-<body style="    background-color: #121212;
-    color: #00ffcc;
-    font-family: monospace;
-    padding: 20px;
-">
-    <!-- Навигационная панель HoneyForge -->
-<div style="display: flex; justify-content: space-between; align-items: center; background: #1e1e1e; padding: 12px 20px; border-radius: 6px; border: 1px solid #333; margin-bottom: 20px;">
-    <div style="font-weight: bold; font-size: 16px; color: #fff;">
-         <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+<body>
+
+    <!-- Навигационная панель HoneyForge  -->
+    <div class="nav-bar">
+        <div style="font-weight: bold; font-size: 16px; color: #fff;">
+             <span style="color: #00ffcc;">HoneyForge</span> SOC Platform
+        </div>
+        <div style="display: flex; gap: 15px;">
+            <a href="UI.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'">Дашборд атак</a>
+            <a href="append.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);">Парк ловушек</a>
+        </div>
     </div>
-    <div style="display: flex; gap: 15px;">
-        <a href="UI.html" style="color: #aaa; text-decoration: none; padding: 6px 12px; border: 1px solid #333; border-radius: 4px; transition: 0.2s;" onmouseover="this.style.color='#fff'; this.style.borderColor='#555'" onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'"> Дашборд атак</a>
-        <a href="append.html" style="color: #00ffcc; text-decoration: none; padding: 6px 12px; border: 1px solid #00ffcc; border-radius: 4px; background: rgba(0,255,204,0.1);">  Парк ловушек</a>
-    </div>
-</div>
-    <div style="background: #121212; padding: 20px; border-radius: 8px; border: 1px solid #222; margin-top: 20px; font-family: monospace;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h3 style="color: #00ffcc; margin: 0;"> Парк ловушек (Fleet Management)</h3>
-        <button style="background: #2563eb;
-    color: #fff;
-    border: none;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    cursor: pointer;" class="btn-primary" onclick="openAddHostModal()">+ Добавить ловушку</button>
+    
+    <div class="fleet-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3 style="color: #00ffcc; margin: 0;">Парк ловушек (Fleet Management) </h3>
+            <button class="btn-primary" onclick="openAddHostModal()">+ Добавить ловушку </button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Имя хоста / Сервис </th>
+                    <th>Тип взаимодействия </th>
+                    <th>Порт </th>
+                    <th>Статус </th>
+                    <th>Последний контакт </th>
+                </tr>
+            </thead>
+            <tbody id="hosts-table-body">
+                <!-- Сюда JS загрузит список хостов  -->
+            </tbody>
+        </table>
     </div>
 
-    <table style="width: 100%; border-collapse: collapse; color: #ffffff;">
-        <thead>
-            <tr style="background-color: #1a1a1a; color: #00ffcc; text-align: left;">
-                <th style="padding: 12px;">Имя хоста / Сервис</th>
-                <th style="padding: 12px;">Тип взаимодействия</th>
-                <th style="padding: 12px;">Порт</th>
-                <th style="padding: 12px;">Статус</th>
-                <th style="padding: 12px;">Последний контакт</th>
-            </tr>
-        </thead>
-        <tbody id="hosts-table-body">
-            <!-- Сюда JS загрузит список хостов -->
-        </tbody>
-    </table>
-</div>
+    <!-- Модальное окно конфигуратора ловушек -->
+    <div id="addTrapModal" class="modal-overlay" onclick="closeModalOnOutside(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAddHostModal()">&times;</button>
+            <h3 style="color: #00ffcc; margin-top: 0; margin-bottom: 20px;">⚙️ Конфигуратор новой ловушки</h3>
+            
+            <form id="trapForm" onsubmit="handleTrapSubmit(event)">
+                <div class="form-group">
+                    <label for="trapLevel">Уровень взаимодействия:</label>
+                    <select id="trapLevel" onchange="updateConfigFields()" required>
+                        <option value="low">Low </option>
+                        <option value="medium">Medium </option>
+                        <option value="high">High </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="trapName">Имя хоста / Название ловушки:</label>
+                    <input type="text" id="trapName" placeholder="напр. HTTP-Auth-Trap" required>
+                </div>
+
+                <!-- Динамические поля в зависимости от уровня -->
+                <div id="dynamicFields">
+                    <!-- Заполняется через JS -->
+                </div>
+
+                <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+                    <button type="button" class="btn-primary" style="background: #333;" onclick="closeAddHostModal()">Отмена</button>
+                    <button type="submit" class="btn-primary">Развернуть ловушку</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-// Мок-данные парка ловушек
-const mockHosts = [
-    { id: 1, name: "SSH-Trap-Production", type: "Medium Interaction", port: 2222, status: "online", last_seen: "Только что" },
-    { id: 2, name: "HTTP-Admin-Panel", type: "Low Interaction", port: 80, status: "online", last_seen: "2 мин назад" },
-    { id: 3, name: "FTP-Backup-Storage", type: "Medium Interaction", port: 21, status: "offline", last_seen: "4 часа назад" }
-];
+        // Мок-данные парка ловушек 
+        const mockHosts = [
+            { id: 1, name: "SSH-Trap-Production", type: "Medium Interaction", port: 2222, status: "online", last_seen: "Только что" },
+            { id: 2, name: "HTTP-Admin-Panel", type: "Low Interaction", port: 80, status: "online", last_seen: "2 мин назад" },
+            { id: 3, name: "FTP-Backup-Storage", type: "Medium Interaction", port: 21, status: "offline", last_seen: "4 часа назад" }
+        ];
 
-// Функция отрисовки таблицы хостов
-function renderHostsTable() {
-    const tbody = document.getElementById('hosts-table-body');
-    if (!tbody) return;
+        // Функция отрисовки таблицы хостов 
+        function renderHostsTable() {
+            const tbody = document.getElementById('hosts-table-body');
+            if (!tbody) return;
 
-    tbody.innerHTML = '';
+            tbody.innerHTML = '';
 
-    mockHosts.forEach(host => {
-        const row = document.createElement('tr');
-        row.style.borderBottom = '1px solid #222';
+            mockHosts.forEach(host => {
+                const row = document.createElement('tr');
+                const isOnline = host.status === 'online';
+                const statusClass = isOnline ? 'status-online' : 'status-offline';
+                const statusText = isOnline ? 'Online' : 'Offline';
 
-        // Формируем красивый статус-бейдж
-        const isOnline = host.status === 'online';
-        const statusClass = isOnline ? 'status-online' : 'status-offline';
-        const statusText = isOnline ? 'Online' : 'Offline';
+                row.innerHTML = `
+                    <td style="font-weight: bold;">${host.name}</td>
+                    <td style="color: #aaa;">${host.type}</td>
+                    <td><code>${host.port}</code></td>
+                    <td><span class="${statusClass}"></span>${statusText}</td>
+                    <td style="color: #777;">${host.last_seen}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
 
-        row.innerHTML = `
-            <td style="padding: 12px; font-weight: bold;">${host.name}</td>
-            <td style="padding: 12px; color: #aaa;">${host.type}</td>
-            <td style="padding: 12px;"><code>${host.port}</code></td>
-            <td style="padding: 12px;">
-                <span class="${statusClass}"></span>${statusText}
-            </td>
-            <td style="padding: 12px; color: #777;">${host.last_seen}</td>
-        `;
+        // Управление модальным окном
+        function openAddHostModal() {
+            document.getElementById('addTrapModal').style.display = 'flex';
+            updateConfigFields(); // инициализируем поля по умолчанию (low)
+        }
 
-        tbody.appendChild(row);
-    });
-}
+        function closeAddHostModal() {
+            document.getElementById('addTrapModal').style.display = 'none';
+        }
 
-// Заглушка для кнопки добавления (пока просто выводит алерт или может открывать форму)
-function openAddHostModal() {
-    alert("Здесь будет модальное окно создания новой ловушки (настраивается бэкендом друга).");
-}
+        function closeModalOnOutside(e) {
+            if (e.target.id === 'addTrapModal') {
+                closeAddHostModal();
+            }
+        }
 
-// Запускаем рендер при загрузке
-renderHostsTable();
+        // Динамическая генерация полей ввода под уровень взаимодействия
+        function updateConfigFields() {
+            const level = document.getElementById('trapLevel').value;
+            const container = document.getElementById('dynamicFields');
+            container.innerHTML = '';
+
+            if (level === 'low') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label for="hostIp">IP / Хост интеграции:</label>
+                        <input type="text" id="hostIp" placeholder="0.0.0.0 (все интерфейсы)" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostPort">Прослушиваемый порт:</label>
+                        <input type="number" id="hostPort" placeholder="80" value="80" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="logSeverity">Уровень критичности логов:</label>
+                        <select id="logSeverity">
+                            <option value="info">Info (Низкий)</option>
+                            <option value="warning" selected>Warning (Средний)</option>
+                            <option value="critical">Critical (Высокий)</option>
+                        </select>
+                    </div>
+                `;
+            } else if (level === 'medium') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label for="attackType">Тип перехватываемой атаки:</label>
+                        <select id="attackType">
+                            <option value="Brute-force">Brute-force (Перебор паролей)</option>
+                            <option value="SQL Injection">SQL Injection (Внедрение SQL)</option>
+                            <option value="XSS">XSS (Межсайтовый скриптинг)</option>
+                            <option value="Path Traversal">Path Traversal (Обход каталогов)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="httpMethod">HTTP Метод:</label>
+                        <select id="httpMethod">
+                            <option value="POST">POST</option>
+                            <option value="GET">GET</option>
+                            <option value="ALL">ANY / ALL</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="endpoint">Целевой End-point (URI):</label>
+                        <input type="text" id="endpoint" placeholder="/api/v1/login" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostPort">Порт симулятора:</label>
+                        <input type="number" id="hostPort" value="8080" required>
+                    </div>
+                `;
+            } else if (level === 'high') {
+                container.innerHTML = `
+                    <div class="form-group">
+                        <label for="sandboxHost">Изолированный Хост / Песочница:</label>
+                        <input type="text" id="sandboxHost" placeholder="docker-sandbox-01.internal" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dockerImage">Базовый образ (Docker Image):</label>
+                        <input type="text" id="dockerImage" placeholder="ubuntu:22.04 / alpine-ssh" value="ubuntu:22.04" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="hostPort">Внешний порт доступа:</label>
+                        <input type="number" id="hostPort" value="2222" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sessionTimeout">Таймаут сессии атакующего (минут):</label>
+                        <input type="number" id="sessionTimeout" value="30">
+                    </div>
+                `;
+            }
+        }
+
+        // Обработка отправки формы добавления ловушки
+        function handleTrapSubmit(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('trapName').value;
+            const levelSelect = document.getElementById('trapLevel');
+            const levelText = levelSelect.options[levelSelect.selectedIndex].text.split(' ')[0] + " Interaction";
+            const portInput = document.getElementById('hostPort') ? document.getElementById('hostPort').value : 2222;
+
+            // Добавляем новый элемент в локальный массив (в реальном проекте здесь будет fetch на FastAPI бэкенд)
+            mockHosts.unshift({
+                id: mockHosts.length + 1,
+                name: name,
+                type: levelText,
+                port: parseInt(portInput),
+                status: "online",
+                last_seen: "Только что"
+            });
+
+            renderHostsTable();
+            closeAddHostModal();
+            document.getElementById('trapForm').reset();
+            alert("Ловушка успешно развернута и зарегистрирована в SOC-платформе!");
+        }
+
+        // Запускаем рендер при загрузке 
+        renderHostsTable();
     </script>
 </body>
 </html>
