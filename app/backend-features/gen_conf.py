@@ -1,34 +1,32 @@
+import os
 import json
 import subprocess
-import requests.exceptions
-from flask import Flask, jsonify
-from flask_cors import CORS
-from app.database import databaze
 
-app = Flask(__name__)
-CORS(app)
+# Автоматически находим абсолютный путь к твоей папке faketemplates в структуре проекта
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))  # Папка backend-features
+APP_DIR = os.path.dirname(CURRENT_DIR)                   # Папка app
+FAKETEMPLATES_DIR = os.path.join(APP_DIR, "faketemplates") # Папка faketemplates
 
-@app.route('/api/v1/deploy', methods=['POST'])
-def deploy_pot():
-    config_from_site = requests.json
-    if not config_from_site:
-        return jsonify({"message": "No config from site"})
-    port = config_from_site.get['port']
-    attack_type = config_from_site.get['attaack_type']
+def deploy_custom_honeypot(config_from_site: dict):
+    port = config_from_site["port"]
+    attack_type = config_from_site.get("attack_type")
     container_name = f"custom_pot_{port}"
     config_string = json.dumps(config_from_site)
 
-    if attack_type in ['SQL-injection', "XSS-injection"]:
+    if attack_type in ['SQL-injection', 'XSS-injection']:
+        # Веб-ловушка среднего взаимодействия (Medium)
         docker_command = [
             "docker", "run", "-d",
             "--name", container_name,
             "-p", f"{port}:8000",
-            "-v", "/root/honeyforge/templates:/app/templates:ro",
+            # Монтируем твою конкретную папку app/faketemplates внутрь контейнера
+            "-v", f"{FAKETEMPLATES_DIR}:/app/templates:ro",
             "-e", f"POT_CONFIG={config_string}",
             "--network", "honeynet",
             "universal-pot-image:latest"
         ]
     else:
+        # Сокет-ловушка низкого взаимодействия (Low)
         docker_command = [
             "docker", "run", "-d",
             "--name", container_name,
@@ -37,25 +35,14 @@ def deploy_pot():
             "--network", "honeynet",
             "universal-socket-image:latest"
         ]
+
     try:
-        subprocess.run(["docker", "rm", "-f", container_name], capture_output = True)
+        # Гарантированно сносим старый контейнер на этом порту, если он мешает
+        subprocess.run(["docker", "rm", "-f", container_name], capture_output=True)
+        # Запускаем новый кастомный капкан
         subprocess.run(docker_command, check=True)
-        return jsonify({"status": "success", "messages":f"ловушка на порту {port} активирована"}), 200
+        print(f"[🔥 GEN] Ловушка {container_name} успешно развернута на порту {port}!")
+        return True
     except Exception as e:
-        return jsonify({"status": "error", "message": f"Ошибка деплоя Docker: {str(e)}"}), 500
-
-@app.route('/api/v1/telemetry', methods=['POST'])
-def get_telemetry():
-    attack_data = request.json
-    if not attack_data:
-        return jsonify({"status":"error"}), 400
-
-    try:
-        databaze.save_logs(pot_logs=attack_data)
-        return jsonify({"status": "success"}), 200
-    except Exception as e:
-        return jsonify({"status": "error"}), 500
-
-if __name__ == '__main__':
-    databaze.init_db()
-    app.run(host='0.0.0.0', port=8000)
+        print(f"[ERROR] Ошибка Docker при деплое: {e}")
+        return False

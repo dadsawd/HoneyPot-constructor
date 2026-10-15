@@ -25,6 +25,8 @@ class HoneyPot:
         attack_info["target_port"] = self.port
         attack_info["risk_lvl"] = self.risk_lvl
 
+
+        requests.post("http://docker.internal", json=attack_info, timeout=2)
         print(f"Ловушка {self.pot_name} зафиксировала атаку с IP: {attack_info.get('attacker_ip')}")
 
         try:
