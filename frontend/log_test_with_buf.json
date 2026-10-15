@@ -1,0 +1,650 @@
+{
+  "application": "Chapter & Co. local demo",
+  "exportedAt": "2026-10-15T13:58:20.847Z",
+  "retentionDays": 7,
+  "eventCount": 68,
+  "events": [
+    {
+      "id": "4da7f2a6-b9b5-4d63-8924-c0cf76894a31",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:21.359Z",
+      "type": "consent_granted",
+      "data": {
+        "scope": "local demo interaction and text logging",
+        "retentionDays": 7,
+        "maxEvents": 1000
+      }
+    },
+    {
+      "id": "d3c75612-c94f-4f2e-b388-77ca04e47425",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:21.361Z",
+      "type": "page_view",
+      "data": {
+        "page": "bookstore",
+        "viewport": {
+          "width": 1334,
+          "height": 734
+        }
+      }
+    },
+    {
+      "id": "301a024e-5cd5-402d-b133-1b145c6b3791",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:23.903Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 25
+      }
+    },
+    {
+      "id": "ebca880e-3a66-42ea-a1d6-84b34667e8c6",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:23.903Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 50
+      }
+    },
+    {
+      "id": "bdd704df-14e0-4fdd-b1cf-3321326cd9e6",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:23.904Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 75
+      }
+    },
+    {
+      "id": "d41d9c11-8f13-4ae7-a010-3ac187d8a10d",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:23.905Z",
+      "type": "scroll_milestone",
+      "data": {
+        "percent": 100
+      }
+    },
+    {
+      "id": "b75400d4-ed1e-435c-8073-fd255701e6c2",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:37.664Z",
+      "type": "profile_view",
+      "data": {}
+    },
+    {
+      "id": "81a36137-ffb1-4c1b-9109-096120e9c566",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:37.696Z",
+      "type": "click",
+      "data": {
+        "target": "profileBtn"
+      }
+    },
+    {
+      "id": "0a8cc1f0-a876-414f-b881-e1c9f0a72ce6",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:40.974Z",
+      "type": "field_focus",
+      "data": {
+        "field": "profileGenre"
+      }
+    },
+    {
+      "id": "3f40c5b9-f3f3-4b15-90ec-3726a28536ff",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:43.326Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileGenre",
+        "value": "Nature"
+      }
+    },
+    {
+      "id": "d526e68a-fc8a-4ad8-9b1b-0105b4f3f52e",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:44.026Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileGenre",
+        "value": "Nature"
+      }
+    },
+    {
+      "id": "503e50a6-6899-402c-a5bf-df62903ed0b4",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:44.240Z",
+      "type": "field_focus",
+      "data": {
+        "field": "profileName"
+      }
+    },
+    {
+      "id": "3ea3c64d-5e94-446b-b5cd-ab086bdfc6e3",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:49.610Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MA"
+      }
+    },
+    {
+      "id": "c8ef10a9-b3fe-49a0-8fc2-d0041b9c48e2",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:50.893Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MAks"
+      }
+    },
+    {
+      "id": "fddd8ae1-7147-4396-ae90-e7dafb6d2719",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:53.592Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MAks Naz"
+      }
+    },
+    {
+      "id": "682f0b73-6f71-481a-80e8-3d7651f568ce",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:54.573Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MAks Naza"
+      }
+    },
+    {
+      "id": "7f6889c6-2d97-490d-b958-c98f26b6351f",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:55.292Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MAks Naz"
+      }
+    },
+    {
+      "id": "c2b2d198-3e80-4a59-92e9-bfd8ab50d09e",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:56.585Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "MAks NazAROW"
+      }
+    },
+    {
+      "id": "12671cb6-3af0-4a6c-91d7-4166ccef718d",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:55:58.211Z",
+      "type": "field_focus",
+      "data": {
+        "field": "profileEmail"
+      }
+    },
+    {
+      "id": "82ae4f08-7fb5-481f-91cd-c278c242c0f1",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:00.585Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileEmail",
+        "value": "iwa"
+      }
+    },
+    {
+      "id": "93bc124f-168a-4562-b8a6-e3ceda46ab26",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:03.989Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileEmail",
+        "value": "iwa.now.13@mail.ru"
+      }
+    },
+    {
+      "id": "e79e80ea-2b7b-430b-86ac-6edc6ad6935c",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:06.533Z",
+      "type": "click",
+      "data": {
+        "target": "Save demo profile"
+      }
+    },
+    {
+      "id": "ab77ece8-a419-48d6-9ce8-7dc56f1dc024",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:06.539Z",
+      "type": "form_submit",
+      "data": {
+        "form": "profile",
+        "name": "MAks NazAROW",
+        "email": "iwa.now.13@mail.ru",
+        "genre": "Nature"
+      }
+    },
+    {
+      "id": "ee970939-5a0e-4b19-9e31-8c05caa0388a",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:08.168Z",
+      "type": "cart_view",
+      "data": {}
+    },
+    {
+      "id": "59671305-a34a-46ed-b6fd-6c0e82759f0d",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:08.171Z",
+      "type": "click",
+      "data": {
+        "target": "cartBtn"
+      }
+    },
+    {
+      "id": "7d4b06d9-d46a-4357-83c7-4970f822517c",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:13.520Z",
+      "type": "click",
+      "data": {
+        "target": "wish:quiet-hours"
+      }
+    },
+    {
+      "id": "c5686d33-36f1-4458-b241-ddde8f465105",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:13.523Z",
+      "type": "favorite_change",
+      "data": {
+        "book": "quiet-hours",
+        "saved": true
+      }
+    },
+    {
+      "id": "d72491f4-00ee-4e74-9120-077c279d63df",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:15.626Z",
+      "type": "click",
+      "data": {
+        "target": "add:art-noticing"
+      }
+    },
+    {
+      "id": "2825fb4b-020e-4342-b7eb-904381eac365",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:15.627Z",
+      "type": "cart_add",
+      "data": {
+        "book": "art-noticing",
+        "quantity": 1
+      }
+    },
+    {
+      "id": "b1ff74cc-52b5-4aaf-ac2e-712d731f1c2e",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:17.998Z",
+      "type": "click",
+      "data": {
+        "target": "add:atlas-dreams"
+      }
+    },
+    {
+      "id": "70725462-655b-456d-b11d-5f99b5a85dfd",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:17.999Z",
+      "type": "cart_add",
+      "data": {
+        "book": "atlas-dreams",
+        "quantity": 1
+      }
+    },
+    {
+      "id": "8bce3d0f-b2b6-4623-a1f9-1f656c075c57",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:19.164Z",
+      "type": "click",
+      "data": {
+        "target": "wish:atlas-dreams"
+      }
+    },
+    {
+      "id": "2e87b48c-37f8-40f5-811f-c4e8c412d8eb",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:19.166Z",
+      "type": "favorite_change",
+      "data": {
+        "book": "atlas-dreams",
+        "saved": true
+      }
+    },
+    {
+      "id": "56a14843-fd4e-4d6f-aba3-bfdde2425b29",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:22.454Z",
+      "type": "click",
+      "data": {
+        "target": "genre:Fiction"
+      }
+    },
+    {
+      "id": "17aec893-5e42-487d-baba-80ee65217754",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:22.456Z",
+      "type": "filter",
+      "data": {
+        "genre": "Fiction"
+      }
+    },
+    {
+      "id": "188d4e4a-215b-4242-b77b-14479f812c51",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:22.951Z",
+      "type": "click",
+      "data": {
+        "target": "genre:Mindful living"
+      }
+    },
+    {
+      "id": "449424ea-c9f4-44ca-b1d6-fd48643df062",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:22.953Z",
+      "type": "filter",
+      "data": {
+        "genre": "Mindful living"
+      }
+    },
+    {
+      "id": "8748fcd4-a7e1-4076-94ad-cb1ab9b0110c",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:23.469Z",
+      "type": "click",
+      "data": {
+        "target": "genre:Nature"
+      }
+    },
+    {
+      "id": "983934ba-9a65-42ef-a175-92fd71644873",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:23.470Z",
+      "type": "filter",
+      "data": {
+        "genre": "Nature"
+      }
+    },
+    {
+      "id": "363f108b-b5aa-4b3f-a442-c451c6f4d316",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:23.873Z",
+      "type": "click",
+      "data": {
+        "target": "genre:Food & drink"
+      }
+    },
+    {
+      "id": "3e85d6a3-3d4d-414d-bef3-431ba7c79431",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:23.874Z",
+      "type": "filter",
+      "data": {
+        "genre": "Food & drink"
+      }
+    },
+    {
+      "id": "c7f8061b-683a-4a98-bd3f-627033231a0f",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:25.112Z",
+      "type": "click",
+      "data": {
+        "target": "genre:All books"
+      }
+    },
+    {
+      "id": "96619d16-5c29-4cab-b2d5-60ffdfd093bf",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:25.114Z",
+      "type": "filter",
+      "data": {
+        "genre": "All books"
+      }
+    },
+    {
+      "id": "b9797578-e882-4036-912d-dd5b448733aa",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:26.340Z",
+      "type": "field_focus",
+      "data": {
+        "field": "search"
+      }
+    },
+    {
+      "id": "c0e7f4e3-7649-4e6c-8887-ae51434ed2ca",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:28.297Z",
+      "type": "field_change",
+      "data": {
+        "field": "search",
+        "value": "ta"
+      }
+    },
+    {
+      "id": "7ab668c3-a705-47a9-8bcc-bf9227391eb5",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:29.300Z",
+      "type": "field_change",
+      "data": {
+        "field": "search",
+        "value": ""
+      }
+    },
+    {
+      "id": "0b29fce7-0470-49c2-b3a5-434a3beec5a9",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:31.531Z",
+      "type": "field_focus",
+      "data": {
+        "field": "sort"
+      }
+    },
+    {
+      "id": "4462667a-914e-4793-ab84-ca914553e4c0",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:32.514Z",
+      "type": "sort",
+      "data": {
+        "value": "price-asc"
+      }
+    },
+    {
+      "id": "5c621015-f7dd-42a0-be82-0b972b7b53ea",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:35.877Z",
+      "type": "sort",
+      "data": {
+        "value": "title"
+      }
+    },
+    {
+      "id": "7ba86f8b-a37f-4550-9eec-f8eed3a8965b",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:38.487Z",
+      "type": "sort",
+      "data": {
+        "value": "price-desc"
+      }
+    },
+    {
+      "id": "494cc3dd-0273-4566-b158-197b6369168f",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:49.957Z",
+      "type": "field_focus",
+      "data": {
+        "field": "newsletterEmail"
+      }
+    },
+    {
+      "id": "e9b8376a-b1af-4b73-804a-eee17f34c128",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:51.913Z",
+      "type": "field_change",
+      "data": {
+        "field": "newsletterEmail",
+        "value": "iwa.now.13@mail.ru"
+      }
+    },
+    {
+      "id": "6f47765e-9ac4-4bf7-a22a-52d3bcbc234b",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:51.976Z",
+      "type": "click",
+      "data": {
+        "target": "Count me in ↗"
+      }
+    },
+    {
+      "id": "e0890f45-4da4-487a-9a08-03bc7fa07a2a",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:56:51.977Z",
+      "type": "form_submit",
+      "data": {
+        "form": "newsletter",
+        "email": "iwa.now.13@mail.ru"
+      }
+    },
+    {
+      "id": "d0c3390c-14a6-45eb-a009-daa7ab4c26dd",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:13.015Z",
+      "type": "navigation",
+      "data": {
+        "destination": "shelves"
+      }
+    },
+    {
+      "id": "8e0b1e4a-f8ef-4c90-940c-901cc3113fc5",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:13.034Z",
+      "type": "click",
+      "data": {
+        "target": "exploreBtn"
+      }
+    },
+    {
+      "id": "726b3e80-454d-45d7-a4c5-1fb0df523a84",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:20.392Z",
+      "type": "navigation",
+      "data": {
+        "destination": "home"
+      }
+    },
+    {
+      "id": "166236af-6ec1-45e0-b36a-2d62b94decc6",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:20.392Z",
+      "type": "click",
+      "data": {
+        "target": "homeLink"
+      }
+    },
+    {
+      "id": "3fb7bfb5-63d8-4253-ad99-1d271f83624d",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:22.909Z",
+      "type": "recording_paused",
+      "data": {}
+    },
+    {
+      "id": "6a288b17-13c1-458a-a9e7-068874491af2",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:49.866Z",
+      "type": "consent_granted",
+      "data": {
+        "scope": "local demo interaction and text logging",
+        "retentionDays": 7,
+        "maxEvents": 1000
+      }
+    },
+    {
+      "id": "b5a3526f-9329-4ee6-a4aa-e699d6e88349",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:49.867Z",
+      "type": "page_view",
+      "data": {
+        "page": "bookstore",
+        "viewport": {
+          "width": 1334,
+          "height": 734
+        }
+      }
+    },
+    {
+      "id": "ef6676e9-cd59-4083-97b4-16a8b995cac5",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:52.457Z",
+      "type": "profile_view",
+      "data": {}
+    },
+    {
+      "id": "c50715d3-098e-4733-a773-330c55e652b7",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:52.461Z",
+      "type": "click",
+      "data": {
+        "target": "profileBtn"
+      }
+    },
+    {
+      "id": "cae1b120-1d47-4fc5-adb9-9d8f10964177",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:56.865Z",
+      "type": "field_focus",
+      "data": {
+        "field": "profileName"
+      }
+    },
+    {
+      "id": "20a53729-f858-4838-a951-8a5ff35304cb",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:57:59.304Z",
+      "type": "field_change",
+      "data": {
+        "field": "profileName",
+        "value": "mkhg"
+      }
+    },
+    {
+      "id": "bc938ce9-9beb-4dff-8ea1-3175ff22e986",
+      "session": "5405fec5-ef94-455a-ae10-f089273c0949",
+      "time": "2026-10-15T13:58:00.792Z",
+      "type": "page_exit",
+      "data": {}
+    },
+    {
+      "id": "07457687-93a2-4e10-9dba-f6fda7382748",
+      "session": "f1f7effc-fcd8-45b7-a91c-5ab33738fc9f",
+      "time": "2026-10-15T13:58:12.381Z",
+      "type": "consent_granted",
+      "data": {
+        "scope": "local demo interaction and text logging",
+        "retentionDays": 7,
+        "maxEvents": 1000
+      }
+    },
+    {
+      "id": "918ec570-5e44-4a7b-9ce8-9c6c29fe5db3",
+      "session": "f1f7effc-fcd8-45b7-a91c-5ab33738fc9f",
+      "time": "2026-10-15T13:58:12.384Z",
+      "type": "page_view",
+      "data": {
+        "page": "bookstore",
+        "viewport": {
+          "width": 1334,
+          "height": 734
+        }
+      }
+    }
+  ]
+}
