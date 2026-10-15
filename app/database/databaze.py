@@ -2,9 +2,7 @@ import psycopg
 import json
 import os
 
-# Берем строку подключения из окружения, настроенного в docker-compose
-db_url = os.getenv("DB_URL")
-
+db_url = os.environ.get("DB_URL") or "postgresql://user:password@localhost:5432/honeypot_db"
 
 def init_db():
     with psycopg.connect(db_url) as conn:
