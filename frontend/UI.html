@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <script src="https://socket.io"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <title>HoneyForge Dashboard</title>
@@ -332,6 +333,16 @@
     </div>
 
     <script>
+        const socket = io("http://192.163.3.86:8000");
+
+// Как только твой бэк делает socketio.emit('new_attack'), этот код срабатывает сам!
+socket.on('new_attack', function(attackData) {
+    console.log("🚨 ПРИЛЕТЕЛА НОВАЯ АТАКА В РЕАЛЬНОМ ВРЕМЕНИ:", attackData);
+
+    // Твой друг берет attackData.signature, attackData.attacker_ip, attackData.payload
+    // И динамически через JS добавляет новую строчку в таблицу атак на экране или обновляет графики!
+    addNewAttackToDashboardTable(attackData);
+});
         const mockEvents = [
             { timestamp: "2026-03-30T10:15:00.000Z", attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
             { timestamp: "2026-03-30T13:40:00.000Z", attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
