@@ -11,7 +11,7 @@
 <header>
     <div class="announcement">ХОРОШАЯ КНИГА — ЭТО ТОЛЬКО НАЧАЛО. &nbsp; БЕСПЛАТНАЯ СТАНДАРТНАЯ ДОСТАВКА ПРИ ЗАКАЗЕ ОТ 2600 &#8381</div>
     <nav class="nav" aria-label="Основная навигация">
-        <a href="#" class="brand" id="homeLink">К <em>&</em> нига </a>
+        <a href="#" class="brand" id="homeLink">Кон <em>&</em> Текст </a>
         <div class="navlinks">
             <button data-nav="all">Книжный магазин</button>
             <button data-nav="new">Новинки</button>
@@ -61,7 +61,7 @@
         <div class="grid" id="books"></div>
     </section>
     <section class="quote">
-        <blockquote>“Где-то книга ждет, чтобы изменить ваш день.”</blockquote>
+        <blockquote>“Где-то ждёт книга, чтобы изменить ваш день.”</blockquote>
         <small>МЕНЬШЕ СКРОЛЛИНГА. БОЛЬШЕ ИСТОРИЙ.</small>
     </section>
     <section class="newsletter">
@@ -111,7 +111,7 @@ function log(type,data={}){
 
 function money(n){return new Intl.NumberFormat('ru-RU',{style:'currency',currency:'RUB'}).format(n)}
 function toast(text){const t=$('toast');if(!t)return;t.textContent=text;t.hidden=false;setTimeout(()=>t.hidden=true,2800)}
-function cover(b){return `<div class="cover c${b.cover}" aria-hidden="true"><div class="cauthor">${esc(b.author)}</div><div class="ctitle">${esc(b.title)}</div><div class="symbol">${esc(b.symbol)}</div><div class="cauthor">Издание Chapter & Co.</div></div>`}
+function cover(b){return `<div class="cover c${b.cover}" aria-hidden="true"><div class="cauthor">${esc(b.author)}</div><div class="ctitle">${esc(b.title)}</div><div class="symbol">${esc(b.symbol)}</div><div class="cauthor">Издание Кон & Текст</div></div>`}
 
 function renderBooks(){
     let list=books.filter(b=>(genre==='Все книги'||b.genre===genre)&&(!favoritesOnly||favorites.has(b.id))&&(b.title+' '+b.author).toLowerCase().includes(query.toLowerCase()));
