@@ -332,6 +332,10 @@
     </div>
 
     <script>
+        const socket = io("http://192.163.3.86:8000");
+        socket.on('new_atack', function(attackData){
+            addNewAttackToDashboardTable(attackData);
+        })
        let liveEvents = []; // Массив для реальных инцидентов с бэкенда
 
 // Функция добавления новой атаки в таблицу и график
