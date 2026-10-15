@@ -1,3 +1,4 @@
+# universal_pot/run_pot.py (или твой файл классов конструктора)
 from datetime import datetime
 from flask import Flask, request, render_template_string
 from collections import deque
@@ -6,9 +7,11 @@ import socket
 import threading
 import time
 import requests
+import os
+import json
+import urllib.parse
 
 app = Flask(__name__)
-
 
 class HoneyPot:
     def __init__(self, port: int, pot_name: str, risk_lvl: int) -> None:
@@ -19,45 +22,56 @@ class HoneyPot:
         self.web = None
 
     def send_telemetry(self, attack_info: dict) -> None:
-        """Метод отправки лога в Центр управления (Оркестратор)"""
-        # Дообогащаем словарь метаданными ловушки
+        """Метод отправки лога в Центральный бэкенд на хост-компьютер через докер-мост"""
         attack_info["honeypot_name"] = self.pot_name
         attack_info["target_port"] = self.port
         attack_info["risk_lvl"] = self.risk_lvl
 
-
-        requests.post("http://docker.internal", json=attack_info, timeout=2)
-        print(f"Ловушка {self.pot_name} зафиксировала атаку с IP: {attack_info.get('attacker_ip')}")
+        print(f"[🚨 ДЕТЕКТ] Ловушка {self.pot_name} зафиксировала атаку!")
 
         try:
-            requests.post("http://center-backend:8000/api/v1/telemetry", json=attack_info, timeout=2)
+            # host.docker.internal выводит сетевой запрос из контейнера прямо на порт 8000 твоего ПК
+            requests.post("http://docker.internal", json=attack_info, timeout=2)
         except Exception as e:
             print(f"Ошибка отправки телеметрии: {e}")
 
     def handle_request(self):
         """Главный диспетчер запросов ловушки среднего уровня взаимодействия"""
-        # Собираем данные из полей ввода (логин и пароль), которые настроил юзер в WebBase
-        user_input_login = request.form.get(self.web.login_field, "")
-        user_input_pass = request.form.get(self.web.password_field, "")
-        combined_input = f"{user_input_login} {user_input_pass}".strip()
+        # Защита от WAF Bypass: собираем и декодируем весь трафик (GET и POST)
+        get_data = " ".join([f"{k}={v}" for k, v in request.args.items()])
+        post_data = " ".join([f"{k}={v}" for k, v in request.form.items()])
+        combined_input = urllib.parse.unquote(f"{get_data} {post_data}").strip()
 
-        # 1. Проверяем триггер на задержку (Брутфорс автоматизацией / DDOS)
+        # 1. Проверяем триггер на задержку (Брутфорс автоматизацией)
         attack = self.trigger.check_delay()
 
-        # 2. Если задержка в норме, проверяем триггер на инъекции (SQLi/XSS)
+        # 2. Проверяем триггер на инъекции во всем входящем потоке
         if not attack and combined_input:
             attack = self.trigger.check_input(combined_input)
 
         # 3. Если это обычный перебор формы, проверяем счетчик попыток входа
-        if not attack:
+        if not attack and request.method == "POST":
             attack = self.trigger.check_tries_to_log()
 
-        # Если хоть один капкан сработал — шлем телеметрию
+        # Если капкан сработал — шлем телеметрию и подыгрываем хакеру
         if attack and isinstance(attack, dict):
             attack["user_agent"] = request.headers.get("user-agent", "unknown")
-            attack[
-                "payload"] = f"Fields: {self.web.login_field}={user_input_login}&{self.web.password_field}={user_input_pass}"
+            attack["payload"] = combined_input if combined_input else "No Input Data"
             self.send_telemetry(attack)
+
+            # Психологический капкан для SQLi: отдаем структурированный фейковый слив
+            if self.trigger.attack_type == 'SQL-injection':
+                return {
+                    "status": "success",
+                    "data": [
+                        {"id": 1, "user": "admin", "password_hash": "$2b$12$HoneyForgeSecretKeyAdminHash"},
+                        {"id": 2, "user": "flag_user_dgtu", "password_hash": "$2b$12$FakeDataForScepticPentester"}
+                    ]
+                }, 200
+
+            # Психологический капкан для XSS: имитируем успешное исполнение кода
+            if self.trigger.attack_type == 'XSS-injection':
+                return "<html><body><h1>Search Results</h1><script>console.log('XSS Executed');</script></body></html>", 200
 
         return self.web.render()
 
@@ -87,7 +101,6 @@ class Triggers:
         self.port = port
         self.counter = 0
         self.delay = 0.5
-
         self.attacker_tracker = {}
 
         self.pattern_database = {
@@ -110,7 +123,6 @@ class Triggers:
         }
 
     def check_tries_to_log(self):
-        """Проверка на превышение лимита попыток входа"""
         self.counter += 1
         if self.counter >= self.tries_to_login:
             print(f"Превышено количество попыток входа: {self.endpoint}, запрос № {self.counter}")
@@ -118,33 +130,33 @@ class Triggers:
                 "timestamp": datetime.utcnow().isoformat() + "Z",
                 "attacker_ip": request.remote_addr,
                 "http_method": request.method,
-                "attacker_port": request.environ.get('REMOTE_PORT'),
+                "attacker_port": request.environ.get('REMOTE_PORT', 0),
                 "signature": "Brute Force Attempt"
             }
         return False
 
     def check_input(self, user_input: str):
-        """Проверка на сигнатуры веб-атак (SQLi/XSS)"""
         if not self.attack_type:
             return False
 
-        target_pattern = self.pattern_database.get(self.attack_type)
-        if not target_pattern:
+        match_data = self.pattern_database.get(self.attack_type)
+        if not match_data:
             print(f"{self.attack_type} not found in patterns")
             return False
 
-        if re.search(target_pattern, user_input, re.IGNORECASE):
+        regex_pattern, official_signature = match_data
+
+        if re.search(regex_pattern, user_input, re.IGNORECASE):
             return {
                 "timestamp": datetime.utcnow().isoformat() + "Z",
                 "attacker_ip": request.remote_addr,
                 "http_method": request.method,
-                "attacker_port": request.environ.get('REMOTE_PORT'),
-                "signature": f"Potential Web Injection ({self.attack_type})"
+                "attacker_port": request.environ.get('REMOTE_PORT', 0),
+                "signature": official_signature
             }
         return False
 
     def check_delay(self):
-        """Проверка на автоматизацию сканирования по таймингам между запросами"""
         current_time = time.time()
         attacker_ip = request.remote_addr
 
@@ -161,57 +173,32 @@ class Triggers:
                     "timestamp": datetime.utcnow().isoformat() + "Z",
                     "attacker_ip": attacker_ip,
                     "http_method": request.method,
-                    "attacker_port": request.environ.get('REMOTE_PORT'),
+                    "attacker_port": request.environ.get('REMOTE_PORT', 0),
                     "signature": "High Rate Automation Scan / DDOS"
                 }
         return False
 
+# Инициализация ловушки на основе JSON из переменной окружения Docker
+if __name__ == "__main__":
+    raw_config = os.environ.get("POT_CONFIG")
+    if raw_config:
+        config = json.loads(raw_config)
+        my_port = int(config.get("port", 8000))
 
-class Low_Interaction_HoneyPot:
-    def __init__(self, port: int, server_host: str = "0.0.0.0") -> None:
-        self.port = port
-        self.server_host = server_host
-        self.is_running = True
+        custom_trigger = Triggers(
+            endpoint=config["url"], tries_to_login=config["tries_to_login"],
+            http_method="POST", attack_type=config["attack_type"], port=my_port
+        )
+        custom_web = WebBase(
+            url=config["url"], login_field=config["login_field"], password_field=config["password_field"]
+        )
+        pot = HoneyPot(port=my_port, pot_name=config["pot_name"], risk_lvl=config["risk_lvl"])
+        pot.trigger = custom_trigger
+        pot.web = custom_web
 
-    def start_loop(self):
-        """Запуск бесконечного цикла прослушки сокета в фоновом режиме"""
-        threading.Thread(target=self._listen_loop, daemon=True).start()
-        print(f"Низкоуровневая ловушка успешно запущена на порту {self.port}")
-
-    def _listen_loop(self):
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            s.bind((self.server_host, self.port))
-            s.listen(5)
-
-            while self.is_running:
-                try:
-                    connection, client_addr = s.accept()
-                    raw_data = connection.recv(1024).decode("utf-8", errors="ignore")
-
-                    user_agent = "Unknown / Raw TCP Connection"
-                    for line in raw_data.split("\n"):
-                        if line.startswith("User-Agent:"):
-                            user_agent = line.split("User-Agent:")[1].strip()
-
-                    attack_info = {
-                        "timestamp": datetime.utcnow().isoformat() + "Z",
-                        "attacker_ip": client_addr[0],
-                        "attacker_port": client_addr[1],
-                        "target_port": self.port,
-                        "http_method": "GET" if "GET" in raw_data else "RAW_TCP",
-                        "signature": "Potential Port Scan / Reconnaissance",
-                        "user_agent": user_agent,
-                        "honeypot_name": f"low_interaction_port_{self.port}",
-                        "risk_lvl": 1,
-                        "payload": raw_data.strip() if raw_data else "No payload"
-                    }
-
-                    try:
-                        requests.post("http://center-backend:8000/api/v1/telemetry", json=attack_info, timeout=2)
-                    except Exception as e:
-                        print(f"Ошибка отправки сокет-лога: {e}")
-
-                    connection.close()
-                except Exception as e:
-                    print(f"Ошибка сокета на порту {self.port}: {e}")
+        app.add_url_rule(
+            rule=pot.trigger.endpoint, endpoint=pot.pot_name,
+            view_func=pot.handle_request, methods=["POST", "GET"]
+        )
+        print(f"[🔥 ENGINE] Ловушка {pot.pot_name} успешно развернута на внутреннем порту 8000")
+        app.run(host="0.0.0.0", port=8000)

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    //script socketio подвязка
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <title>HoneyForge Dashboard</title>
@@ -333,16 +334,10 @@
 
     <script>
         const socket = io("http://192.163.3.86:8000");
-
-// Как только твой бэк делает socketio.emit('new_attack'), этот код срабатывает сам!
-socket.on('new_attack', function(attackData) {
-    console.log("🚨 ПРИЛЕТЕЛА НОВАЯ АТАКА В РЕАЛЬНОМ ВРЕМЕНИ:", attackData);
-
-    // Твой друг берет attackData.signature, attackData.attacker_ip, attackData.payload
-    // И динамически через JS добавляет новую строчку в таблицу атак на экране или обновляет графики!
-    addNewAttackToDashboardTable(attackData);
-});
-
+        socket.on('new_attack', function(attackData){
+            console.log("НОВАЯ АТАКА !", attackData);
+            addNewAttackToDashboardTable(attackData);
+        })
        let liveEvents = []; // Массив для реальных инцидентов с бэкенда
 
 // Функция добавления новой атаки в таблицу и график
