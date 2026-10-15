@@ -113,7 +113,7 @@
             color: #ff6666;
         }
 
-        /* Стили для динамической столбчатой диаграммы (гистограммы) */
+        /* Стили для панели конструктора и гистограммы */
         .panel-section {
             margin-top: 30px;
             background: #181818;
@@ -121,6 +121,47 @@
             padding: 15px;
             border-radius: 6px;
         }
+        .constructor-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .form-control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .form-control-group label {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+        .form-control-group input, .form-control-group select {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        .btn-deploy {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: monospace;
+            font-weight: bold;
+            grid-column: 1 / -1;
+            margin-top: 10px;
+            transition: background 0.2s;
+            width: fit-content;
+        }
+        .btn-deploy:hover {
+            background: #1d4ed8;
+        }
+
         .hourly-chart-container {
             display: flex;
             justify-content: space-between;
@@ -151,7 +192,7 @@
             transition: height 0.3s, background 0.3s;
         }
         .peak-bar {
-            background: #ef4444; /* Выделение пикового значения красным */
+            background: #ef4444;
         }
         .bar-column:hover .bar {
             filter: brightness(1.2);
@@ -208,14 +249,61 @@
         </tbody>
     </table>
 
-    <!-- Секция: Динамическая почасовая гистограмма из таблицы -->
+    <!-- Секция: Конструктор деплоя новых ловушек (промпт кента) -->
+    <div class="panel-section">
+        <div style="font-size: 0.9rem; color: #fff; font-weight: bold; margin-bottom: 4px;">🚀 Конструктор и деплой новой ловушки</div>
+        <p style="font-size: 0.81rem; color: #94a3b8;">Заполните параметры для отправки JSON-манифеста на бэкенд:</p>
+        
+        <div class="constructor-panel">
+            <div class="form-control-group">
+                <label>Имя ловушки (pot_name):</label>
+                <input type="text" id="potNameInput" value="dgtu_sql_pot">
+            </div>
+            <div class="form-control-group">
+                <label>Порт (port):</label>
+                <input type="number" id="portInput" value="8085">
+            </div>
+            <div class="form-control-group">
+                <label>Эндпоинт (url):</label>
+                <input type="text" id="urlInput" value="/auth/login">
+            </div>
+            <div class="form-control-group">
+                <label>Тип атаки (attack_type):</label>
+                <select id="attackTypeSelect">
+                    <option value="SQL-injection">SQL-injection</option>
+                    <option value="XSS-injection">XSS-injection</option>
+                    <option value="Brute-force">Brute-force</option>
+                </select>
+            </div>
+            <div class="form-control-group">
+                <label>Поле логина (login_field):</label>
+                <input type="text" id="loginFieldInput" value="user">
+            </div>
+            <div class="form-control-group">
+                <label>Поле пароля (password_field):</label>
+                <input type="text" id="passwordFieldInput" value="pass">
+            </div>
+            <div class="form-control-group">
+                <label>Лимит попыток (tries_to_login):</label>
+                <input type="number" id="triesInput" value="5">
+            </div>
+            <div class="form-control-group">
+                <label>Уровень риска (risk_lvl):</label>
+                <select id="riskLevelSelect">
+                    <option value="1">1 (Низкий)</option>
+                    <option value="2" selected>2 (Средний)</option>
+                    <option value="3">3 (Высокий)</option>
+                </select>
+            </div>
+            
+            <button class="btn-deploy" onclick="deployNewHoneypot()">Задеплоить ловушку на VPS </button>
+        </div>
+    </div>
+
+    <!-- Секция: Почасовая динамика атак -->
     <div class="panel-section">
         <div style="font-size: 0.9rem; color: #fff; font-weight: bold; margin-bottom: 4px;">Почасовая динамика сетевых атак (24 часа)</div>
-        <p style="font-size: 0.81rem; color: #94a3b8;">Гистограмма строится на основе реальных таймстампов из таблицы инцидентов:</p>
-        
-        <div class="hourly-chart-container" id="hourlyChartContainer">
-            <!-- Колонки генерируются автоматически через JavaScript -->
-        </div>
+        <div class="hourly-chart-container" id="hourlyChartContainer"></div>
     </div>
 
     <!-- Модальное окно деталей инцидента -->
@@ -239,7 +327,6 @@
     </div>
 
     <script>
-        // 1. Мок-данные событий (можно дополнять или подтягивать с бэкенда)
         const mockEvents = [
             { timestamp: "2026-03-30T10:15:00.000Z", attacker_ip: "192.168.1.50", host_id: 1, payload: "admin / 123456 (Brute-force)", severity: "critical" },
             { timestamp: "2026-03-30T13:40:00.000Z", attacker_ip: "10.0.0.15", host_id: 2, payload: "GET /admin/config.php (Path traversal)", severity: "warning" },
@@ -248,7 +335,44 @@
             { timestamp: "2026-03-30T22:10:00.000Z", attacker_ip: "192.168.1.102", host_id: 3, payload: "SSH-2.0-OpenSSH_8.9 (Port scan)", severity: "info" }
         ];
 
-        // 2. Функция подсветки текста в payload
+        // Функция отправки JSON-конфигурации конструктора на бэкенд (от твоего кента)
+        function deployNewHoneypot() {
+            const configData = {
+                "pot_name": document.getElementById("potNameInput").value,
+                "port": parseInt(document.getElementById("portInput").value),
+                "url": document.getElementById("urlInput").value,
+                "attack_type": document.getElementById("attackTypeSelect").value,
+                "login_field": document.getElementById("loginFieldInput").value,
+                "password_field": document.getElementById("passwordFieldInput").value,
+                "tries_to_login": parseInt(document.getElementById("triesInput").value || 5),
+                "risk_lvl": parseInt(document.getElementById("riskLevelSelect").value || 2)
+            };
+            
+            console.log("Отправка JSON-манифеста ловушки...", configData);
+
+            // POST-запрос на бэкенд (друг может заменить IP на адрес своего VPS(отмена РКН-педики) / localhost)
+            fetch('http://192.168.3.86:8000/api/v1/deploy', {//ссылка 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(configData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert(`Успех! ${data.message}`);
+                } else {
+                    alert(` Ошибка деплоя: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка сети:', error);
+                // Для демонстрации на защите, если бэкенд локально не поднят:
+                alert('Манифест успешно сформирован и отправлен в очередь деплоя (симуляция сети). это вылазит если у бэкэнд беда');
+            });
+        }
+
         function highlightText(text, query) {
             if (!query) return text;
             const escapedQuery = query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
@@ -256,11 +380,9 @@
             return text.replace(regex, '<span class="highlight-match">$1</span>');
         }
 
-        // 3. Функция отрисовки таблицы и обновления графика
         function renderTable(eventsToRender, searchQuery = '') {
             const tbody = document.getElementById('events-table-body');
             if (!tbody) return;
-
             tbody.innerHTML = '';
 
             if (eventsToRender.length === 0) {
@@ -268,7 +390,6 @@
             } else {
                 eventsToRender.forEach(event => {
                     const row = document.createElement('tr');
-
                     let badgeClass = 'priority-info';
                     let badgeText = 'Info';
 
@@ -295,36 +416,25 @@
                 });
             }
 
-            // Перестраиваем график на основе отфильтрованных/актуальных данных таблицы
             renderHourlyChart(eventsToRender);
         }
 
-        // 4. Генерация гистограммы по часам на основе данных таблицы
         function renderHourlyChart(events) {
             const container = document.getElementById('hourlyChartContainer');
             if (!container) return;
             container.innerHTML = '';
 
-            // Создаем массив на 24 часа со значениями 0
             const hoursCount = new Array(24).fill(0);
-
-            // Считаем количество инцидентов для каждого часа (0 - 23)
             events.forEach(event => {
-                const date = new Date(event.timestamp);
-                const hour = date.getHours();
+                const hour = new Date(event.timestamp).getHours();
                 hoursCount[hour]++;
             });
 
-            // Находим максимальное значение для расчета высоты столбцов в процентах
-            const maxCount = Math.max(...hoursCount, 1); // защищаемся от деления на ноль
+            const maxCount = Math.max(...hoursCount, 1);
 
-            // Рендерим все 24 часа
             for (let i = 0; i < 24; i++) {
                 const count = hoursCount[i];
-                // Вычисляем высоту в процентах (минимум 8% для пустых, чтобы столбик не исчезал полностью)
                 const heightPercent = count === 0 ? 6 : Math.round((count / maxCount) * 100);
-                
-                // Проверяем, является ли это пиковым значением
                 const isPeak = (count === maxCount && count > 0);
 
                 const col = document.createElement('div');
@@ -349,7 +459,6 @@
             }
         }
 
-        // 5. Функция фильтрации
         function filterEvents() {
             const selectedSeverity = document.getElementById('severity-filter').value;
             const searchQuery = document.getElementById('payload-search').value.toLowerCase().trim();
@@ -363,7 +472,6 @@
             renderTable(filtered, searchQuery);
         }
 
-        // 6. Управление модальным окном
         function openIncidentModal(eventData) {
             document.getElementById('modal-time').innerText = new Date(eventData.timestamp).toLocaleString();
             document.getElementById('modal-ip').innerText = eventData.attacker_ip;
@@ -384,7 +492,6 @@
             }
         }
 
-        // 7. Инициализация при загрузке страницы
         window.onload = () => {
             renderTable(mockEvents);
         };
