@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    //script socketio подвязка
+   
+   
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <title>HoneyForge Dashboard</title>
@@ -333,11 +334,14 @@
     </div>
 
     <script>
-        const socket = io("http://192.163.3.86:8000");
-        socket.on('new_attack', function(attackData){
-            console.log("НОВАЯ АТАКА !", attackData);
-            addNewAttackToDashboardTable(attackData);
-        })
+       // const socket = io("http://192.168.3.86:8000");
+        //transports: ["websocket"]
+        //socket.on('new_attack', function(attackData){
+            
+         //   console.log("НОВАЯ АТАКА !", attackData);
+            
+           // addNewAttackToDashboardTable(attackData);
+       // })
        let liveEvents = []; // Массив для реальных инцидентов с бэкенда
 
 // Функция добавления новой атаки в таблицу и график
@@ -369,12 +373,10 @@ function addNewAttackToDashboardTable(addData) {
             
             console.log("Отправка JSON-манифеста ловушки...", configData);
 
-            // POST-запрос на бэкенд (друг может заменить IP на адрес своего VPS(отмена РКН-педики) / localhost)
-            fetch('http://192.168.3.86:8000/api/v1/deploy', {//ссылка 
+            // POST-запрос на бэкенд (друг может заменить IP на адрес своего VPS(отмена РКН-педики) / 192.168.3.86)
+            fetch('http://192.168.3.86:8000/api/v1/deploy', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(configData)
             })
             .then(response => response.json())
@@ -515,5 +517,32 @@ function addNewAttackToDashboardTable(addData) {
             renderTable(liveEvents);
         };
     </script>
+<!-- Подключаем официальный клиент Socket.IO (если еще не подключен в шапке) -->
+<<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+    // Принудительно разрешаем polling как первый шаг, чтобы избежать падения чистого WebSocket
+    const socket = io("http://192.168.3.86:8000", {
+        transports: ['polling', 'websocket'],
+        reconnectionAttempts: 5,
+        timeout: 10000
+    });
+
+    socket.on('connect', () => {
+        console.log("🟢 СОКЕТ УСПЕШНО ПОДКЛЮЧЕН К БЭКЕНДУ!");
+    });
+
+    socket.on('connect_error', (error) => {
+        console.log("⚠️ Ошибка подключения сокета (но мы держим связь):", error.message);
+    });
+
+    socket.on('new_attack', function(attackData) {
+        console.log("🚨 ПЕРЕХВАЧЕН ЛОГ АТАКИ В РЕАЛЬНОМ ВРЕМЕНИ:", attackData);
+        addNewAttackToDashboardTable(attackData);
+    });
+
+    socket.on('disconnect', () => {
+        console.log("🔴 Соединение с сокетом потеряно.");
+    });
+</script>
 </body>
 </html>
