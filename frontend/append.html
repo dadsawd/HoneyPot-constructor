@@ -181,7 +181,7 @@
         // НАСТРОЙКА ПОДКЛЮЧЕНИЯ К БЭКЕНДУ (LOCALHOST)
         // ==========================================
         // Меняй этот адрес, если бэкенд на другом порту или домене
-        const API_BASE_URL = "http://192.163.3.86:8000"; 
+        const API_BASE_URL = "http://192.168.3.86:8000"; 
 
         // Функция отрисовки таблицы хостов на основе реальных данных с бэкенда
         function renderHostsTable(hosts) {
@@ -215,7 +215,7 @@
         // Запрос списка ловушек с бэкенда при загрузке страницы
         async function fetchHosts() {
             try {
-                const response = await fetch(`${API_BASE_URL}/api/hosts`); // Эндпоинт списка хостов на бэкенде
+                const response = await fetch(`${API_BASE_URL}/api/v1/hosts`); // Эндпоинт списка хостов на бэкенде
                 if (!response.ok) {
                     throw new Error(`Ошибка загрузки: ${response.statusText}`);
                 }
@@ -329,7 +329,7 @@
 
             try {
                 // Отправляем POST запрос на локальный бэкенд
-                const response = await fetch(`${API_BASE_URL}/api/deploy`, { 
+                const response = await fetch(`${API_BASE_URL}/api/v1/deploy`, { 
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
