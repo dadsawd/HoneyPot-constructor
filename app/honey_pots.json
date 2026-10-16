@@ -1,0 +1,362 @@
+[
+    {
+        "timestamp": "2026-10-16T05:45:39.269863Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 54960,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2
+    },
+    {
+        "timestamp": "2026-10-16T05:46:20.084206Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 55404,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2
+    },
+    {
+        "timestamp": "2026-10-16T05:49:31.197299Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 50610,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2,
+        "pot_name": "test_trap"
+    },
+    {
+        "timestamp": "2026-10-16T05:51:12.298429Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 51046,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2,
+        "pot_name": "test_trap"
+    },
+    {
+        "timestamp": "2026-10-16T05:53:14.596220Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 39116,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2,
+        "pot_name": "test_trap"
+    },
+    {
+        "timestamp": "2026-10-16T05:58:43.134195Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 45710,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2,
+        "pot_name": "test_trap"
+    },
+    {
+        "timestamp": "2026-10-16T06:00:22.033635Z",
+        "attacker_ip": "172.20.0.1",
+        "http_method": "GET",
+        "attacker_port": 45656,
+        "signature": "Potential SQL-Injection Attempt",
+        "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:158.0) Gecko/20100101 Firefox/158.0",
+        "payload": "id=' or 1=1 --",
+        "honeypot_name": "test_trap",
+        "target_port": 8085,
+        "risk_lvl": 2,
+        "pot_name": "test_trap"
+    },
+    {
+        "attacker_ip": "192.168.1.99",
+        "pot_name": "dgtu_sql_trap",
+        "signature": "DROP TABLE users; --",
+        "risk_lvl": 3
+    },
+    {
+        "attacker_ip": "192.168.1.99",
+        "pot_name": "dgtu_sql_trap",
+        "signature": "DROP TABLE users; --",
+        "risk_lvl": 3
+    },
+    {
+        "attacker_ip": "192.168.1.99",
+        "pot_name": "dgtu_sql_trap",
+        "signature": "DROP TABLE users; --",
+        "risk_lvl": 3
+    },
+    {
+        "attacker_ip": "192.168.1.99",
+        "pot_name": "dgtu_sql_trap",
+        "signature": "DROP TABLE users; --",
+        "risk_lvl": 3
+    },
+    {
+        "attacker_ip": "192.168.1.99",
+        "pot_name": "dgtu_sql_trap",
+        "signature": "DROP TABLE users; --",
+        "risk_lvl": 3
+    },
+    {
+        "pot_name": "gallery_trap",
+        "page": 1,
+        "action": "pagination_switch",
+        "timestamp": "2026-10-16T07:33:48.199Z",
+        "attacker_ip": "192.168.3.90",
+        "signature": "Potential SQL-Injection Attempt"
+    },
+    {
+        "pot_name": "gallery_trap",
+        "signature": "SQLi / XSS payload in comments: ghj",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T07:33:53.491Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "gallery_trap",
+        "page": 1,
+        "action": "pagination_switch",
+        "timestamp": "2026-10-16T07:35:01.428Z",
+        "attacker_ip": "192.168.3.90",
+        "signature": "Potential SQL-Injection Attempt"
+    },
+    {
+        "pot_name": "gallery_trap",
+        "page": 1,
+        "action": "pagination_switch",
+        "timestamp": "2026-10-16T07:35:16.146Z",
+        "attacker_ip": "192.168.3.90",
+        "signature": "Potential SQL-Injection Attempt"
+    },
+    {
+        "pot_name": "login_trap",
+        "signature": "Brute-force / Login attempt: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T07:35:45.891Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_board_trap",
+        "signature": "Command Injection / Ping target: yandex.ru",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T07:39:02.783Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: а где ориг?!?!",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:42:06.031Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [config_gateway.conf] (Page 1)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:42:09.470Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": "Diagnostic ping check for host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:42:21.591Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [ssl_certificate.crt] (Page 2)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:46:00.404Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T07:46:11.044Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": "Diagnostic ping check for host: sudo rm -f",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:46:47.792Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": "Diagnostic ping check for host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:49:02.251Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T07:49:08.013Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": "${target}",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:50:26.478Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:50:55.631Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [config_gateway.conf] (Page 1)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:53:50.763Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: hjjgg",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T07:53:56.861Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: что-то",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:02:31.811Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:02:38.939Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:02:57.558Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [config_gateway.conf] (Page 1)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:03:09.653Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: что-то",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:03:14.350Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:04:25.933Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T08:06:24.441Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T08:13:06.955Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T08:25:03.464Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: ping yandex.ru",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:25:06.639Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [config_gateway.conf] (Page 1)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:25:09.303Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: comment-mo`",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:25:17.983Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "auth_service_trap",
+        "signature": "CRITICAL SQLi in Auth form: user='admin' or '1'='1', pass='test'",
+        "risk_lvl": 3,
+        "timestamp": "2026-10-16T08:37:06.992Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "admin_ping_trap",
+        "signature": " host: sudo rm -f",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:37:38.771Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "Unauthorized file download attempt: [config_gateway.conf] (Page 1)",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:37:47.398Z",
+        "attacker_ip": "192.168.3.90"
+    },
+    {
+        "pot_name": "secure_storage_trap",
+        "signature": "New comment on config_gateway.conf: comment",
+        "risk_lvl": 1,
+        "timestamp": "2026-10-16T08:38:01.142Z",
+        "attacker_ip": "192.168.3.90"
+    }
+]

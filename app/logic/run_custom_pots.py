@@ -15,7 +15,18 @@ if __name__ == '__main__':
         print("Error, config not found in environment!")
         exit(1)
 
-    config = json.loads(raw_config)
+    # ИСПРАВЛЕНО: Защита от багов кавычек Windows (парсим и Base64, и обычную строку)
+    try:
+        config = json.loads(raw_config)
+    except json.JSONDecodeError:
+        import base64
+
+        try:
+            decoded_bytes = base64.b64decode(raw_config)
+            config = json.loads(decoded_bytes.decode('utf-8'))
+        except Exception as e:
+            print(f"Critical JSON/Base64 decode error: {e}")
+            exit(1)
     # ИСПРАВЛЕНО: Корректный синтаксис получения порта из словаря
     my_port = int(config.get('port', 8000))
 
@@ -23,25 +34,25 @@ if __name__ == '__main__':
 
     # ИСПРАВЛЕНО: Передаем в триггер ВСЕ необходимые аргументы по твоей ООП-структуре
     custom_trigger = Triggers(
-        endpoint=config["url"],
-        tries_to_login=int(config["tries_to_login"]),
+        endpoint=config.get("url"),
+        tries_to_login=int(config.get("tries_to_login", 5)),
         http_method="POST",
-        attack_type=config["attack_type"],
+        attack_type=config.get("attack_type"),
         port=my_port
     )
 
     # Настраиваем имена полей ввода для формы лже-сайта
     custom_web = WebBase(
-        url=config["url"],
-        login_field=config["login_field"],
-        password_field=config["password_field"]
+        url=config.get("url"),
+        login_field=config.get("login_field"),
+        password_field=config.get("password_field")
     )
 
     # Собираем ловушку воедино
     pot = HoneyPot(
         port=my_port,
-        pot_name=config["pot_name"],
-        risk_lvl=int(config["risk_lvl"])
+        pot_name=config.get("pot_name"),
+        risk_lvl=int(config.get("risk_lvl", 2))
     )
     pot.trigger = custom_trigger
     pot.web = custom_web
@@ -54,6 +65,6 @@ if __name__ == '__main__':
         methods=["POST", "GET"]
     )
 
-    print(f"[🚀 PROD ACTIVE] Ловушка открыта на внутреннем порту 8000 | Эндпоинт: {config['url']}")
+    print(f"[🚀 PROD ACTIVE] Ловушка открыта на внутреннем порту 8000 | Эндпоинт: {config.get('url')}")
     # Запускаем Flask на внутреннем порту 8000 контейнера (докер сам пробросит его наружу)
     app.run(host='0.0.0.0', port=8000)

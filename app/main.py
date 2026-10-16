@@ -1,7 +1,9 @@
 # app/main.py
 import json
 import subprocess
-from flask import Flask, render_template, request, jsonify
+import sys
+from logic.run_low_pot import run_low_interaction_pot
+from flask import Flask, render_template, request, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from json_logging import save_to_json_log
@@ -16,6 +18,7 @@ CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Инициализируем сокеты для реалтайм передачи логов на экран друга
 socketio = SocketIO(app, cors_allowed_origins="*")
+
 
 
 @app.route('/')
@@ -36,7 +39,21 @@ def deploy_pot():
     port = config_from_site.get("port")
     container_name = f"custom_pot_{port}"
     config_string = json.dumps(config_from_site)
+    risk_lvl = int(config_from_site.get("risk_lvl", 2))
 
+    # ЕСЛИ ДРУГ ПЕРЕДАЛ НИЗКИЙ УРОВЕНЬ (risk_lvl = 1) -> ЗАПУСКАЕМ НАШ СКРИПТ БЕЗ ДОКЕРА!
+    if risk_lvl == 1:
+        try:
+            import os
+            # ИСПРАВЛЕНО: Добавлен cwd=os.getcwd(), чтобы Windows гарантированно нашла и запустила файл в фоне!
+            subprocess.Popen(
+                [sys.executable, "app/logic/run_low_pot.py", str(port)],
+                cwd=os.getcwd()
+            )
+            print(f"[🔥 LIGHT ORCHESTRATOR] Низкоуровневый капкан успешно поднят на порту {port}!")
+            return jsonify({"status": "success", "message": f"Ловушка уровня Low на порту {port} активна!"}), 200
+        except Exception as e:
+            return jsonify({"status": "error", "message": f"Ошибка старта Low-пота: {str(e)}"}), 500
     # Системный вызов Docker: разворачиваем универсальный образ на выбранном порту,
     # прокидывая JSON-чертеж прямо в переменную окружения (ENV) контейнера
     docker_command = [
@@ -67,6 +84,7 @@ def deploy_pot():
         return jsonify({"status": "success", "message": f"Ловушка на порту {port} успешно активирована!"}), 200
     except Exception as e:
         print(f"[❌ ERROR] Ошибка выполнения Docker: {e}")
+
         return jsonify({"status": "error", "message": f"Ошибка Docker: {str(e)}"}), 500
 
 
@@ -77,9 +95,6 @@ def get_hosts():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-# ===================================================
-# ФИЧА 2: СБОР ЛОГОВ ТЕЛЕМЕТРИИ С ДИНАМИЧЕСКИМ ПУШЕМ
-# ===================================================
 @app.route('/api/v1/telemetry', methods=['POST'], strict_slashes=False)
 def collect_telemetry():
     attack_data = request.json
@@ -87,15 +102,36 @@ def collect_telemetry():
         return jsonify({"status": "error"}), 400
 
     try:
+        # 1. СТРАХОВКА ИМЕНИ ЛОВУШКИ
+        if "honeypot_name" in attack_data and "pot_name" not in attack_data:
+            attack_data["pot_name"] = attack_data["honeypot_name"]
+        if not attack_data.get("pot_name"):
+            attack_data["pot_name"] = "test_trap"
+
+        # 2. ЖЕСТКАЯ СТРАХОВКА IP-АДРЕСА (Убираем null для Postgres)
+        if "attack_ip" in attack_data and "attacker_ip" not in attack_data:
+            attack_data["attacker_ip"] = attack_data["attack_ip"]
+
+        # Если оба поля пусты, принудительно берём реальный IP, с которого прилетел HTTP-запрос
+        if not attack_data.get("attacker_ip"):
+            attack_data["attacker_ip"] = request.remote_addr or "127.0.0.1"
+
+        # 3. СТРАХОВКА СИГНАТУРЫ АТАКИ
+        if not attack_data.get("signature"):
+            attack_data["signature"] = "Potential SQL-Injection Attempt"
+
+        print(f"[⚙️ ПРЕД-ОБРАБОТКА] Данные лога вычищены. Пишем в базу IP: {attack_data['attacker_ip']}")
+
         # Пишем прилетевшие данные лога в JSON и в PostgreSQL базу данных
         save_to_json_log(attack_info=attack_data)
         databaze.save_logs(pot_logs=attack_data)
 
-        # МГНОВЕННЫЙ ПУШ НА ДАШБОРД ДРУГА: отправляем лог по веб-сокетам в реальном времени
-        socketio.emit('new_attack', attack_data, broadcast=True)
-        print(f"[💥 АТАКА СФИКСИРОВАНА] Передано на дашборд по WebSocket. Сигнатура: {attack_data.get('signature')}")
+        # МГНОВЕННЫЙ ПУШ НА ДАШБОРД ДРУГА ПО ВЕБ-СОКЕТАМ!
+        socketio.emit('new_attack', attack_data)
 
+        print(f"[💥 АТАКА СФИКСИРОВАНА] Успешно сохранено и передано на дашборд!")
         return jsonify({"status": "success"}), 200
+
     except Exception as e:
         print(f"Ошибка сохранения логов телеметрии: {e}")
         return jsonify({"status": "error", "message": str(e)}), 500
@@ -112,3 +148,12 @@ if __name__ == '__main__':
     print("[🔥 CENTRAL ENGINE ACTIVE] Бэкенд и оркестратор сокетов запущены на порту 8000!")
     # Важно: для работы реалтайм сокетов запускаем сервер через socketio.run
     socketio.run(app, host='0.0.0.0', port=8000, allow_unsafe_werkzeug=True)
+    target_port = 7777  # Дефолтный порт
+
+    # Безопасный перебор аргументов: ищем первое попавшееся число
+    for arg in sys.argv[1:]:
+        if arg.isdigit():
+            target_port = int(arg)
+            break
+
+    run_low_interaction_pot(target_port)
