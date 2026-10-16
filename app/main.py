@@ -9,7 +9,10 @@ from database import databaze
 
 app = Flask(__name__)
 # Включаем CORS, чтобы браузер не блокировал сетевые запросы фронтенда к бэкенду
-CORS(app, resources={r"/*": {"origins": "*"}})
+
+active_traps = []
+
+CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Инициализируем сокеты для реалтайм передачи логов на экран друга
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -24,7 +27,7 @@ def index():
 # ===================================================
 # ФИЧА 1: ДИНАМИЧЕСКИЙ ДЕПЛОЙ ЛОВУШЕК ИЗ КОНСТРУКТОРА
 # ===================================================
-@app.route('/api/v1/deploy', methods=['POST'])
+@app.route('/api/v1/deploy', methods=['POST'],strict_slashes=False)
 def deploy_pot():
     config_from_site = request.json
     if not config_from_site:
@@ -51,16 +54,33 @@ def deploy_pot():
         # Запускаем новый кастомный капкан на лету!
         subprocess.run(docker_command, check=True)
         print(f"[🔥 ORCHESTRATOR] Кастомный контейнер {container_name} успешно поднят на порту {port}!")
+
+        trap_data = {
+            "name": config_from_site.get("name", "Unknown-Trap"),
+            "type": config_from_site.get("type", "Medium Interaction"),
+            "port": config_from_site.get("port", 2222),
+            "status": "online",
+            "last_seen": "Только что"
+        }
+        active_traps.append(trap_data)
+
         return jsonify({"status": "success", "message": f"Ловушка на порту {port} успешно активирована!"}), 200
     except Exception as e:
         print(f"[❌ ERROR] Ошибка выполнения Docker: {e}")
         return jsonify({"status": "error", "message": f"Ошибка Docker: {str(e)}"}), 500
 
 
+@app.route('/api/v1/hosts', methods=['GET'],strict_slashes=False)
+def get_hosts():
+    try:
+        return jsonify(active_traps), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 # ===================================================
 # ФИЧА 2: СБОР ЛОГОВ ТЕЛЕМЕТРИИ С ДИНАМИЧЕСКИМ ПУШЕМ
 # ===================================================
-@app.route('/api/v1/telemetry', methods=['POST'])
+@app.route('/api/v1/telemetry', methods=['POST'], strict_slashes=False)
 def collect_telemetry():
     attack_data = request.json
     if not attack_data:
