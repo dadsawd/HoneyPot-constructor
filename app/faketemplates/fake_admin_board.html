@@ -73,7 +73,7 @@ function runDiagnostics() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             pot_name: "admin_ping_trap",
-            signature: isCommandInjection ? `CRITICAL: Remote Command Injection detected via ping utility -> [${target}]` : `Diagnostic ping check for host: ${target}`,
+            signature: isCommandInjection ? `CRITICAL: Remote Command Injection detected via ping utility -> [${target}]` : ` host: ${target}`,
             risk_lvl: isCommandInjection ? 3 : 1,
             timestamp: new Date().toISOString()
         })

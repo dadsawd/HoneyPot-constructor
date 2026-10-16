@@ -331,18 +331,20 @@
         let liveEvents = []; // Массив для реальных инцидентов с бэкенда
 
         // Функция добавления новой атаки в таблицу и график
-        function addNewAttackToDashboardTable(addData) {
-            const newEvent = {
-                timestamp: addData.timestamp || new Date().toISOString(),
-                attacker_ip: addData.attacker_ip || addData.ip || addData.client_ip || "127.0.0.1",
-                host_id: addData.host_id || 1,
-                payload: addData.payload || addData.attack_type || addData.raw_data || "Подозрительный запрос",
-                severity: addData.severity || (addData.risk_lvl === 3 ? "critical" : addData.risk_lvl === 2 ? "warning" : "info")
-            };
-            
-            liveEvents.unshift(newEvent); // Добавляем свежую атаку в самое начало
-            renderTable(liveEvents);      // Перерисовываем таблицу и почасовой график
-        }
+       // Функция добавления новой атаки в таблицу и график
+function addNewAttackToDashboardTable(addData) {
+    const newEvent = {
+        timestamp: addData.timestamp || new Date().toISOString(),
+        attacker_ip: addData.attacker_ip || addData.ip || addData.client_ip || "127.0.0.1",
+        host_id: addData.host_id || 1,
+        // Сначала проверяем signature, которую шлют ловушки, затем остальные поля
+        payload: addData.signature || addData.payload || addData.attack_type || addData.raw_data || "Подозрительный запрос",
+        severity: addData.severity || (addData.risk_lvl === 3 ? "critical" : addData.risk_lvl === 2 ? "warning" : "info")
+    };
+    
+    liveEvents.unshift(newEvent); // Добавляем свежую атаку в самое начало
+    renderTable(liveEvents);      // Перерисовываем таблицу и почасовой график
+}
 
         // Функция отправки JSON-конфигурации конструктора на бэкенд
         function deployNewHoneypot() {
