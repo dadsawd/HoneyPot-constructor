@@ -31,7 +31,7 @@ class HoneyPot:
 
         try:
             # host.docker.internal выводит сетевой запрос из контейнера прямо на порт 8000 твоего ПК
-            requests.post("http://docker.internal", json=attack_info, timeout=2)
+            requests.post("http://192.168.3.86:8000/api/v1/telemetry", json=attack_info, timeout=2)
         except Exception as e:
             print(f"Ошибка отправки телеметрии: {e}")
 
