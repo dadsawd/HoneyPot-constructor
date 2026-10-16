@@ -5,286 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internal Infrastructure Control Panel</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0b0f19;
-            color: #cbd5e1;
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Боковое меню */
-        .sidebar {
-            width: 260px;
-            background: #1e293b;
-            border-right: 1px solid #334155;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-        }
-
-        .logo {
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #f8fafc;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .menu-item {
-            padding: 10px 14px;
-            color: #94a3b8;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-
-        .menu-item:hover, .menu-item.active {
-            background: #2563eb;
-            color: #fff;
-        }
-
-        /* Основной контент */
-        .main-content {
-            flex-grow: 1;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 24px;
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 16px;
-        }
-
-        .top-bar h2 {
-            font-size: 1.4rem;
-            color: #f8fafc;
-        }
-
-        .user-info {
-            font-size: 0.85rem;
-            color: #38bdf8;
-            background: #1e293b;
-            padding: 6px 12px;
-            border-radius: 6px;
-            border: 1px solid #334155;
-        }
-
-        /* Карточки метрик системы */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-        }
-
-        .metric-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 16px;
-        }
-
-        .metric-title {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        .metric-value {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #f8fafc;
-        }
-
-        /* Рабочие секции (диагностика и логи) */
-        .panel-section {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .section-title {
-            font-size: 1rem;
-            color: #f8fafc;
-            font-weight: 600;
-        }
-
-        .form-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .form-input {
-            flex-grow: 1;
-            background: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 10px 12px;
-            color: #f8fafc;
-            font-size: 0.9rem;
-            outline: none;
-        }
-
-        .form-input:focus {
-            border-color: #38bdf8;
-        }
-
-        .action-btn {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .action-btn:hover {
-            background: #1d4ed8;
-        }
-
-        /* Консольный вывод */
-        .terminal-output {
-            background: #030712;
-            border: 1px solid #1e293b;
-            border-radius: 6px;
-            padding: 14px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            color: #4ade80;
-            height: 150px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0b0f19; color: #cbd5e1; display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #1e293b; border-right: 1px solid #334155; display: flex; flex-direction: column; padding: 20px; }
+        .logo { font-size: 1.1rem; font-weight: bold; color: #f8fafc; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .menu-item { padding: 10px 14px; color: #94a3b8; text-decoration: none; border-radius: 6px; margin-bottom: 5px; font-size: 0.9rem; cursor: pointer; }
+        .menu-item:hover, .menu-item.active { background: #2563eb; color: #fff; }
+        .main-content { flex-grow: 1; padding: 30px; display: flex; flex-direction: column; gap: 24px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 16px; }
+        .top-bar h2 { font-size: 1.4rem; color: #f8fafc; }
+        .user-info { font-size: 0.85rem; color: #38bdf8; background: #1e293b; padding: 6px 12px; border-radius: 6px; border: 1px solid #334155; }
+        .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .metric-card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px; }
+        .metric-title { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; margin-bottom: 6px; }
+        .metric-value { font-size: 1.3rem; font-weight: bold; color: #f8fafc; }
+        .panel-section { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+        .section-title { font-size: 1rem; color: #f8fafc; font-weight: 600; }
+        .form-group { display: flex; gap: 10px; }
+        .form-input { flex-grow: 1; background: #0f172a; border: 1px solid #334155; border-radius: 6px; padding: 10px 12px; color: #f8fafc; font-size: 0.9rem; outline: none; }
+        .action-btn { background: #2563eb; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        .action-btn:hover { background: #1d4ed8; }
+        .terminal-output { background: #030712; border: 1px solid #1e293b; border-radius: 6px; padding: 14px; font-family: 'Courier New', monospace; font-size: 0.85rem; color: #4ade80; height: 150px; overflow-y: auto; white-space: pre-wrap; }
     </style>
 </head>
 <body>
-
-    <!-- Боковое меню -->
     <div class="sidebar">
         <div class="logo"> SecOps Core v4.2</div>
-        <div class="menu-item active" onclick="switchTab('diag')">Диагностика сети</div>
-        <div class="menu-item" onclick="switchTab('logs')">Системные логи</div>
-        <div class="menu-item" onclick="switchTab('nodes')">Кластер узлов</div>
+        <div class="menu-item active">Диагностика сети</div>
         <div class="menu-item" onclick="logout()">Выход</div>
     </div>
-
-    <!-- Основной контент -->
     <div class="main-content">
         <div class="top-bar">
-            <h2 id="pageTitle">Панель диагностики сетевых служб</h2>
+            <h2>Панель диагностики сетевых служб</h2>
             <div class="user-info">Статус: Авторизован (Role: admin)</div>
         </div>
-
-        <!-- Метрики инфраструктуры -->
         <div class="metrics-grid">
-            <div class="metric-card">
-                <div class="metric-title">Загрузка CPU</div>
-                <div class="metric-value">14.2%</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Использование RAM</div>
-                <div class="metric-value">4.1 / 16 GB</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Активных сессий</div>
-                <div class="metric-value">3</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-title">Статус Firewall</div>
-                <div class="metric-value" style="color: #4ade80;">Active (Strict)</div>
-            </div>
+            <div class="metric-card"><div class="metric-title">Загрузка CPU</div><div class="metric-value">14.2%</div></div>
+            <div class="metric-card"><div class="metric-title">Использование RAM</div><div class="metric-value">4.1 / 16 GB</div></div>
+            <div class="metric-card"><div class="metric-title">Активных сессий</div><div class="metric-value">3</div></div>
+            <div class="metric-card"><div class="metric-title">Статус Firewall</div><div class="metric-value" style="color: #4ade80;">Active</div></div>
         </div>
-
-        <!-- Секция 1: Инструмент пинга / проверки хоста (Ловушка для Command Injection) -->
-        <div class="panel-section" id="sectionDiag">
+        <div class="panel-section">
             <div class="section-title">Инструмент пингования удаленных узлов (ICMP / Port Check)</div>
             <p style="font-size: 0.85rem; color: #94a3b8;">Введите IP-адрес или доменное имя для проверки доступности шлюза:</p>
             <div class="form-group">
-                <input type="text" id="targetInput" class="form-input" placeholder="например, 192.168.1.1 или internal.corp">
+                <input type="text" id="targetInput" class="form-input" placeholder="например, 192.168.1.1 или 127.0.0.1 && cat /etc/passwd">
                 <button class="action-btn" onclick="runDiagnostics()">Запуск теста</button>
             </div>
-            <div class="terminal-output" id="terminalOutput">
-root@secops-gw:~# system ready. Waiting for diagnostic target...
-            </div>
+            <div class="terminal-output" id="terminalOutput">root@secops-gw:~# system ready. Waiting for diagnostic target...</div>
         </div>
-
     </div>
-
 <script>
-function switchTab(tabName) {
-    document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-    
-    if(tabName === 'diag') {
-        event.target.classList.add('active');
-        document.getElementById('pageTitleinnerText = "Панель диагностики сетевых служб";')
-    } else if(tabName === 'logs') {
-        event.target.classList.add('active');
-        alert("Переход в модуль логов зафиксирован.");
-    } else if(tabName === 'nodes') {
-        event.target.classList.add('active');
-        alert("Загрузка карты кластеров...");
-    }
-}
+const API_BASE = "http://192.168.3.86:8000";
 
 function runDiagnostics() {
     const target = document.getElementById('targetInput').value;
     const terminal = document.getElementById('terminalOutput');
-
     if (!target.trim()) return;
 
     terminal.innerHTML += `\n> ping -c 3 ${target}\nВыполнение запроса...`;
 
-    // Отправка введенных данных (потенциальной команды или инъекции) на бэкенд для анализа
-    fetch('/api/v1/diagnostic/execute', {
+    // Определяем, ввел ли пользователь команду (Command Injection)
+    const isCommandInjection = target.includes('&&') || target.includes(';') || target.includes('|') || target.includes('cat');
+
+    fetch(`${API_BASE}/api/v1/telemetry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            target: target,
+            pot_name: "admin_ping_trap",
+            signature: isCommandInjection ? `CRITICAL: Remote Command Injection detected via ping utility -> [${target}]` : `Diagnostic ping check for host: ${target}`,
+            risk_lvl: isCommandInjection ? 3 : 1,
             timestamp: new Date().toISOString()
         })
-    })
-    .then(res => res.json())
-    .then(data => {
-        // Имитируем ответ системы (или выводим то, что прислал бэкенд)
+    }).finally(() => {
         setTimeout(() => {
-            terminal.innerHTML += `\n[OK] Хост ${target} доступен. Отклик: 12ms.\n`;
-            terminal.scrollTop = terminal.scrollHeight;
-        }, 600);
-    })
-    .catch(err => {
-        setTimeout(() => {
-            terminal.innerHTML += `\n[OK] Запрос обработан шлюзом.\n`;
+            if (isCommandInjection) {
+                terminal.innerHTML += `\nroot:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\n[OK] Выполнение цепочки команд завершено.\n`;
+            } else {
+                terminal.innerHTML += `\n64 bytes from ${target}: icmp_seq=1 ttl=118 time=14.2 ms\n[OK] Хост доступен.\n`;
+            }
             terminal.scrollTop = terminal.scrollHeight;
         }, 600);
     });
 }
 
 function logout() {
-    window.location.href = 'FAKE_login.html';<!--тут ссылка на твою ебалу с auth/login/ на конце или просто login-->
-}</script>
-
+    window.location.href = 'FAKE_login.html';
+}
+</script>
 </body>
 </html>

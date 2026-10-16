@@ -5,56 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Infrastructure Login</title>
 </head>
-<body style="display: flex;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-    background: #f4f6f9;
-    font-family: Arial, sans-serif;
-    align-items: flex-start;">
-
+<body style="display: flex; justify-content: center; height: 100vh; margin: 0; background: #f4f6f9; font-family: Arial, sans-serif; align-items: flex-start;">
     <div style="margin: 50px; width: 300px; padding: 30px; background: white; border: 1px solid #040404;">
-        <h3 style=" margin-bottom: 20px;">Вход в панель управления</h3>
-        
-        <form id="loginForm" action=" " method="POST"><!--ссылка адекватная в action-->
+        <h3 style="margin-bottom: 20px;">Вход в панель управления</h3>
+        <form id="loginForm">
             <label style="font-size: 14px; display: block; margin-bottom: 5px;">Логин</label>
-            <input type="text" name="username" id="username"  required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <input type="text" name="username" id="username" required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 5px;" placeholder="admin или ' OR '1'='1">
             
-            <label style="font-size: 14px; display: block; margin-bottom: 5px;">Пароль</label>
-            <input type="password" name="password" id="password"  required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <label style="font-size: 14px; display: block; margin-bottom: 5px; margin-top: 10px;">Пароль</label>
+            <input type="password" name="password" id="password" required style="width: 100%; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; padding: 5px;" placeholder="••••••••">
             
-            <div class="buttons" style="    display: flex;
-    align-items: center;
-    justify-content: space-between;"><button type="submit" style="padding: 5px 10px 5px 10px; margin: 5px 0px 5px 0px;
-    background: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 12px;">Войти</button>
-    <a href="FAKE_login.html" style = " text-decoration: none; font-size: 10px;">восстановить пароль</a></div><!--вместо fake login ссылка на дрисню какую-нибудь-->
+            <div class="buttons" style="display: flex; align-items: center; justify-content: space-between; margin-top: 15px;">
+                <button type="submit" style="padding: 5px 10px; background: #007bff; color: white; border: none; cursor: pointer; font-size: 12px;">Войти</button>
+                <a href="#" style="text-decoration: none; font-size: 10px; color: #666;">восстановить пароль</a>
+            </div>
         </form>
     </div>
 <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+const API_BASE = "http://192.168.3.86:8000";
 
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
     const usernameInput = document.getElementById('username').value;
     const passwordInput = document.getElementById('password').value;
 
-    
-    fetch('/api/v1/login', {//адекватная ссылка
+    // Детект SQL-инъекции или попытки подбора
+    const isSQLi = usernameInput.includes("'") || usernameInput.includes("or") || passwordInput.includes("'") || passwordInput.includes("or");
+
+    fetch(`${API_BASE}/api/v1/telemetry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            username: usernameInput,
-            password: passwordInput,
+            pot_name: "auth_service_trap",
+            signature: isSQLi ? `CRITICAL SQLi in Auth form: user='${usernameInput}', pass='${passwordInput}'` : `Failed login attempt: user='${usernameInput}'`,
+            risk_lvl: isSQLi ? 3 : 2,
             timestamp: new Date().toISOString()
         })
-    })
-    .then(response => {
-        window.location.href = 'fake_admin_board.html'; 
-    })
-    .catch(error => {
+    }).finally(() => {
+        // Если это SQLi — пускаем в админку, иначе крутим ошибку или пускаем в ложную
         window.location.href = 'fake_admin_board.html';
     });
 });

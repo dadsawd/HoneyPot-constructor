@@ -5,257 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internal Secure File Repository & Archive</title>
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 30px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 1100px;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 16px;
-        }
-
-        .header h3 {
-            font-size: 1.3rem;
-            color: #f8fafc;
-        }
-
-        .badge {
-            background: #0284c7;
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        /* Сетка файлов */
-        .gallery-grid {
-            display: contents;
-            margin-bottom: 30px;
-        }
-
-        .photo-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            transition: border-color 0.2s, transform 0.2s;
-            margin: 15px 0px 15px 0px;
-        }
-
-        .photo-card:hover {
-            border-color: #38bdf8;
-            transform: translateY(-2px);
-        }
-
-        /* Карточка файла с превью и блюром */
-        .file-item-wrapper {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            background: #1a2234;
-            border-bottom: 1px solid #334155;
-            gap: 14px;
-        }
-
-        .file-thumb-container {
-            position: relative;
-            width: 48px;
-            height: 60px;
-            background: #0f172a;
-            border-radius: 4px;
-            overflow: hidden;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid #475569;
-        }
-
-        .file-thumb-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: blur(4px);
-            opacity: 0.75;
-        }
-
-        .file-extension-badge {
-            position: absolute;
-            bottom: 2px;
-            right: 2px;
-            color: #fff;
-            font-size: 0.55rem;
-            font-weight: bold;
-            padding: 2px 4px;
-            border-radius: 2px;
-            text-transform: uppercase;
-        }
-
-        /* Цветовая дифференциация бейджей по типу файлов */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0f172a; color: #e2e8f0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 30px; }
+        .container { width: 100%; max-width: 1100px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid #334155; padding-bottom: 16px; }
+        .header h3 { font-size: 1.3rem; color: #f8fafc; }
+        .badge { background: #0284c7; color: #fff; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; font-weight: 600; }
+        .gallery-grid { display: contents; margin-bottom: 30px; }
+        .photo-card { background: #1e293b; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column; transition: border-color 0.2s, transform 0.2s; margin: 15px 0px; }
+        .photo-card:hover { border-color: #38bdf8; transform: translateY(-2px); }
+        .file-item-wrapper { display: flex; align-items: center; padding: 16px; background: #1a2234; border-bottom: 1px solid #334155; gap: 14px; }
+        .file-thumb-container { position: relative; width: 48px; height: 60px; background: #0f172a; border-radius: 4px; overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 1px solid #475569; }
+        .file-thumb-container img { width: 100%; height: 100%; object-fit: cover; filter: blur(4px); opacity: 0.75; }
+        .file-extension-badge { position: absolute; bottom: 2px; right: 2px; color: #fff; font-size: 0.55rem; font-weight: bold; padding: 2px 4px; border-radius: 2px; text-transform: uppercase; }
         .badge-sql, .badge-zip { background: #ef4444; }
         .badge-pdf { background: #dc2626; }
         .badge-xlsx, .badge-csv { background: #10b981; }
-        .badge-conf, .badge-env, .badge-yml, .badge-yaml { background: #f59e0b; }
-        .badge-sec, .badge-key { background: #8b5cf6; }
+        .badge-conf, .badge-env { background: #f59e0b; }
+        .badge-sec { background: #8b5cf6; }
         .badge-default { background: #0284c7; }
-
-        .file-meta {
-            flex-grow: 1;
-            overflow: hidden;
-        }
-
-        .file-name-link {
-            color: #38bdf8;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 600;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            cursor: pointer;
-        }
-
-        .file-name-link:hover {
-            text-decoration: underline;
-        }
-
-        .file-details {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            margin-top: 4px;
-        }
-
-        .photo-content {
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-grow: 1;
-            background: #1e293b;
-        }
-
-        /* Блок комментариев под файлом */
-        .comments-section {
-            background: #0f172a;
-            border-radius: 6px;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            border: 1px solid #334155;
-        }
-
-        .comment-item {
-            font-size: 0.75rem;
-            color: #94a3b8;
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 4px;
-        }
-
-        .comment-item span {
-            color: #38bdf8;
-            font-weight: 600;
-        }
-
-        .comment-input-row {
-            display: flex;
-            gap: 6px;
-            margin-top: 4px;
-        }
-
-        .comment-input {
-            width: 100%;
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 4px;
-            padding: 6px 8px;
-            color: #f8fafc;
-            font-size: 0.75rem;
-            outline: none;
-        }
-
-        .comment-input:focus {
-            border-color: #38bdf8;
-        }
-
-        .comment-btn {
-            background: #2563eb;
-            color: #fff;
-            border: none;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        .comment-btn:hover {
-            background: #1d4ed8;
-        }
-
-        /* Пагинация на 5 страниц */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 20px;
-        }
-
-        .page-btn {
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #cbd5e1;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background 0.2s, border-color 0.2s;
-        }
-
-        .page-btn:hover, .page-btn.active {
-            background: #2563eb;
-            border-color: #2563eb;
-            color: #fff;
-        }
+        .file-meta { flex-grow: 1; overflow: hidden; }
+        .file-name-link { color: #38bdf8; text-decoration: none; font-size: 0.9rem; font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+        .file-name-link:hover { text-decoration: underline; }
+        .file-details { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; }
+        .photo-content { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; background: #1e293b; }
+        .comments-section { background: #0f172a; border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px; border: 1px solid #334155; }
+        .comment-item { font-size: 0.75rem; color: #94a3b8; border-bottom: 1px solid #1e293b; padding-bottom: 4px; }
+        .comment-item span { color: #38bdf8; font-weight: 600; }
+        .comment-input-row { display: flex; gap: 6px; margin-top: 4px; }
+        .comment-input { width: 100%; background: #1e293b; border: 1px solid #334155; border-radius: 4px; padding: 6px 8px; color: #f8fafc; font-size: 0.75rem; outline: none; }
+        .comment-input:focus { border-color: #38bdf8; }
+        .comment-btn { background: #2563eb; color: #fff; border: none; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; cursor: pointer; font-weight: 600; }
+        .comment-btn:hover { background: #1d4ed8; }
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .page-btn { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .page-btn:hover, .page-btn.active { background: #2563eb; border-color: #2563eb; color: #fff; }
     </style>
 </head>
 <body>
-
 <div class="container">
     <div class="header">
         <h3>Внутреннее хранилище файлов компании (Secure Storage)</h3>
         <span class="badge" id="pageIndicator">Страница 1 из 5</span>
     </div>
-
-    <!-- Сетка файлов -->
     <div class="gallery-grid" id="galleryGrid"></div>
-
-    <!-- Кнопки пагинации на 5 страниц -->
     <div class="pagination">
         <button class="page-btn active" onclick="changePage(1)">1</button>
         <button class="page-btn" onclick="changePage(2)">2</button>
@@ -264,9 +57,9 @@
         <button class="page-btn" onclick="changePage(5)">5</button>
     </div>
 </div>
-
 <script>
-// Данные для 5 страниц (на каждой странице 6 уникальных файлов с реалистичными комментариями)
+const API_BASE = "http://192.168.3.86:8000";
+
 const pagesData = {
     1: [
         { name: "config_gateway.conf", commentUser: "alex_dev", commentText: "Залил обновленный конфиг после утреннего релиза." },
@@ -310,25 +103,16 @@ const pagesData = {
     ]
 };
 
-// Функция для автоматического определения расширения, размера и цвета бейджа
 function getFileMeta(fileName) {
     const parts = fileName.split('.');
     const ext = parts.length > 1 ? parts[parts.length - 1].toUpperCase() : 'DAT';
-    
     let size = '1.2 MB';
     let badgeClass = 'badge-default';
-    
-    switch(ext) {
-        case 'SQL': size = '142.5 MB'; badgeClass = 'badge-sql'; break;
-        case 'PDF': size = '3.8 MB'; badgeClass = 'badge-pdf'; break;
-        case 'XLSX': case 'CSV': size = '1.4 MB'; badgeClass = 'badge-xlsx'; break;
-        case 'CONF': case 'ENV': case 'YML': case 'YAML': size = '32 KB'; badgeClass = 'badge-conf'; break;
-        case 'SH': case 'PY': size = '14 KB'; badgeClass = 'badge-sec'; break;
-        case 'KEY': case 'CRT': size = '8 KB'; badgeClass = 'badge-sec'; break;
-        case 'ZIP': case 'DB': size = '86.4 MB'; badgeClass = 'badge-zip'; break;
-        case 'LOG': case 'TXT': size = '5.1 MB'; badgeClass = 'badge-default'; break;
-        default: size = '2.1 MB';
-    }
+    if(['SQL','ZIP'].includes(ext)) { size = '142.5 MB'; badgeClass = 'badge-sql'; }
+    else if(ext === 'PDF') { size = '3.8 MB'; badgeClass = 'badge-pdf'; }
+    else if(['XLSX','CSV'].includes(ext)) { size = '1.4 MB'; badgeClass = 'badge-xlsx'; }
+    else if(['CONF','ENV','YML','YAML'].includes(ext)) { size = '32 KB'; badgeClass = 'badge-conf'; }
+    else if(['SH','PY','KEY','CRT'].includes(ext)) { size = '14 KB'; badgeClass = 'badge-sec'; }
     return { ext, size, badgeClass };
 }
 
@@ -338,19 +122,15 @@ function renderPage(page) {
     currentPage = page;
     const grid = document.getElementById('galleryGrid');
     grid.innerHTML = '';
-
-    const items = pagesData[page];
-
-    items.forEach((item, index) => {
+    pagesData[page].forEach((item, index) => {
         const globalIndex = (page - 1) * 6 + index + 1;
         const meta = getFileMeta(item.name);
-        
         const card = document.createElement('div');
         card.className = 'photo-card';
         card.innerHTML = `
             <div class="file-item-wrapper">
                 <div class="file-thumb-container">
-                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=150" alt="Document preview">
+                    <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=150" alt="preview">
                     <span class="file-extension-badge ${meta.badgeClass}">${meta.ext}</span>
                 </div>
                 <div class="file-meta">
@@ -362,7 +142,7 @@ function renderPage(page) {
                 <div class="comments-section">
                     <div class="comment-item"><span>${item.commentUser}:</span> ${item.commentText}</div>
                     <div class="comment-input-row">
-                        <input type="text" class="comment-input" id="comm_${globalIndex}" placeholder="Комментарий...">
+                        <input type="text" class="comment-input" id="comm_${globalIndex}" placeholder="Комментарий или SQLi payload...">
                         <button class="comment-btn" onclick="sendComment(${globalIndex}, '${item.name}')">Отпр.</button>
                     </div>
                 </div>
@@ -371,76 +151,55 @@ function renderPage(page) {
         grid.appendChild(card);
     });
 
-    // Обновляем активную кнопку пагинации
     document.querySelectorAll('.page-btn').forEach((btn, idx) => {
-        if (idx + 1 === page) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
+        btn.classList.toggle('active', idx + 1 === page);
     });
-
-    // Плавный скролл вверх при переходе на другую страницу
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     document.getElementById('pageIndicator').innerText = `Страница ${page} из 5`;
-
-    // Телеметрия смены страниц для фиксации сканеров на бэкенде
-    fetch('/api/v1/trap/gallery', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ page: page, action: 'pagination_switch', timestamp: new Date().toISOString() })
-    }).catch(err => {});
 }
 
-function changePage(page) {
-    renderPage(page);
-}
+function changePage(page) { renderPage(page); }
 
 function handleDownload(fileId, fileName) {
-    fetch('/api/v1/trap/download', {
+    // Детект скачивания ценного конфига / базы данных
+    const isCritical = fileName.includes('db_') || fileName.includes('key') || fileName.includes('env');
+    fetch(`${API_BASE}/api/v1/telemetry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ file_id: fileId, file_name: fileName, page: currentPage, timestamp: new Date().toISOString() })
+        body: JSON.stringify({
+            pot_name: "secure_storage_trap",
+            signature: `Unauthorized file download attempt: [${fileName}] (Page ${currentPage})`,
+            risk_lvl: isCritical ? 3 : 1,
+            timestamp: new Date().toISOString()
+        })
     }).catch(err => {});
-
-    // Эмуляция скачивания-ловушки
-    alert(`Запрос на скачивание файла "${fileName}" отправлен в систему безопасности.`);
+    alert(`Запрос на скачивание файла "${fileName}" зафиксирован в системе контроля доступа.`);
 }
 
 function sendComment(fileId, fileName) {
     const inputField = document.getElementById(`comm_${fileId}`);
     const commentText = inputField.value;
-
     if (!commentText.trim()) return;
 
-    fetch('/api/v1/trap/gallery/comment', {
+    // Определяем, пытается ли пользователь пропихнуть инъекцию
+    const isInjection = commentText.includes("'") || commentText.includes("union") || commentText.includes("<script>") || commentText.includes(";");
+    
+    fetch(`${API_BASE}/api/v1/telemetry`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            file_id: fileId,
-            file_name: fileName,
-            page: currentPage,
-            payload: commentText,
+            pot_name: "secure_storage_trap",
+            signature: isInjection ? `Malicious payload in file comments: ${commentText}` : `New comment on ${fileName}: ${commentText}`,
+            risk_lvl: isInjection ? 3 : 1,
             timestamp: new Date().toISOString()
         })
-    }).then(() => {
-        alert("Комментарий отправлен на модерацию администратору.");
-        inputField.value = '';
-    }).catch(() => {
+    }).finally(() => {
         alert("Комментарий отправлен на модерацию администратору.");
         inputField.value = '';
     });
 }
 
-// Инициализация при загрузке
-window.onload = () => {
-    renderPage(1);
-};
+window.onload = () => { renderPage(1); };
 </script>
-
 </body>
 </html>
